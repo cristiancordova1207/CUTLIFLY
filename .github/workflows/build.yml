@@ -9,7 +9,11 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: 'Publicar una Release con la versión del archivo VERSION'
+        description: 'Publicar la Release oficial con la versión de VERSION (requiere firma configurada)'
+        type: boolean
+        default: false
+      unsigned_prerelease:
+        description: 'Solo pruebas: publicar como pre-release SIN FIRMA (el actualizador ignora las pre-releases)'
         type: boolean
         default: false
 
@@ -20,12 +24,18 @@ concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  # Repositorio PÚBLICO donde se publican solo los binarios (el código es privado). Variable de repositorio RELEASES_REPO.
+  RELEASES_REPO: ${{ vars.RELEASES_REPO || 'cristiancordova1207/cutlify-releases' }}
+  # Proveedor de firma (variable de repositorio): pfx | artifact-signing | vacío = sin firma
+  SIGNING_PROVIDER: ${{ vars.SIGNING_PROVIDER }}
+  SIGNING_PUBLISHER: ${{ vars.SIGNING_PUBLISHER }}
+
 jobs:
   build:
     runs-on: windows-latest
-    env:
-      DOTNET_NOLOGO: true
-      DOTNET_CLI_TELEMETRY_OPTOUT: true
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -46,37 +56,124 @@ jobs:
 
       - name: Restaurar dependencias
         run: |
-          dotnet restore src/CUTLIFLY/CUTLIFLY.csproj -r win-x64
-          dotnet restore tests/CUTLIFLY.Tests/CUTLIFLY.Tests.csproj
+          dotnet restore src/CUTLIFY/CUTLIFY.csproj -r win-x64
+          dotnet restore tests/CUTLIFY.Tests/CUTLIFY.Tests.csproj
 
       - name: Compilar
-        run: dotnet build src/CUTLIFLY/CUTLIFLY.csproj -c Release --no-restore
+        run: dotnet build src/CUTLIFY/CUTLIFY.csproj -c Release --no-restore
 
       - name: Pruebas
-        run: dotnet test tests/CUTLIFLY.Tests/CUTLIFLY.Tests.csproj -c Release --no-restore --logger "console;verbosity=normal"
+        run: dotnet test tests/CUTLIFY.Tests/CUTLIFY.Tests.csproj -c Release --no-restore --logger "console;verbosity=normal"
 
-      - name: Publicar CUTLIFLY.exe
+      - name: Publicar CUTLIFY.exe
         run: >
-          dotnet publish src/CUTLIFLY/CUTLIFLY.csproj -c Release -r win-x64 --self-contained true
+          dotnet publish src/CUTLIFY/CUTLIFY.csproj -c Release -r win-x64 --self-contained true
           -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
-          -p:PublishReadyToRun=true -p:DebugType=none -o publish
+          -p:PublishReadyToRun=true -p:DebugType=none -p:ReleasesRepository=${{ env.RELEASES_REPO }} -o publish
+
+      - name: Estado de la firma
+        id: sign
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:SIGNING_PROVIDER)) {
+            Write-Host "::warning::Code signing is not configured. Los binarios de esta build NO están firmados (solo desarrollo)."
+            "enabled=false" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "Firma configurada con el proveedor: $env:SIGNING_PROVIDER"
+            "enabled=true" >> $env:GITHUB_OUTPUT
+          }
+
+      # ---- Firma de CUTLIFY.exe (antes de empaquetarlo en el instalador) ----
+      - name: Firmar CUTLIFY.exe (certificado PFX)
+        if: steps.sign.outputs.enabled == 'true' && env.SIGNING_PROVIDER == 'pfx'
+        shell: pwsh
+        env:
+          SIGNING_CERT_PFX_BASE64: ${{ secrets.SIGNING_CERT_PFX_BASE64 }}
+          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
+        run: ./scripts/sign.ps1 -Files publish/CUTLIFY.exe
+
+      - name: Firmar CUTLIFY.exe (Azure Artifact Signing)
+        if: steps.sign.outputs.enabled == 'true' && env.SIGNING_PROVIDER == 'artifact-signing'
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ vars.ARTIFACT_SIGNING_PROFILE }}
+          files-folder: ${{ github.workspace }}\publish
+          files-folder-filter: exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
 
       - name: Instalador (Inno Setup)
         shell: pwsh
+        env:
+          SIGNING_CERT_PFX_BASE64: ${{ secrets.SIGNING_CERT_PFX_BASE64 }}
+          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
         run: |
           $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
           if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress | Out-Null }
-          & $iscc "/DAppVersion=${{ steps.ver.outputs.version }}" installer/CUTLIFLY.iss
-          if ($LASTEXITCODE -ne 0) { throw "ISCC falló" }
+          $isccArgs = @("/DAppVersion=${{ steps.ver.outputs.version }}")
+          $pfx = $null
+          if ('${{ steps.sign.outputs.enabled }}' -eq 'true' -and $env:SIGNING_PROVIDER -eq 'pfx') {
+            # Firma también el desinstalador generado por Inno Setup.
+            $pfx = Join-Path $env:RUNNER_TEMP 'cutlify-inno.pfx'
+            [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:SIGNING_CERT_PFX_BASE64))
+            $signtool = (Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" | Sort-Object FullName -Descending | Select-Object -First 1).FullName
+            $isccArgs += "/DSignUninstaller"
+            # $q = comillas y $f = archivo (sustituidos por Inno Setup)
+            $isccArgs += "/Scutlifysign=`$q$signtool`$q sign /fd SHA256 /f `$q$pfx`$q /p $env:SIGNING_CERT_PASSWORD /tr http://timestamp.digicert.com /td SHA256 /d CUTLIFY `$q`$f`$q"
+          }
+          try {
+            & $iscc @isccArgs installer/CUTLIFY.iss
+            if ($LASTEXITCODE -ne 0) { throw "ISCC falló" }
+          } finally { if ($pfx) { Remove-Item $pfx -Force -ErrorAction SilentlyContinue } }
 
-      - name: Empaquetar y calcular SHA-256
+      # ---- Firma del instalador (después de crearlo; no se modifica después) ----
+      - name: Firmar CUTLIFY-Setup.exe (certificado PFX)
+        if: steps.sign.outputs.enabled == 'true' && env.SIGNING_PROVIDER == 'pfx'
+        shell: pwsh
+        env:
+          SIGNING_CERT_PFX_BASE64: ${{ secrets.SIGNING_CERT_PFX_BASE64 }}
+          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
+        run: ./scripts/sign.ps1 -Files releases/CUTLIFY-Setup.exe
+
+      - name: Firmar CUTLIFY-Setup.exe (Azure Artifact Signing)
+        if: steps.sign.outputs.enabled == 'true' && env.SIGNING_PROVIDER == 'artifact-signing'
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ vars.ARTIFACT_SIGNING_PROFILE }}
+          files-folder: ${{ github.workspace }}\releases
+          files-folder-filter: exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      - name: Empaquetar
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force releases | Out-Null
-          Copy-Item publish/CUTLIFLY.exe releases/CUTLIFLY.exe -Force
-          $v = (Get-Item releases/CUTLIFLY.exe).VersionInfo.ProductVersion
+          Copy-Item publish/CUTLIFY.exe releases/CUTLIFY.exe -Force
+          $v = (Get-Item releases/CUTLIFY.exe).VersionInfo.ProductVersion
           if (-not $v.StartsWith('${{ steps.ver.outputs.version }}')) { throw "Versión del exe inesperada: $v" }
-          Get-ChildItem releases -Filter *.exe | ForEach-Object {
+
+      - name: Verificar firmas
+        if: steps.sign.outputs.enabled == 'true'
+        shell: pwsh
+        run: ./scripts/verify-signature.ps1 -Files releases/CUTLIFY.exe, releases/CUTLIFY-Setup.exe
+
+      - name: SHA-256 de los archivos finales
+        shell: pwsh
+        run: |
+          Get-ChildItem releases -Filter *.exe | Sort-Object Name | ForEach-Object {
             "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(), $_.Name
           } | Set-Content releases/SHA256SUMS.txt -Encoding ascii
           Get-Content releases/SHA256SUMS.txt
@@ -85,10 +182,10 @@ jobs:
       - name: Guardar artefactos
         uses: actions/upload-artifact@v5
         with:
-          name: CUTLIFLY-${{ steps.ver.outputs.version }}
+          name: CUTLIFY-${{ steps.ver.outputs.version }}${{ steps.sign.outputs.enabled == 'true' && '' || '-unsigned' }}
           path: |
-            releases/CUTLIFLY.exe
-            releases/CUTLIFLY-Setup.exe
+            releases/CUTLIFY.exe
+            releases/CUTLIFY-Setup.exe
             releases/SHA256SUMS.txt
 
       - name: Notas de la versión (CHANGELOG)
@@ -102,11 +199,14 @@ jobs:
             if ($l -match '^## \[') { if ($in) { break }; if ($l -match "^## \[$([regex]::Escape($v))\]") { $in = $true; continue } }
             if ($in) { $out += $l }
           }
-          if ($out.Count -eq 0) { $out = @("CUTLIFLY $v") }
-          $out += ''; $out += '---'; $out += 'Verifica la descarga con `SHA256SUMS.txt`. CUTLIFLY instalado detecta esta versión y se actualiza solo.'
+          if ($out.Count -eq 0) { $out = @("CUTLIFY $v") }
+          $out += ''; $out += '---'
+          $out += "**Fecha:** $(Get-Date -Format 'yyyy-MM-dd')"
+          $out += ''; $out += '**SHA-256 (archivos oficiales):**'; $out += '```'; $out += (Get-Content releases/SHA256SUMS.txt); $out += '```'
+          $out += 'Solo los archivos publicados aquí son versiones oficiales de CUTLIFY. CUTLIFY instalado detecta esta versión y se actualiza solo.'
           $out -join "`n" | Set-Content release-notes.md -Encoding utf8
 
-      - name: Publicar GitHub Release
+      - name: Publicar GitHub Release oficial (solo binarios firmados)
         if: >
           github.event_name != 'pull_request' && (
             github.ref_type == 'tag' ||
@@ -115,10 +215,26 @@ jobs:
           )
         shell: pwsh
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN || github.token }}
         run: |
+          if ('${{ steps.sign.outputs.enabled }}' -ne 'true') {
+            Write-Host "::warning::Code signing is not configured. No se publica la Release oficial: una Release de producción requiere CUTLIFY.exe y CUTLIFY-Setup.exe firmados."
+            exit 0
+          }
           $tag = "v${{ steps.ver.outputs.version }}"
-          gh release view $tag --repo "${{ github.repository }}" *> $null
-          if ($LASTEXITCODE -eq 0) { Write-Host "La Release $tag ya existe; no se publica de nuevo."; exit 0 }
-          gh release create $tag releases/CUTLIFLY.exe releases/CUTLIFLY-Setup.exe releases/SHA256SUMS.txt `
-            --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "CUTLIFLY ${{ steps.ver.outputs.version }}" --notes-file release-notes.md
+          gh release view $tag --repo "$env:RELEASES_REPO" *> $null
+          if ($LASTEXITCODE -eq 0) { Write-Host "La Release $tag ya existe en $env:RELEASES_REPO; no se publica de nuevo."; exit 0 }
+          gh release create $tag releases/CUTLIFY.exe releases/CUTLIFY-Setup.exe releases/SHA256SUMS.txt `
+            --repo "$env:RELEASES_REPO" --title "CUTLIFY ${{ steps.ver.outputs.version }}" --notes-file release-notes.md
+          if ($LASTEXITCODE -ne 0) { throw "No se pudo crear la Release en $env:RELEASES_REPO (¿existe el repositorio y RELEASES_TOKEN tiene permiso contents:write?)" }
+
+      - name: Publicar pre-release SIN FIRMA (solo pruebas)
+        if: github.event_name == 'workflow_dispatch' && inputs.unsigned_prerelease
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN || github.token }}
+        run: |
+          $tag = "v${{ steps.ver.outputs.version }}-dev.${{ github.run_number }}"
+          gh release create $tag releases/CUTLIFY.exe releases/CUTLIFY-Setup.exe releases/SHA256SUMS.txt `
+            --repo "$env:RELEASES_REPO" --prerelease --title "CUTLIFY ${{ steps.ver.outputs.version }} (desarrollo, SIN FIRMA)" `
+            --notes "Build de desarrollo sin firma digital. No es una versión oficial de producción."

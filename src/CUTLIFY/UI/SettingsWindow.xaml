@@ -1,0 +1,498 @@
+<Window x:Class="Cutlify.UI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Configuración — CUTLIFY" Width="900" Height="640" MinWidth="760" MinHeight="480"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowGradient}"
+        FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
+        Icon="pack://application:,,,/CUTLIFY;component/Assets/cutlify.ico">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="48" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <Style x:Key="Row" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource Surface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+        <Style x:Key="PageTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,14"/>
+        </Style>
+        <Style x:Key="Key" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource AccentSoft}"/>
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Padding" Value="10,4"/>
+            <Setter Property="MinWidth" Value="130"/>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="18,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="2">
+            <TextBlock Text="&#xE713;" Style="{StaticResource Icon}" Foreground="{DynamicResource Accent}"/>
+            <TextBlock Text="Configuración" FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBlock Text="CUTLIFY" Style="{StaticResource Secondary}" Margin="8,1,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+        <Button x:Name="CloseButton" Grid.Column="1" Style="{StaticResource CloseCaptionButton}" Content="&#xE8BB;" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Margin="0,7,6,0" WindowChrome.IsHitTestVisibleInChrome="True"/>
+
+        <ListBox x:Name="Nav" Grid.Row="1" Margin="12,4,8,16" Background="Transparent" BorderThickness="0" ItemContainerStyle="{StaticResource NavItem}"
+                 AutomationProperties.Name="Categorías">
+            <ListBoxItem Tag="general"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="General" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="capture"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE722;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Capturas" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="record"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE714;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Grabación" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="clipboard"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE77F;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Portapapeles" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="storage"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xEDA2;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Almacenamiento" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="hotkeys"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE765;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Atajos" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="appearance"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE790;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Apariencia" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="privacy"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE72E;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Privacidad" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="diagnostics"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Diagnóstico" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="advanced"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9F5;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Avanzado" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+            <ListBoxItem Tag="about"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE946;" Style="{StaticResource Icon}" FontSize="14"/><TextBlock Text="Actualizaciones y acerca de" Margin="12,0,0,0"/></StackPanel></ListBoxItem>
+        </ListBox>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="8,4,16,16">
+            <Grid x:Name="Pages" Margin="0,0,8,0">
+
+                <StackPanel x:Name="Page_general">
+                    <TextBlock Text="General" Style="{StaticResource PageTitle}"/>
+                    <Border Style="{StaticResource Row}"><CheckBox x:Name="StartWithWindows" Style="{StaticResource Switch}" Content="Iniciar CUTLIFY con Windows (minimizado en la bandeja)"/></Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Minimizar a la bandeja" IsChecked="{Binding MinimizeToTray}"/></Border>
+                    <Border Style="{StaticResource Row}">
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding RunInBackground}">
+                            <StackPanel>
+                                <TextBlock Text="Al cerrar la ventana, seguir en la bandeja"/>
+                                <TextBlock Text="Desactivado = salir completamente al cerrar." Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Mostrar notificaciones" IsChecked="{Binding ShowNotifications}"/></Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Abrir editor después de capturar" IsChecked="{Binding OpenEditorAfterCapture}"/></Border>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_capture" Visibility="Collapsed">
+                    <TextBlock Text="Capturas" Style="{StaticResource PageTitle}"/>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="FormatCombo" DockPanel.Dock="Right" AutomationProperties.Name="Formato de imagen">
+                                <ComboBoxItem Tag="PNG">PNG</ComboBoxItem>
+                                <ComboBoxItem Tag="JPG">JPG</ComboBoxItem>
+                            </ComboBox>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Formato de imagen"/>
+                                <TextBlock Text="PNG por defecto. Las capturas de forma libre siempre usan PNG (transparencia)." Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="DelayCombo" DockPanel.Dock="Right" AutomationProperties.Name="Retraso de captura">
+                                <ComboBoxItem Tag="0">Sin retraso</ComboBoxItem>
+                                <ComboBoxItem Tag="1">1 segundo</ComboBoxItem>
+                                <ComboBoxItem Tag="2">2 segundos</ComboBoxItem>
+                                <ComboBoxItem Tag="3">3 segundos</ComboBoxItem>
+                                <ComboBoxItem Tag="5">5 segundos</ComboBoxItem>
+                                <ComboBoxItem Tag="10">10 segundos</ComboBoxItem>
+                            </ComboBox>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Retraso"/>
+                                <TextBlock Text="Muestra una cuenta regresiva; útil para capturar menús." Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Copiar automáticamente al portapapeles" IsChecked="{Binding AutoCopyCaptures}"/></Border>
+                    <Border Style="{StaticResource Row}">
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding SaveTemporarily}">
+                            <StackPanel>
+                                <TextBlock Text="Guardar temporalmente"/>
+                                <TextBlock Text="Desactivado = modo solo portapapeles: no se crea ningún archivo hasta que pulses Guardar (se conserva la miniatura en el historial)." Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AdjustBeforeCapture}">
+                            <StackPanel>
+                                <TextBlock Text="Ajustar la selección antes de capturar"/>
+                                <TextBlock Text="Al soltar el ratón podrás mover y redimensionar la región; Enter o doble clic para capturar. Durante el arrastre, mantén Espacio para mover." Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding ShowMagnifier}">
+                            <StackPanel>
+                                <TextBlock Text="Mostrar siempre la lupa"/>
+                                <TextBlock Text="También puedes mantener Ctrl durante la selección. La lupa nunca aparece en la captura." Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Abrir editor automáticamente" IsChecked="{Binding OpenEditorAfterCapture}"/></Border>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_record" Visibility="Collapsed">
+                    <TextBlock Text="Grabación" Style="{StaticResource PageTitle}"/>
+                    <TextBlock Text="Calidad de vídeo" Style="{StaticResource SectionTitle}" Margin="2,0,0,8"/>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="ProfileCombo" DockPanel.Dock="Right" MinWidth="170" AutomationProperties.Name="Perfil de grabación"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Perfil"/>
+                                <TextBlock Text="Solo se muestran los perfiles compatibles con tus monitores." Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="ResolutionCombo" DockPanel.Dock="Right" AutomationProperties.Name="Resolución"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Resolución"/>
+                                <TextBlock Text="Reduce la grabación a esta altura máxima sin deformarla; nunca amplía." Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="FpsCombo" DockPanel.Dock="Right" AutomationProperties.Name="Fotogramas por segundo"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Fotogramas por segundo"/>
+                                <TextBlock x:Name="FpsHint" Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="CodecCombo" DockPanel.Dock="Right" MinWidth="170" AutomationProperties.Name="Codec"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Codec"/>
+                                <TextBlock Text="Solo los codecs con codificador disponible en este equipo." Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="QualityCombo" DockPanel.Dock="Right" AutomationProperties.Name="Calidad"/>
+                            <TextBlock Text="Calidad" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <TextBox x:Name="CustomBitrateBox" Width="70" Visibility="Collapsed" Margin="0,0,8,0" AutomationProperties.Name="Bitrate personalizado en Mbps"/>
+                                <ComboBox x:Name="BitrateCombo" AutomationProperties.Name="Bitrate"/>
+                            </StackPanel>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Bitrate"/>
+                                <TextBlock x:Name="BitrateHint" Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Usar aceleración por hardware cuando esté disponible" IsChecked="{Binding HardwareEncoding}"/></Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Mostrar el cursor en la grabación" IsChecked="{Binding RecordCursor}"/></Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Resaltar los clics del ratón en el vídeo" IsChecked="{Binding HighlightClicks}"/></Border>
+
+                    <TextBlock Text="Audio" Style="{StaticResource SectionTitle}" Margin="2,14,0,8"/>
+                    <Border Style="{StaticResource Row}"><CheckBox x:Name="RecordAudioSwitch" Style="{StaticResource Switch}" Content="Grabar audio" IsChecked="{Binding RecordAudio}"/></Border>
+                    <StackPanel x:Name="AudioOptions">
+                        <Border Style="{StaticResource Row}" Padding="16,12">
+                            <StackPanel>
+                                <TextBlock Text="Fuente" Margin="0,0,0,8"/>
+                                <RadioButton x:Name="SourceSystem" GroupName="src" Content="Audio del sistema" Margin="0,3"/>
+                                <RadioButton x:Name="SourceMic" GroupName="src" Content="Micrófono" Margin="0,3"/>
+                                <RadioButton x:Name="SourceBoth" GroupName="src" Content="Audio del sistema + Micrófono (mezclados en una pista)" Margin="0,3"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource Row}">
+                            <DockPanel>
+                                <ComboBox x:Name="SystemDeviceCombo" DockPanel.Dock="Right" MinWidth="240" MaxWidth="300" AutomationProperties.Name="Dispositivo de audio del sistema"/>
+                                <TextBlock Text="Audio del sistema" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource Row}" Padding="16,12">
+                            <StackPanel>
+                                <DockPanel>
+                                    <ComboBox x:Name="MicDeviceCombo" DockPanel.Dock="Right" MinWidth="240" MaxWidth="300" AutomationProperties.Name="Micrófono"/>
+                                    <TextBlock Text="Micrófono" VerticalAlignment="Center"/>
+                                </DockPanel>
+                                <DockPanel Margin="0,10,0,0">
+                                    <Button x:Name="MicTestButton" DockPanel.Dock="Right" Style="{StaticResource OutlineButton}" Content="Probar micrófono" Margin="12,0,0,0"/>
+                                    <TextBlock Text="Nivel" VerticalAlignment="Center" Margin="0,0,10,0" Style="{StaticResource Secondary}"/>
+                                    <ProgressBar x:Name="MicLevel" Height="8" Minimum="0" Maximum="1" Foreground="{DynamicResource Accent}"
+                                                 Background="{DynamicResource AccentSoft}" BorderThickness="0" VerticalAlignment="Center" AutomationProperties.Name="Nivel del micrófono"/>
+                                </DockPanel>
+                                <TextBlock x:Name="MicStatus" Style="{StaticResource Secondary}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <TextBlock Text="Diagnóstico" Style="{StaticResource SectionTitle}" Margin="2,14,0,8"/>
+                    <Border Style="{StaticResource Row}">
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding ShowRecordingStats}">
+                            <StackPanel>
+                                <TextBlock Text="Mostrar estadísticas durante la grabación"/>
+                                <TextBlock Text="FPS reales y fotogramas perdidos en la barra de grabación. CUTLIFY nunca duplica fotogramas para aparentar más FPS." Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+                    <Button x:Name="RecordDefaultsButton" Style="{StaticResource SoftButton}" Content="Restaurar valores predeterminados de grabación" HorizontalAlignment="Left" Margin="0,8,0,0"/>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_clipboard" Visibility="Collapsed">
+                    <TextBlock Text="Portapapeles" Style="{StaticResource PageTitle}"/>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Copiar capturas automáticamente" IsChecked="{Binding AutoCopyCaptures}"/></Border>
+                    <Border Style="{StaticResource Row}">
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding CopyRecordingsAsFile}">
+                            <StackPanel>
+                                <TextBlock Text="Copiar grabaciones como archivo cuando sea compatible"/>
+                                <TextBlock Text="Se pega con Ctrl + V en el Explorador, Discord, Telegram, WhatsApp Desktop y otras apps que aceptan archivos." Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Mostrar notificación" IsChecked="{Binding ShowNotifications}"/></Border>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_storage" Visibility="Collapsed">
+                    <TextBlock Text="Almacenamiento" Style="{StaticResource PageTitle}"/>
+                    <TextBlock Text="Ubicación" Style="{StaticResource SectionTitle}" Margin="2,0,0,8"/>
+                    <Border Style="{StaticResource Row}" Padding="16,12">
+                        <StackPanel>
+                            <TextBlock Text="Ubicación de capturas"/>
+                            <TextBlock x:Name="CapturesFolderText" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,8"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="CapturesFolderButton" Style="{StaticResource OutlineButton}" Content="Cambiar ubicación" Margin="0,0,8,0"/>
+                                <Button x:Name="CapturesDefaultButton" Style="{StaticResource FlatButton}" Content="Usar ubicación predeterminada" Foreground="{DynamicResource Accent}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}" Padding="16,12">
+                        <StackPanel>
+                            <TextBlock Text="Ubicación de grabaciones"/>
+                            <TextBlock x:Name="RecordingsFolderText" Style="{StaticResource Secondary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,8"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="RecordingsFolderButton" Style="{StaticResource OutlineButton}" Content="Cambiar ubicación" Margin="0,0,8,0"/>
+                                <Button x:Name="RecordingsDefaultButton" Style="{StaticResource FlatButton}" Content="Usar ubicación predeterminada" Foreground="{DynamicResource Accent}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="Al cambiar la ubicación, los archivos existentes no se mueven ni se eliminan salvo que lo confirmes." Style="{StaticResource Secondary}" Margin="2,0,0,10" TextWrapping="Wrap"/>
+
+                    <TextBlock Text="Temporales" Style="{StaticResource SectionTitle}" Margin="2,6,0,8"/>
+                    <Border Style="{StaticResource Row}" Padding="16,14">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Margin="0,0,40,0">
+                                    <TextBlock Text="Archivos temporales" Style="{StaticResource Secondary}"/>
+                                    <TextBlock x:Name="TempCountText" Text="0" FontSize="22" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Espacio utilizado" Style="{StaticResource Secondary}"/>
+                                    <TextBlock x:Name="TempSizeText" Text="0 KB" FontSize="22" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <TextBlock x:Name="TempPathText" Style="{StaticResource Secondary}" Margin="0,8,0,0" TextTrimming="CharacterEllipsis"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                <Button x:Name="CleanButton" Style="{StaticResource PrimaryButton}" Content="Limpiar archivos temporales"/>
+                                <Button x:Name="OpenTempButton" Style="{StaticResource OutlineButton}" Content="Abrir carpeta" Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="RetentionCombo" DockPanel.Dock="Right" AutomationProperties.Name="Eliminar temporales después de">
+                                <ComboBoxItem Tag="5">5 minutos</ComboBoxItem>
+                                <ComboBoxItem Tag="30">30 minutos</ComboBoxItem>
+                                <ComboBoxItem Tag="60">1 hora</ComboBoxItem>
+                                <ComboBoxItem Tag="360">6 horas</ComboBoxItem>
+                                <ComboBoxItem Tag="720">12 horas</ComboBoxItem>
+                                <ComboBoxItem Tag="1440">1 día</ComboBoxItem>
+                                <ComboBoxItem Tag="4320">3 días</ComboBoxItem>
+                                <ComboBoxItem Tag="0">Nunca</ComboBoxItem>
+                            </ComboBox>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Eliminar capturas temporales después de"/>
+                                <TextBlock Text="Imágenes y vídeos, aunque CUTLIFY haya estado cerrado. La entrada queda en el historial como «Expirada»." Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Enviar temporales expirados a la Papelera (desactivado = eliminar permanentemente)" IsChecked="{Binding SendExpiredToRecycleBin}"/></Border>
+                    <TextBlock Text="Los archivos guardados siempre se envían a la Papelera de reciclaje al eliminarlos." Style="{StaticResource Secondary}" Margin="2,0,0,10"/>
+
+                    <TextBlock Text="Historial" Style="{StaticResource SectionTitle}" Margin="2,6,0,8"/>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <Button x:Name="ClearHistoryButton" DockPanel.Dock="Right" Style="{StaticResource OutlineButton}" Content="Limpiar historial"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Limpiar historial"/>
+                                <TextBlock Text="Quita entradas y miniaturas. No elimina capturas ni grabaciones guardadas." Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_hotkeys" Visibility="Collapsed">
+                    <TextBlock Text="Atajos" Style="{StaticResource PageTitle}"/>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <Border Style="{StaticResource Key}"><TextBlock x:Name="HkCaptureText" Foreground="{DynamicResource Accent}" FontWeight="SemiBold" HorizontalAlignment="Center"/></Border>
+                                <Button x:Name="HkCaptureButton" Style="{StaticResource OutlineButton}" Content="Cambiar" Margin="8,0,0,0" Tag="capture"/>
+                            </StackPanel>
+                            <TextBlock Text="Captura rápida" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <Border Style="{StaticResource Key}"><TextBlock x:Name="HkRecordText" Foreground="{DynamicResource Accent}" FontWeight="SemiBold" HorizontalAlignment="Center"/></Border>
+                                <Button x:Name="HkRecordButton" Style="{StaticResource OutlineButton}" Content="Cambiar" Margin="8,0,0,0" Tag="record"/>
+                            </StackPanel>
+                            <TextBlock Text="Grabación rápida (iniciar / detener)" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <Border Style="{StaticResource Key}"><TextBlock x:Name="HkOpenText" Foreground="{DynamicResource Accent}" FontWeight="SemiBold" HorizontalAlignment="Center"/></Border>
+                                <Button x:Name="HkOpenButton" Style="{StaticResource OutlineButton}" Content="Cambiar" Margin="8,0,0,0" Tag="open"/>
+                            </StackPanel>
+                            <TextBlock Text="Abrir CUTLIFY" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <Border Style="{StaticResource Key}"><TextBlock x:Name="HkRepeatText" Foreground="{DynamicResource Accent}" FontWeight="SemiBold" HorizontalAlignment="Center"/></Border>
+                                <Button x:Name="HkRepeatButton" Style="{StaticResource OutlineButton}" Content="Cambiar" Margin="8,0,0,0" Tag="repeat"/>
+                            </StackPanel>
+                            <TextBlock Text="Repetir última captura" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <TextBlock x:Name="HkStatus" Margin="2,6,0,0" TextWrapping="Wrap" Style="{StaticResource Secondary}"/>
+                    <Button x:Name="HkResetButton" Style="{StaticResource SoftButton}" Content="Restablecer atajos" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+                    <TextBlock Margin="2,14,0,0" TextWrapping="Wrap" Style="{StaticResource Secondary}"
+                               Text="CUTLIFY intercepta Win + Shift + S y Win + Shift + R antes que Windows, de modo que sustituyen a la Herramienta Recortes mientras CUTLIFY está en ejecución."/>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_appearance" Visibility="Collapsed">
+                    <TextBlock Text="Apariencia" Style="{StaticResource PageTitle}"/>
+                    <Border Style="{StaticResource Row}" Padding="16,12">
+                        <StackPanel>
+                            <TextBlock Text="Tema" Margin="0,0,0,10"/>
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton x:Name="ThemeLight" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Claro" Margin="0,0,6,0"/>
+                                <RadioButton x:Name="ThemeDark" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Oscuro" Margin="0,0,6,0"/>
+                                <RadioButton x:Name="ThemeSystem" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Usar configuración de Windows"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_privacy" Visibility="Collapsed">
+                    <TextBlock Text="Privacidad" Style="{StaticResource PageTitle}"/>
+                    <Border Style="{StaticResource Row}" Padding="18,14">
+                        <StackPanel>
+                            <TextBlock Text="✓  Sin cuenta ni inicio de sesión" Margin="0,2"/>
+                            <TextBlock Text="✓  Sin nube: capturas y grabaciones se procesan en tu PC" Margin="0,2"/>
+                            <TextBlock Text="✓  Sin telemetría ni analítica" Margin="0,2"/>
+                            <TextBlock Text="✓  Sin envío automático de capturas ni grabaciones" Margin="0,2"/>
+                            <TextBlock Text="✓  OCR local de Windows, sin servicios externos" Margin="0,2"/>
+                            <TextBlock Text="La única conexión es la comprobación de actualizaciones en las Releases oficiales de CUTLIFY en GitHub." Style="{StaticResource Secondary}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="Micrófono" Style="{StaticResource SectionTitle}" Margin="2,10,0,8"/>
+                    <Border Style="{StaticResource Row}" Padding="16,12">
+                        <StackPanel>
+                            <TextBlock x:Name="ConsentText"/>
+                            <TextBlock x:Name="WindowsMicText" Style="{StaticResource Secondary}" Margin="0,4,0,0"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Button x:Name="ConsentRevokeButton" Style="{StaticResource OutlineButton}" Content="Revocar consentimiento" Margin="0,0,8,0"/>
+                                <Button x:Name="ConsentAskButton" Style="{StaticResource OutlineButton}" Content="Volver a solicitar permiso" Margin="0,0,8,0"/>
+                                <Button x:Name="WindowsMicButton" Style="{StaticResource FlatButton}" Content="Abrir configuración de Windows" Foreground="{DynamicResource Accent}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="CUTLIFY solo abre el micrófono durante una grabación con micrófono o durante la prueba de micrófono, y lo libera al terminar." Style="{StaticResource Secondary}" Margin="2,0,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_diagnostics" Visibility="Collapsed">
+                    <TextBlock Text="Diagnóstico" Style="{StaticResource PageTitle}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button x:Name="RunDiagnosticsButton" Style="{StaticResource PrimaryButton}" Content="Ejecutar diagnóstico" Margin="0,0,8,0"/>
+                        <Button x:Name="CopyDiagnosticsButton" Style="{StaticResource OutlineButton}" Content="Copiar informe"/>
+                    </StackPanel>
+                    <TextBox x:Name="DiagnosticsText" IsReadOnly="True" TextWrapping="Wrap" MinHeight="260" VerticalContentAlignment="Top"
+                             FontFamily="Cascadia Mono, Consolas" FontSize="12" AutomationProperties.Name="Informe de diagnóstico"/>
+                    <TextBlock Text="El informe se genera en tu equipo y no se envía a ningún sitio." Style="{StaticResource Secondary}" Margin="2,8,0,0"/>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_advanced" Visibility="Collapsed">
+                    <TextBlock Text="Avanzado" Style="{StaticResource PageTitle}"/>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <Button x:Name="LogsButton" DockPanel.Dock="Right" Style="{StaticResource OutlineButton}" Content="Abrir"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Registros de errores"/>
+                                <TextBlock Text="No incluyen el contenido de tus capturas." Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <Button x:Name="ResetButton" DockPanel.Dock="Right" Style="{StaticResource OutlineButton}" Content="Restaurar"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Restaurar valores predeterminados"/>
+                                <TextBlock Text="1080p · 30 FPS · H.264 · bitrate automático · audio activado · Documentos\CUTLIFY. El historial no se borra." Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel x:Name="Page_about" Visibility="Collapsed">
+                    <TextBlock Text="Actualizaciones y acerca de" Style="{StaticResource PageTitle}"/>
+                    <Border Style="{StaticResource Row}" Padding="18,16">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/CUTLIFY;component/Assets/logo.png" Width="56" Height="56" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="CUTLIFY" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="Screen Capture &amp; Recording" Style="{StaticResource Secondary}"/>
+                                <TextBlock x:Name="VersionText" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <Button x:Name="CheckUpdatesButton" DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="Buscar actualizaciones"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Actualizaciones desde GitHub Releases"/>
+                                <TextBlock x:Name="LastCheckText" Style="{StaticResource Secondary}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <ComboBox x:Name="UpdateCombo" DockPanel.Dock="Right" MinWidth="170">
+                                <ComboBoxItem Tag="Never">Nunca</ComboBoxItem>
+                                <ComboBoxItem Tag="Startup">Al iniciar CUTLIFY</ComboBoxItem>
+                                <ComboBoxItem Tag="Daily">Una vez al día</ComboBoxItem>
+                                <ComboBoxItem Tag="Weekly">Una vez a la semana</ComboBoxItem>
+                            </ComboBox>
+                            <TextBlock Text="Buscar actualizaciones automáticamente" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <TextBlock Margin="2,6,0,0" TextWrapping="Wrap" Style="{StaticResource Secondary}"
+                               Text="CUTLIFY funciona 100 % en local: sin cuentas, sin telemetría y sin subir tus capturas. Solo se conecta a GitHub para comprobar actualizaciones."/>
+                    <Button x:Name="ReleasesButton" Style="{StaticResource FlatButton}" Content="Ver Releases en GitHub" HorizontalAlignment="Left" Margin="0,8,0,0" Foreground="{DynamicResource Accent}"/>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

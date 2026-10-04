@@ -1,0 +1,35 @@
+﻿CUTLIFY — LICENCIA DE USO DEL SOFTWARE (BORRADOR)
+==================================================
+
+[PENDIENTE DE REVISIÓN LEGAL: este texto es un borrador de trabajo y debe ser
+revisado por un profesional antes de considerarse definitivo.]
+
+Copyright (c) 2026 CUTLIFY. Todos los derechos reservados.
+
+1. CUTLIFY es software GRATUITO para el usuario final. No requiere pago,
+   suscripción, cuenta ni inicio de sesión, y no contiene publicidad.
+
+2. Se concede permiso para descargar, instalar y usar CUTLIFY, para fines
+   personales o profesionales, obtenido desde los canales oficiales.
+
+3. El código fuente de CUTLIFY es privado y no se distribuye. Esta licencia no
+   concede derechos sobre el código fuente.
+
+4. Versiones oficiales: solo son versiones oficiales de CUTLIFY los binarios
+   (CUTLIFY.exe, CUTLIFY-Setup.exe) publicados en las Releases oficiales del
+   proyecto, acompañados de sus sumas SHA-256. Cualquier ejecutable modificado,
+   reempaquetado o recompilado por terceros no es una versión oficial y no debe
+   presentarse como tal.
+
+5. [PENDIENTE DE REVISIÓN LEGAL: condiciones de redistribución, ingeniería
+   inversa, marcas y uso del nombre «CUTLIFY».]
+
+6. Privacidad: CUTLIFY funciona localmente. No recopila capturas, grabaciones,
+   audio, documentos, nombres de archivo ni contenido del portapapeles. La única
+   conexión de red es la comprobación de actualizaciones en GitHub.
+
+7. CUTLIFY se proporciona «tal cual», sin garantías de ningún tipo.
+   [PENDIENTE DE REVISIÓN LEGAL: limitación de responsabilidad y ley aplicable.]
+
+8. CUTLIFY incluye componentes de terceros con sus propias licencias; consulta
+   THIRD-PARTY-NOTICES.txt.

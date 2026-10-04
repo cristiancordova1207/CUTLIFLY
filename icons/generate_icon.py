@@ -1,4 +1,4 @@
-"""Genera icons/cutlifly.ico y assets/logo.png (requiere Pillow)."""
+"""Genera icons/cutlify.ico y assets/logo.png (requiere Pillow)."""
 from PIL import Image, ImageDraw, ImageFilter
 import os
 
@@ -51,8 +51,8 @@ def sorted_box(x0, y0, x1, y1):
 if __name__ == "__main__":
     sizes = [16, 24, 32, 48, 64, 128, 256]
     imgs = [render(sz) for sz in sizes]
-    imgs[-1].save(os.path.join(HERE, "cutlifly.ico"), sizes=[(s, s) for s in sizes], append_images=imgs[:-1])
+    imgs[-1].save(os.path.join(HERE, "cutlify.ico"), sizes=[(s, s) for s in sizes], append_images=imgs[:-1])
     imgs[-1].save(os.path.join(ROOT, "assets", "logo.png"))
     for sz, im in zip(sizes, imgs):
-        im.save(os.path.join(HERE, f"cutlifly-{sz}.png"))
+        im.save(os.path.join(HERE, f"cutlify-{sz}.png"))
     print("ok")

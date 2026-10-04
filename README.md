@@ -1,108 +1,92 @@
-<p align="center"><img src="assets/logo.png" width="96" alt="CUTLIFLY"></p>
+<p align="center"><img src="assets/logo.png" width="96" alt="CUTLIFY"></p>
 
-# CUTLIFLY
+# CUTLIFY
 
-**Capture. Record. Share.** — Herramienta de captura y grabación de pantalla para Windows 10/11.
+**Capture. Record. Share.** — Captura y grabación de pantalla para Windows 11 (compatible con Windows 10).
 
-Atajo → seleccionas una zona → se copia sola → **Ctrl + V** donde quieras. Sin abrir carpetas, sin guardar a mano y sin llenar el disco: CUTLIFLY limpia sus temporales automáticamente.
+Atajo → seleccionas una zona → se copia sola → **Ctrl + V** donde quieras. Sin abrir carpetas, sin guardar a mano y sin llenar el disco.
 
-Aplicación nativa en C# / .NET 8 (WPF + Win32). 100 % local: sin cuentas, sin telemetría, sin nube.
+CUTLIFY es **gratuito** para el usuario, **sin cuenta, sin publicidad, sin telemetría y sin nube**. Su código fuente es **privado**: solo se distribuyen los binarios oficiales.
 
 ## Características
 
-- **Capturas**: rectangular, ventana (resalta la ventana bajo el cursor) y pantalla completa (elige monitor). Pantalla congelada y oscurecida, tamaño en vivo (`1280 × 720`), Esc cancela.
-- **Portapapeles automático** (imagen DIB + PNG): se pega en ChatGPT, Discord, WhatsApp Web, Telegram, Office…
-- **Modo solo portapapeles**: desactiva «Guardado temporal» y no se crea ningún archivo hasta que pulses Guardar.
-- **Temporizador**: 3, 5 o 10 segundos.
-- **Grabación** de región, ventana o pantalla completa a **MP4 (H.264)** con Media Foundation y codificador por hardware si existe (NVENC, Quick Sync, AMF). 30/60 FPS, calidad baja/media/alta, barra flotante con pausa y detener (no aparece en el vídeo).
-- **Vídeo al portapapeles como archivo**: Ctrl + V en el Explorador, Discord, Telegram, WhatsApp Desktop… (las apps que no aceptan archivos no pegan nada; no se simula).
-- **Temporales con caducidad** en `%LOCALAPPDATA%\CUTLIFLY\Temp`: 5 min, 30 min, 1 h, 6 h, 12 h, 1 día, 3 días o nunca. Funciona aunque la app estuviera cerrada. Papelera opcional (activada por defecto).
-- **Historial** con búsqueda por nombre, fecha o tipo, y filtros Todas / Capturas / Grabaciones.
-- **Editor**: cursor, lápiz, resaltador, borrador, rectángulo, círculo, línea, flecha, texto, recorte, deshacer/rehacer, copiar y guardar.
-- **Fijar** una captura siempre encima y **Capturar otra vez** (repite región/ventana/monitor).
-- **Multimonitor y DPI** (100–200 %, PerMonitorV2).
-- Bandeja del sistema, inicio con Windows, notificaciones, tema claro/oscuro/sistema, arrastrar y soltar.
-- **Actualizaciones** desde GitHub Releases con verificación SHA-256.
+- **Capturas**: rectángulo (con proporciones 1:1, 4:3, 16:9, 16:10, 21:9, mover con Espacio y ajuste previo opcional), forma libre (PNG con transparencia), ventana, monitor y todas las pantallas. Tamaño en vivo y lupa (Ctrl). Esc cancela.
+- **Selector de color** en pantalla: HEX y RGB al portapapeles.
+- **Portapapeles automático** con la imagen real (DIB + PNG) y **modo solo portapapeles**.
+- **Retraso** de 1, 2, 3, 5 o 10 s con cuenta regresiva visual. **Repetir captura** (Alt + N).
+- **Editor**: cursor, lápiz, resaltador, borrador, línea, flecha, rectángulo, elipse, texto, recorte, deshacer/rehacer, color + colores recientes, grosor, opacidad, copiar, guardar y guardar como.
+- **OCR local** («Extraer texto») con el motor de Windows; sin servicios externos.
+- **Fijar** capturas encima de todo (mover, redimensionar, cerrar).
+- **Grabación** de región, ventana, monitor o todas las pantallas a **MP4** con **H.264, HEVC o AV1** (solo los codecs disponibles en tu equipo), resolución hasta 4K, 30–240 FPS (limitados a la frecuencia real de tus monitores), bitrate automático o manual, aceleración por hardware, cursor y resaltado de clics.
+- **Audio**: sistema, micrófono o ambos **mezclados en una pista AAC sincronizada**, con selección de dispositivo, prueba y medidor de nivel. Consentimiento propio antes de usar el micrófono.
+- **FPS honestos**: nunca se duplican fotogramas; las estadísticas muestran FPS reales y fotogramas perdidos.
+- **Temporales con caducidad** (5 min – 3 días / nunca) que funcionan aunque la app estuviera cerrada.
+- **Historial visual**: miniaturas independientes; una captura eliminada o caducada sigue visible como «Eliminada» / «Expirada». Filtros (todos, imágenes, vídeos, disponibles, eliminados, expirados) y búsqueda.
+- Bandeja del sistema, pausa temporal de atajos, inicio con Windows (opcional), notificaciones, tema claro/oscuro/sistema, multimonitor y DPI por monitor.
 
-## Instalación
+## Carpetas
 
-1. Descarga `CUTLIFLY-Setup.exe` desde [Releases](https://github.com/cristiancordova1207/cutlifly/releases) (o el portable `CUTLIFLY.exe`).
-2. Ejecuta el instalador (no requiere administrador; se instala en `%LOCALAPPDATA%\Programs\CUTLIFLY`).
-3. Opcional: marca «Iniciar CUTLIFLY con Windows».
+| Qué | Dónde |
+|---|---|
+| Capturas guardadas | `Documentos\CUTLIFY\Capturas` (configurable) |
+| Grabaciones guardadas | `Documentos\CUTLIFY\Grabaciones` (configurable) |
+| Temporales | `%LOCALAPPDATA%\CUTLIFY\Temporales` |
+| Miniaturas del historial | `%LOCALAPPDATA%\CUTLIFY\Thumbnails` |
+| Configuración / historial / logs | `%LOCALAPPDATA%\CUTLIFY` |
 
-> El ejecutable no está firmado digitalmente: SmartScreen puede pedir confirmación la primera vez («Más información → Ejecutar de todas formas»).
+Los temporales viven en `%LOCALAPPDATA%` (no en Documentos) para no sincronizar cientos de capturas rápidas con OneDrive.
 
-## Uso y atajos
+## Atajos
 
 | Atajo | Acción |
 |---|---|
-| `Win + Shift + S` | Captura rápida (sin abrir la ventana) |
-| `Win + Shift + R` | Grabación rápida: seleccionar región / detener |
-| `Ctrl + Shift + X` | Abrir CUTLIFLY |
-| `Esc` / clic derecho | Cancelar selección |
-| `Ctrl + Z` / `Ctrl + Y` | Deshacer / rehacer en el editor |
-| `Ctrl + C` / `Ctrl + S` | Copiar / guardar desde el editor |
-| `Ctrl + N` | Nueva captura (ventana principal) |
+| `Win + Shift + S` | Captura rápida |
+| `Win + Shift + R` | Grabación rápida (iniciar / detener) |
+| `Ctrl + Shift + X` | Abrir CUTLIFY |
+| `Alt + N` | Repetir la última captura |
+| `Ctrl + C` / `Ctrl + S` / `Ctrl + Shift + S` | Copiar / guardar / guardar como (editor) |
+| `Ctrl + Z` / `Ctrl + Y` | Deshacer / rehacer |
 
-Los atajos se cambian en **Configuración → Atajos** (detecta conflictos con CUTLIFLY y con otras apps). CUTLIFLY intercepta `Win + Shift + S` / `Win + Shift + R` antes que Windows, así que sustituye a la Herramienta Recortes mientras está abierto.
+Configurables en **Configuración → Atajos** (detecta conflictos).
 
-## Configuración
+## Instalación
 
-General · Capturas · Grabación · Portapapeles · Almacenamiento · Atajos · Apariencia · Avanzado · Actualizaciones.
-Se guarda en `%LOCALAPPDATA%\CUTLIFLY\settings.json`; el historial en `history.json`; los logs en `Logs\`.
+Descarga `CUTLIFY-Setup.exe` (o el portable `CUTLIFY.exe`) desde las **Releases oficiales** y comprueba su SHA-256 con `SHA256SUMS.txt`. El instalador no requiere administrador, permite elegir la carpeta y, al desinstalar, pregunta si conservar configuración, historial y archivos.
 
-## Compilación
+## Distribución oficial y actualizaciones
 
-Requisitos: Windows 10/11, [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), opcional [Inno Setup 6](https://jrsoftware.org/isinfo.php).
+- El código fuente está en un **repositorio privado**. Las versiones públicas se publican en un repositorio **público solo de binarios** (por defecto `cristiancordova1207/cutlify-releases`, configurable con la variable de repositorio `RELEASES_REPO`).
+- Solo son oficiales los binarios generados por el pipeline de GitHub Actions y publicados en esas Releases.
+- El actualizador integrado solo consulta ese repositorio, ignora las pre-releases, exige una versión mayor, comprueba tamaño, **SHA-256** y versión del archivo antes de instalar, y conserva configuración e historial.
+
+## Firma digital
+
+Las Releases públicas **solo se publican con `CUTLIFY.exe` y `CUTLIFY-Setup.exe` firmados** (Authenticode con timestamp). Si la firma no está configurada, el workflow muestra *“Code signing is not configured.”* y no publica la Release oficial (las builds quedan como artefactos de desarrollo).
+
+Proveedores soportados (sin acoplar la arquitectura a uno): certificado **OV/EV** (`SIGNING_PROVIDER=pfx`) o **Azure Artifact Signing** (`SIGNING_PROVIDER=artifact-signing`). Los certificados y claves se guardan **solo como secretos de GitHub**, nunca en el repositorio. Ver `docs/SIGNING.md`.
+
+> La firma no elimina inmediatamente los avisos de SmartScreen: la reputación se construye con el tiempo usando siempre la misma identidad de firma.
+
+## Compilación (desarrollo)
+
+Requisitos: Windows 10/11, [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), opcional Inno Setup 6.
 
 ```powershell
-./build.ps1            # pruebas + releases/CUTLIFLY.exe + releases/CUTLIFLY-Setup.exe + SHA256SUMS.txt
-dotnet run --project src/CUTLIFLY   # ejecutar en modo desarrollo
+./build.ps1                         # pruebas + releases/CUTLIFY.exe + CUTLIFY-Setup.exe + SHA256SUMS.txt (sin firma)
+dotnet run --project src/CUTLIFY    # ejecutar en modo desarrollo
 ```
 
-## Desarrollo
+Estructura: `src/CUTLIFY/` (Capture, Clipboard, Recording, Storage, Hotkeys, Editor, Ocr, Notifications, Tray, Settings, Update, UI, Themes), `tests/CUTLIFY.Tests/`, `installer/`, `scripts/` (firma), `icons/`.
 
-```
-src/CUTLIFLY/
-  Capture/        captura GDI, capa de selección, ventanas
-  Clipboard/      portapapeles (imagen y archivo)
-  Recording/      Media Foundation, grabador, barra y marco
-  Storage/        historial, temporales, limpieza
-  Hotkeys/        atajos globales (hook de teclado)
-  Editor/         editor de imágenes y vista de vídeo
-  Notifications/  notificaciones propias
-  Tray/           bandeja del sistema
-  Settings/       configuración e inicio con Windows
-  Update/         actualizador desde GitHub Releases
-  UI/             ventanas (principal, historial, configuración, fijar, diálogos)
-  Themes/         paleta clara/oscura y estilos
-tests/CUTLIFLY.Tests/   pruebas xUnit (incluye una grabación real a MP4)
-installer/              script de Inno Setup
-icons/                  icono (.ico multi-tamaño) y generador
-```
+## Limitaciones conocidas
 
-Flujo: código → pruebas → commit → push → **GitHub Actions** (build + tests + exe + instalador) → Release.
-
-## Versiones y Releases
-
-- La versión vive en el archivo `VERSION` (semver) y se incrusta en el exe (Propiedades → Detalles).
-- Cada push compila y adjunta los artefactos al workflow.
-- Al hacer push a `main` con una versión nueva en `VERSION` (o al crear un tag `vX.Y.Z`, o lanzando el workflow manualmente con «release»), GitHub Actions publica la Release `vX.Y.Z` con `CUTLIFLY.exe`, `CUTLIFLY-Setup.exe`, `SHA256SUMS.txt` y las notas de `CHANGELOG.md`.
-
-## Sistema de actualizaciones
-
-CUTLIFLY consulta `api.github.com/repos/cristiancordova1207/cutlifly/releases/latest` (al iniciar, a diario, semanalmente o nunca; configurable) y muestra **«CUTLIFLY X.Y.Z está disponible»** con *Ver cambios*, *Actualizar* y *Más tarde*. Al actualizar:
-
-1. Solo acepta descargas de `github.com/cristiancordova1207/cutlifly/releases/download/`.
-2. Exige que la versión sea mayor que la instalada.
-3. Verifica tamaño y **SHA-256** contra `SHA256SUMS.txt`, y la versión del exe descargado.
-4. Instalación con Setup → ejecuta el instalador en modo silencioso; portable → reemplaza el exe.
-5. Reinicia CUTLIFLY. La configuración, el historial y los atajos (en `%LOCALAPPDATA%\CUTLIFLY`) se conservan.
-
-## Privacidad
-
-Nada sale de tu PC. La única conexión de red es la comprobación de actualizaciones contra GitHub.
+- **WEBP**: no incluido (Windows no trae codificador WebP).
+- **Captura de página completa** con desplazamiento: no incluida; requiere integración con el navegador y no sería fiable de forma genérica.
+- **Webcam** y **Replay Buffer**: previstos para una versión futura.
+- **Recuperar desde la Papelera** desde CUTLIFY: no incluido (no es fiable de forma programática); se puede restaurar desde la Papelera de Windows.
+- La grabación de **ventana** graba el área de la ventana al iniciar (no la sigue si se mueve).
+- Una grabación interrumpida por un cierre inesperado no es recuperable (el MP4 no se finalizó): se registra como «Grabación incompleta».
 
 ## Licencia
 
-[MIT](LICENSE)
+Software propietario y gratuito. Ver [LICENSE.txt](LICENSE.txt) (borrador pendiente de revisión legal) y [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).

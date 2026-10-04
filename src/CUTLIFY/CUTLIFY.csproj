@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- SDK de Windows 10 para OCR local (Windows.Media.Ocr) -->
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AssemblyName>CUTLIFY</AssemblyName>
+    <RootNamespace>Cutlify</RootNamespace>
+    <ApplicationIcon>..\..\icons\cutlify.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <SatelliteResourceLanguages>es</SatelliteResourceLanguages>
+
+    <Version>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)..\..\VERSION').Trim())</Version>
+    <Product>CUTLIFY</Product>
+    <AssemblyTitle>CUTLIFY</AssemblyTitle>
+    <Company>CUTLIFY</Company>
+    <Description>CUTLIFY - Screen Capture &amp; Recording</Description>
+    <Copyright>Copyright © 2026 CUTLIFY. Todos los derechos reservados.</Copyright>
+    <NeutralLanguage>es</NeutralLanguage>
+    <!-- Repositorio público con las Releases oficiales (solo binarios). -->
+    <ReleasesRepository Condition="'$(ReleasesRepository)' == ''">cristiancordova1207/cutlify-releases</ReleasesRepository>
+    <!-- WPF necesita el DPI PerMonitorV2 en app.manifest -->
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="..\..\icons\cutlify.ico" Link="Assets\cutlify.ico" />
+    <Resource Include="..\..\assets\logo.png" Link="Assets\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Captura WASAPI (audio del sistema y micrófono), remuestreo y mezcla. Licencia MIT. -->
+    <PackageReference Include="NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="ReleasesRepository" Value="$(ReleasesRepository)" />
+    <InternalsVisibleTo Include="CUTLIFY.Tests" />
+  </ItemGroup>
+
+</Project>
