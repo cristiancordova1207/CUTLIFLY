@@ -67,6 +67,9 @@ namespace Cutlifly
             _updateTimer.Tick += (_, __) => { _updateTimer.Interval = TimeSpan.FromHours(6); if (IsUpdateDue()) CheckForUpdates(false); };
         }
 
+        /// <summary>Instancia sin hooks, bandeja ni temporizadores (pruebas de humo de la interfaz).</summary>
+        internal static AppController CreateDetached(Application app) => new AppController(app);
+
         public static void Initialize(Application app, bool startInTray, bool justUpdated)
         {
             Instance = new AppController(app);

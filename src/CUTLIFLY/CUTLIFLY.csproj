@@ -22,6 +22,8 @@
     <Description>CUTLIFLY - Screen Capture &amp; Recording</Description>
     <Copyright>Copyright © 2026 CUTLIFLY</Copyright>
     <NeutralLanguage>es</NeutralLanguage>
+    <!-- WPF necesita el DPI PerMonitorV2 en app.manifest -->
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
