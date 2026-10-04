@@ -207,7 +207,7 @@
                 </DockPanel>
                 <TextBlock Grid.Row="1" x:Name="RecentEmpty" Text="Tus capturas y grabaciones aparecerán aquí." Style="{StaticResource Secondary}" Margin="2,10,0,14"/>
                 <ListBox Grid.Row="1" x:Name="RecentList" Style="{StaticResource PlainList}" ItemContainerStyle="{StaticResource CardItem}"
-                         VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.Orientation="Horizontal" Height="128">
+                         VirtualizingPanel.IsVirtualizing="True" Height="128">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
