@@ -55,7 +55,6 @@ namespace Cutlifly.Editor
 
         public event Action CopyRequested, SaveRequested, PinRequested, OpenLocationRequested, DeleteRequested;
 
-        public BitmapSource BaseImage => _base;
         public bool HasEdits => _undo.Count > 0;
 
         public EditorView()

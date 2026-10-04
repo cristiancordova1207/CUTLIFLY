@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using Cutlifly.Core;
 using Cutlifly.Settings;
 using Cutlifly.Storage;
+using CaptureMode = Cutlifly.Settings.CaptureMode;
 
 namespace Cutlifly.UI
 {
