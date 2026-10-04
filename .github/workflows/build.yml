@@ -228,13 +228,14 @@ jobs:
             --repo "$env:RELEASES_REPO" --title "CUTLIFY ${{ steps.ver.outputs.version }}" --notes-file release-notes.md
           if ($LASTEXITCODE -ne 0) { throw "No se pudo crear la Release en $env:RELEASES_REPO (¿existe el repositorio y RELEASES_TOKEN tiene permiso contents:write?)" }
 
+      # Las pre-releases de desarrollo se publican en este mismo repositorio (no en el de Releases oficiales).
       - name: Publicar pre-release SIN FIRMA (solo pruebas)
         if: github.event_name == 'workflow_dispatch' && inputs.unsigned_prerelease
         shell: pwsh
         env:
-          GH_TOKEN: ${{ secrets.RELEASES_TOKEN || github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           $tag = "v${{ steps.ver.outputs.version }}-dev.${{ github.run_number }}"
           gh release create $tag releases/CUTLIFY.exe releases/CUTLIFY-Setup.exe releases/SHA256SUMS.txt `
-            --repo "$env:RELEASES_REPO" --prerelease --title "CUTLIFY ${{ steps.ver.outputs.version }} (desarrollo, SIN FIRMA)" `
+            --repo "${{ github.repository }}" --target "${{ github.sha }}" --prerelease --title "CUTLIFY ${{ steps.ver.outputs.version }} (desarrollo, SIN FIRMA)" `
             --notes "Build de desarrollo sin firma digital. No es una versión oficial de producción."
