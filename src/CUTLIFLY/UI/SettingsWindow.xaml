@@ -4,7 +4,7 @@
         Title="Configuración — CUTLIFLY" Width="900" Height="640" MinWidth="760" MinHeight="480"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowGradient}"
         FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
-        Icon="pack://application:,,,/Assets/cutlifly.ico">
+        Icon="pack://application:,,,/CUTLIFLY;component/Assets/cutlifly.ico">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="48" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
     </WindowChrome.WindowChrome>
@@ -274,7 +274,7 @@
                     <TextBlock Text="Actualizaciones y acerca de" Style="{StaticResource PageTitle}"/>
                     <Border Style="{StaticResource Row}" Padding="18,16">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/Assets/logo.png" Width="56" Height="56" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="pack://application:,,,/CUTLIFLY;component/Assets/logo.png" Width="56" Height="56" RenderOptions.BitmapScalingMode="HighQuality"/>
                             <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="CUTLIFLY" FontSize="20" FontWeight="Bold"/>
                                 <TextBlock Text="Screen Capture &amp; Recording" Style="{StaticResource Secondary}"/>

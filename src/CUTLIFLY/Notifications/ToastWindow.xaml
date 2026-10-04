@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Border Width="36" Height="36" CornerRadius="10" VerticalAlignment="Top">
-                <Image Source="pack://application:,,,/Assets/logo.png"/>
+                <Image Source="pack://application:,,,/CUTLIFLY;component/Assets/logo.png"/>
             </Border>
             <StackPanel Grid.Column="1" Margin="12,0,10,0">
                 <TextBlock Text="CUTLIFLY" FontWeight="SemiBold" Foreground="{DynamicResource Text}"/>

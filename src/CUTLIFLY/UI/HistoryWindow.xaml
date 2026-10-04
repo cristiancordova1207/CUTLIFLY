@@ -4,7 +4,7 @@
         Title="Historial — CUTLIFLY" Width="980" Height="680" MinWidth="720" MinHeight="420"
         WindowStartupLocation="CenterOwner" Background="{DynamicResource WindowGradient}"
         FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
-        Icon="pack://application:,,,/Assets/cutlifly.ico">
+        Icon="pack://application:,,,/CUTLIFLY;component/Assets/cutlifly.ico">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="48" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
     </WindowChrome.WindowChrome>

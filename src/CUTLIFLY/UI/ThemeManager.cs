@@ -16,7 +16,7 @@ namespace Cutlifly.UI
             bool dark = _mode == "Dark" || (_mode == "System" && !SystemUsesLightTheme());
             IsDark = dark;
             var dicts = Application.Current.Resources.MergedDictionaries;
-            var uri = new Uri(dark ? "Themes/Dark.xaml" : "Themes/Light.xaml", UriKind.Relative);
+            var uri = new Uri(dark ? "pack://application:,,,/CUTLIFLY;component/Themes/Dark.xaml" : "pack://application:,,,/CUTLIFLY;component/Themes/Light.xaml", UriKind.Absolute);
             dicts[0] = new ResourceDictionary { Source = uri };
         }
 

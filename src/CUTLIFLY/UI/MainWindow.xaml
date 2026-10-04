@@ -5,7 +5,7 @@
         Title="CUTLIFLY" Width="1180" Height="820" MinWidth="860" MinHeight="580"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowGradient}"
         FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
-        AllowDrop="True" Icon="pack://application:,,,/Assets/cutlifly.ico">
+        AllowDrop="True" Icon="pack://application:,,,/CUTLIFLY;component/Assets/cutlifly.ico">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="52" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
     </WindowChrome.WindowChrome>
@@ -21,7 +21,7 @@
         <!-- Barra de título -->
         <Grid Margin="16,0,6,0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Image Source="pack://application:,,,/Assets/logo.png" Width="28" Height="28" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Image Source="pack://application:,,,/CUTLIFLY;component/Assets/logo.png" Width="28" Height="28" RenderOptions.BitmapScalingMode="HighQuality"/>
                 <TextBlock Text="CUTLIFLY" FontSize="16" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center"/>
                 <TextBlock Text="Capture. Record. Share." Style="{StaticResource Secondary}" Margin="10,1,0,0" VerticalAlignment="Center"/>
             </StackPanel>
@@ -129,7 +129,7 @@
         <Grid Grid.Row="2" Margin="16,0,16,12">
             <Border x:Name="EmptyState" Style="{StaticResource Card}">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Image Source="pack://application:,,,/Assets/logo.png" Width="72" Height="72" Opacity="0.95" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Image Source="pack://application:,,,/CUTLIFLY;component/Assets/logo.png" Width="72" Height="72" Opacity="0.95" RenderOptions.BitmapScalingMode="HighQuality"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
                         <TextBlock Text="Presiona" FontSize="16" VerticalAlignment="Center"/>
                         <Border Background="{DynamicResource AccentSoft}" CornerRadius="6" Padding="8,3" Margin="8,0,0,0">

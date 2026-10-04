@@ -8,7 +8,7 @@
             CornerRadius="14" Effect="{StaticResource SoftShadow}" MinWidth="360" MaxWidth="520">
         <StackPanel Margin="22,20,22,18">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <Image Source="pack://application:,,,/Assets/logo.png" Width="20" Height="20" Margin="0,0,8,0"/>
+                <Image Source="pack://application:,,,/CUTLIFLY;component/Assets/logo.png" Width="20" Height="20" Margin="0,0,8,0"/>
                 <TextBlock Text="CUTLIFLY" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>
             </StackPanel>
             <TextBlock x:Name="TitleText" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource Text}" TextWrapping="Wrap"/>

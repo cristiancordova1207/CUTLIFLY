@@ -92,21 +92,13 @@ namespace Cutlifly.Tests
                     ToastWindow.ShowToast("Captura copiada al portapapeles", "Puedes pegarla con Ctrl + V", img, "00:38", null,
                         new (string, Action)[] { ("Abrir", () => { }) });
                 }
-            });
-        }
 
-        [Fact]
-        public void EditorDrawsUndoesAndRenders()
-        {
-            RunSta(() =>
-            {
-                var app = new App();
-                app.InitializeComponent();
+                // Editor: carga, render a tamaño original, deshacer/rehacer.
                 var host = new Window { Width = 800, Height = 600 };
                 var editor = new EditorView();
                 host.Content = editor;
                 host.Show();
-                editor.Load(SampleImage());
+                editor.Load(img);
                 host.UpdateLayout();
                 Assert.False(editor.HasEdits);
                 var rendered = editor.Render();

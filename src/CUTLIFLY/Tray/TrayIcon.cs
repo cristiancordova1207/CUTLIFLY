@@ -35,7 +35,7 @@ namespace Cutlifly.Tray
         {
             try
             {
-                var info = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Assets/cutlifly.ico"));
+                var info = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/CUTLIFLY;component/Assets/cutlifly.ico"));
                 if (info != null) return new Icon(info.Stream, SystemInformation.SmallIconSize);
             }
             catch { }
