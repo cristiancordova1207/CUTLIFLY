@@ -1,0 +1,93 @@
+<Window x:Class="Cutlifly.UI.HistoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Historial — CUTLIFLY" Width="980" Height="680" MinWidth="720" MinHeight="420"
+        WindowStartupLocation="CenterOwner" Background="{DynamicResource WindowGradient}"
+        FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
+        Icon="pack://application:,,,/Assets/cutlifly.ico">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="48" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="16,0,6,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="&#xE81C;" Style="{StaticResource Icon}" Foreground="{DynamicResource Accent}"/>
+                <TextBlock Text="Historial" FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <TextBlock Text="CUTLIFLY" Style="{StaticResource Secondary}" Margin="8,1,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <Button x:Name="CloseButton" Style="{StaticResource CloseCaptionButton}" Content="&#xE8BB;" HorizontalAlignment="Right"
+                    VerticalAlignment="Top" Margin="0,7,0,0" WindowChrome.IsHitTestVisibleInChrome="True"/>
+        </Grid>
+
+        <DockPanel Grid.Row="1" Margin="16,0,16,12" LastChildFill="False">
+            <Border DockPanel.Dock="Left" Padding="3" CornerRadius="11" Background="{DynamicResource AccentSoft}">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton x:Name="FilterAll" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Todas" IsChecked="True"/>
+                    <RadioButton x:Name="FilterImages" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Capturas"/>
+                    <RadioButton x:Name="FilterVideos" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Grabaciones"/>
+                </StackPanel>
+            </Border>
+            <Grid DockPanel.Dock="Right" Width="300">
+                <TextBox x:Name="SearchBox" Padding="32,7,8,7"/>
+                <TextBlock Text="&#xE721;" Style="{StaticResource Icon}" FontSize="13" HorizontalAlignment="Left" Margin="12,0,0,0"
+                           Foreground="{DynamicResource TextSecondary}" IsHitTestVisible="False"/>
+                <TextBlock x:Name="SearchHint" Text="Buscar por nombre, fecha o tipo" Style="{StaticResource Secondary}" Margin="34,0,0,0"
+                           VerticalAlignment="Center" IsHitTestVisible="False"/>
+            </Grid>
+        </DockPanel>
+
+        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="16,0,16,16" Padding="6">
+            <Grid>
+                <TextBlock x:Name="EmptyText" Text="No hay elementos." Style="{StaticResource Secondary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ListBox x:Name="List" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource NavItem}">
+                            <Setter Property="Padding" Value="8"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Height="62" CornerRadius="8" Background="{DynamicResource Stage}">
+                                    <Border CornerRadius="8">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding Thumbnail}" Stretch="UniformToFill"/>
+                                        </Border.Background>
+                                    </Border>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="14,0,8,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Text}"/>
+                                    <TextBlock Margin="0,4,0,0" Style="{StaticResource Secondary}">
+                                        <Run Text="{Binding TypeLabel, Mode=OneWay}"/><Run Text="  ·  "/><Run Text="{Binding DateLabel, Mode=OneWay}"/><Run Text="  "/><Run Text="{Binding TimeLabel, Mode=OneWay}"/><Run Text="  ·  "/><Run Text="{Binding SizeLabel, Mode=OneWay}"/><Run Text="  ·  "/><Run Text="{Binding DimensionsLabel, Mode=OneWay}"/><Run Text="  "/><Run Text="{Binding DurationLabel, Mode=OneWay}"/>
+                                    </TextBlock>
+                                    <Border HorizontalAlignment="Left" Margin="0,5,0,0" CornerRadius="6" Padding="7,1" Background="{DynamicResource AccentSoft}">
+                                        <TextBlock Text="{Binding StatusLabel}" FontSize="11" Foreground="{DynamicResource Accent}"/>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Style="{StaticResource FlatButton}" ToolTip="Copiar" Click="Copy_Click"><TextBlock Text="&#xE8C8;" Style="{StaticResource Icon}" FontSize="14"/></Button>
+                                    <Button Style="{StaticResource FlatButton}" ToolTip="Guardar" Click="Save_Click"><TextBlock Text="&#xE74E;" Style="{StaticResource Icon}" FontSize="14"/></Button>
+                                    <Button Style="{StaticResource FlatButton}" ToolTip="Abrir" Click="Open_Click"><TextBlock Text="&#xE8A7;" Style="{StaticResource Icon}" FontSize="14"/></Button>
+                                    <Button Style="{StaticResource FlatButton}" ToolTip="Abrir ubicación" Click="Location_Click"><TextBlock Text="&#xE8B7;" Style="{StaticResource Icon}" FontSize="14"/></Button>
+                                    <Button Style="{StaticResource FlatButton}" ToolTip="Eliminar" Click="Delete_Click"><TextBlock Text="&#xE74D;" Style="{StaticResource Icon}" FontSize="14"/></Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

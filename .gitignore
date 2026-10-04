@@ -1,0 +1,13 @@
+bin/
+obj/
+publish/
+out/
+*.user
+*.suo
+.vs/
+.vscode/
+*.log
+TestResults/
+releases/*
+!releases/README.md
+installer/Output/

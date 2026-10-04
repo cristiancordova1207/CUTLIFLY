@@ -1,0 +1,124 @@
+name: Build
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+    paths-ignore: ['**.md']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Publicar una Release con la versión del archivo VERSION'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Versión
+        id: ver
+        shell: pwsh
+        run: |
+          $v = (Get-Content VERSION -Raw).Trim()
+          if ($v -notmatch '^\d+\.\d+\.\d+$') { throw "VERSION no es semver: $v" }
+          if ('${{ github.ref_type }}' -eq 'tag' -and '${{ github.ref_name }}' -ne "v$v") { throw "El tag ${{ github.ref_name }} no coincide con VERSION ($v)" }
+          "version=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Restaurar dependencias
+        run: |
+          dotnet restore src/CUTLIFLY/CUTLIFLY.csproj -r win-x64
+          dotnet restore tests/CUTLIFLY.Tests/CUTLIFLY.Tests.csproj
+
+      - name: Compilar
+        run: dotnet build src/CUTLIFLY/CUTLIFLY.csproj -c Release --no-restore
+
+      - name: Pruebas
+        run: dotnet test tests/CUTLIFLY.Tests/CUTLIFLY.Tests.csproj -c Release --no-restore --logger "console;verbosity=normal"
+
+      - name: Publicar CUTLIFLY.exe
+        run: >
+          dotnet publish src/CUTLIFLY/CUTLIFLY.csproj -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
+          -p:PublishReadyToRun=true -p:DebugType=none -o publish
+
+      - name: Instalador (Inno Setup)
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress | Out-Null }
+          & $iscc "/DAppVersion=${{ steps.ver.outputs.version }}" installer/CUTLIFLY.iss
+          if ($LASTEXITCODE -ne 0) { throw "ISCC falló" }
+
+      - name: Empaquetar y calcular SHA-256
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force releases | Out-Null
+          Copy-Item publish/CUTLIFLY.exe releases/CUTLIFLY.exe -Force
+          $v = (Get-Item releases/CUTLIFLY.exe).VersionInfo.ProductVersion
+          if (-not $v.StartsWith('${{ steps.ver.outputs.version }}')) { throw "Versión del exe inesperada: $v" }
+          Get-ChildItem releases -Filter *.exe | ForEach-Object {
+            "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(), $_.Name
+          } | Set-Content releases/SHA256SUMS.txt -Encoding ascii
+          Get-Content releases/SHA256SUMS.txt
+          Get-ChildItem releases | Format-Table Name, Length
+
+      - name: Guardar artefactos
+        uses: actions/upload-artifact@v4
+        with:
+          name: CUTLIFLY-${{ steps.ver.outputs.version }}
+          path: |
+            releases/CUTLIFLY.exe
+            releases/CUTLIFLY-Setup.exe
+            releases/SHA256SUMS.txt
+
+      - name: Notas de la versión (CHANGELOG)
+        if: github.event_name != 'pull_request'
+        shell: pwsh
+        run: |
+          $v = '${{ steps.ver.outputs.version }}'
+          $lines = Get-Content CHANGELOG.md
+          $out = @(); $in = $false
+          foreach ($l in $lines) {
+            if ($l -match '^## \[') { if ($in) { break }; if ($l -match "^## \[$([regex]::Escape($v))\]") { $in = $true; continue } }
+            if ($in) { $out += $l }
+          }
+          if ($out.Count -eq 0) { $out = @("CUTLIFLY $v") }
+          $out += ''; $out += '---'; $out += 'Verifica la descarga con `SHA256SUMS.txt`. CUTLIFLY instalado detecta esta versión y se actualiza solo.'
+          $out -join "`n" | Set-Content release-notes.md -Encoding utf8
+
+      - name: Publicar GitHub Release
+        if: >
+          github.event_name != 'pull_request' && (
+            github.ref_type == 'tag' ||
+            (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master')) ||
+            (github.event_name == 'workflow_dispatch' && inputs.release)
+          )
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "v${{ steps.ver.outputs.version }}"
+          gh release view $tag --repo "${{ github.repository }}" *> $null
+          if ($LASTEXITCODE -eq 0) { Write-Host "La Release $tag ya existe; no se publica de nuevo."; exit 0 }
+          gh release create $tag releases/CUTLIFLY.exe releases/CUTLIFLY-Setup.exe releases/SHA256SUMS.txt `
+            --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "CUTLIFLY ${{ steps.ver.outputs.version }}" --notes-file release-notes.md

@@ -1,0 +1,31 @@
+<Window x:Class="Cutlifly.Recording.RecordingBar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CUTLIFLY - Grabando" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" SizeToContent="WidthAndHeight"
+        Left="-10000" Top="-10000" FontFamily="{StaticResource UiFont}" FontSize="13">
+    <Border Margin="10" CornerRadius="14" Padding="6" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}"
+            Effect="{StaticResource SoftShadow}" Cursor="SizeAll" x:Name="Root">
+        <Border.Background>
+            <SolidColorBrush Color="{DynamicResource BarColor}" Opacity="0.92"/>
+        </Border.Background>
+        <StackPanel Orientation="Horizontal">
+            <Ellipse x:Name="Dot" Width="10" Height="10" Fill="#F0506E" Margin="10,0,8,0" VerticalAlignment="Center"/>
+            <TextBlock x:Name="StateText" Text="REC" FontWeight="SemiBold" Foreground="#F0506E" VerticalAlignment="Center"/>
+            <TextBlock x:Name="TimeText" Text="00:00" Margin="10,0,14,0" FontSize="14" FontWeight="SemiBold"
+                       Foreground="{DynamicResource Text}" VerticalAlignment="Center" MinWidth="44"/>
+            <Button x:Name="PauseButton" Style="{StaticResource FlatButton}" Padding="10,6" ToolTip="Pausar" Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="PauseIcon" Text="&#xE769;" Style="{StaticResource Icon}" FontSize="13"/>
+                    <TextBlock x:Name="PauseLabel" Text="Pausar" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="StopButton" Style="{StaticResource SoftButton}" Padding="12,6" Margin="4,0,2,0" ToolTip="Detener" Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE71A;" Style="{StaticResource Icon}" FontSize="13"/>
+                    <TextBlock Text="Detener" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Border>
+</Window>

@@ -1,0 +1,31 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="AccentColor">#7C5CFF</Color>
+    <Color x:Key="ShadowColor">#5A4A9E</Color>
+    <SolidColorBrush x:Key="Bg" Color="#F6F4FD"/>
+    <SolidColorBrush x:Key="Surface" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="SurfaceAlt" Color="#FAF9FF"/>
+    <SolidColorBrush x:Key="Stage" Color="#EFECFA"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#E7E2F6"/>
+    <SolidColorBrush x:Key="Text" Color="#1F1B2E"/>
+    <SolidColorBrush x:Key="TextSecondary" Color="#6E6A84"/>
+    <SolidColorBrush x:Key="Accent" Color="#7C5CFF"/>
+    <SolidColorBrush x:Key="AccentHover" Color="#6C4BF5"/>
+    <SolidColorBrush x:Key="AccentSoft" Color="#EEE9FF"/>
+    <SolidColorBrush x:Key="AccentSoftHover" Color="#E3DBFF"/>
+    <SolidColorBrush x:Key="OnAccent" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Hover" Color="#F1EEFB"/>
+    <SolidColorBrush x:Key="Pressed" Color="#E7E2F6"/>
+    <SolidColorBrush x:Key="Danger" Color="#E5487A"/>
+    <SolidColorBrush x:Key="PinkSoft" Color="#FFE3EF"/>
+    <SolidColorBrush x:Key="BlueSoft" Color="#E1EBFF"/>
+    <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#8E72FF" Offset="0"/>
+        <GradientStop Color="#6E4EF6" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="WindowGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FBFAFF" Offset="0"/>
+        <GradientStop Color="#F4F1FD" Offset="0.6"/>
+        <GradientStop Color="#FBF2F8" Offset="1"/>
+    </LinearGradientBrush>
+</ResourceDictionary>

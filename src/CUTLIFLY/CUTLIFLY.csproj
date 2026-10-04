@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AssemblyName>CUTLIFLY</AssemblyName>
+    <RootNamespace>Cutlifly</RootNamespace>
+    <ApplicationIcon>..\..\icons\cutlifly.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <SatelliteResourceLanguages>es</SatelliteResourceLanguages>
+
+    <Version>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)..\..\VERSION').Trim())</Version>
+    <Product>CUTLIFLY</Product>
+    <AssemblyTitle>CUTLIFLY</AssemblyTitle>
+    <Company>CUTLIFLY</Company>
+    <Description>CUTLIFLY - Screen Capture &amp; Recording</Description>
+    <Copyright>Copyright © 2026 CUTLIFLY</Copyright>
+    <NeutralLanguage>es</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="..\..\icons\cutlifly.ico" Link="Assets\cutlifly.ico" />
+    <Resource Include="..\..\assets\logo.png" Link="Assets\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CUTLIFLY.Tests" />
+  </ItemGroup>
+
+</Project>
