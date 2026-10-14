@@ -73,10 +73,11 @@ namespace Cutlify.Tests
             // Mezcla en silencio (A silenciada, B a 0 Hz = continua 0), pista A con señal.
             float MaxAbs(string p)
             {
-                using var r = new AudioFileReader(p);
+                using var r = new WaveFileReader(p);
+                var sp = r.ToSampleProvider();
                 var buf = new float[r.WaveFormat.SampleRate];
                 float m = 0; int n;
-                while ((n = r.Read(buf, 0, buf.Length)) > 0) for (int i = 0; i < n; i++) m = Math.Max(m, Math.Abs(buf[i]));
+                while ((n = sp.Read(buf, 0, buf.Length)) > 0) for (int i = 0; i < n; i++) m = Math.Max(m, Math.Abs(buf[i]));
                 return m;
             }
             Assert.True(MaxAbs(result.TrackPaths[0]) > 0.1f);
