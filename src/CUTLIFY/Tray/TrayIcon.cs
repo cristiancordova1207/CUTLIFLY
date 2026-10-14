@@ -10,7 +10,7 @@ namespace Cutlify.Tray
         private readonly NotifyIcon _icon;
         private readonly ToolStripMenuItem _pauseItem;
 
-        public TrayIcon(Action capture, Action record, Action open, Action settings, Action togglePause, Action exit)
+        public TrayIcon(Action capture, Action record, Action audio, Action open, Action settings, Action togglePause, Action exit)
         {
             var menu = new ContextMenuStrip { ShowImageMargin = false, ShowCheckMargin = true, Font = new Font("Segoe UI", 9.5f) };
             var title = new ToolStripMenuItem("CUTLIFY", null, (_, __) => open()) { Font = new Font("Segoe UI", 9.5f, FontStyle.Bold) };
@@ -18,6 +18,7 @@ namespace Cutlify.Tray
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add("Nueva captura", null, (_, __) => capture());
             menu.Items.Add("Nueva grabación", null, (_, __) => record());
+            menu.Items.Add("Grabadora de audio", null, (_, __) => audio());
             menu.Items.Add("Abrir CUTLIFY", null, (_, __) => open());
             menu.Items.Add("Configuración", null, (_, __) => settings());
             menu.Items.Add(new ToolStripSeparator());

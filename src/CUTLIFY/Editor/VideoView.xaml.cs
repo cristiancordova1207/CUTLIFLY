@@ -62,13 +62,15 @@ namespace Cutlify.Editor
             long size = item.SizeBytes;
             try { if (item.HasFile) size = new FileInfo(item.FilePath).Length; } catch { }
             var parts = new[] { HistoryItem.FormatDuration(TimeSpan.FromMilliseconds(item.DurationMs)), HistoryItem.FormatBytes(size), item.DimensionsLabel,
-                                item.FpsLabel, item.Codec, item.BitrateLabel, item.Audio, item.StatusLabel };
+                                item.FpsLabel, item.Codec, item.BitrateLabel, item.Audio, item.TracksLabel, item.StatusLabel };
             InfoText.Text = string.Join("  ·  ", Array.FindAll(parts, p => !string.IsNullOrWhiteSpace(p)));
             InfoText.ToolTip = AppController.Describe(item);
             DurationText.Text = HistoryItem.FormatDuration(TimeSpan.FromMilliseconds(item.DurationMs));
             Seek.Maximum = Math.Max(0.1, item.DurationMs / 1000.0);
             Seek.Value = 0;
             DeleteButton.IsEnabled = !item.IsExternal;
+            AudioArt.Visibility = item.IsAudio ? Visibility.Visible : Visibility.Collapsed;
+            AudioArt.Source = item.IsAudio ? item.Thumbnail : null;
             if (item.HasFile)
             {
                 Player.Source = new Uri(item.FilePath);

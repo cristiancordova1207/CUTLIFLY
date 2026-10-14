@@ -2,6 +2,17 @@
 
 Todas las versiones siguen [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.2.0] - 2026-10-14
+
+### Added
+- **Grabadora de audio multipista**: pistas de micrófono, escritorio (todo el sonido del PC) y aplicaciones concretas (process loopback de Windows 11: p. ej. solo Spotify). Pistas sincronizadas en WAV + mezcla en M4A (AAC), MP3 o WAV; volumen y silencio por pista en la mezcla; medidores de nivel; pausa.
+- Atajo global `Win + Shift + A` para iniciar/detener la grabación de audio (configurable); acceso desde «Nuevo», el selector Captura/Grabación/Audio y la bandeja.
+- Las grabaciones de audio aparecen en el historial con miniatura de forma de onda, reproducción, detalles de pistas y filtro «Audio»; guardar copia la mezcla y las pistas a `Documentos\CUTLIFY\Audio`.
+- Arrastrar y soltar archivos de audio (MP3, M4A, WAV…).
+
+### Changed
+- Las Releases y el actualizador usan este repositorio (`cristiancordova1207/CUTLIFLY`).
+
 ## [1.1.0] - 2026-10-04
 
 ### Changed

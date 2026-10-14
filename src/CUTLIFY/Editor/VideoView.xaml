@@ -39,6 +39,7 @@
 
         <Border Grid.Row="1" CornerRadius="14" Background="#0E0C14" ClipToBounds="True">
             <Grid>
+                <Image x:Name="AudioArt" Stretch="Uniform" Margin="40" Visibility="Collapsed" RenderOptions.BitmapScalingMode="HighQuality"/>
                 <MediaElement x:Name="Player" LoadedBehavior="Manual" UnloadedBehavior="Close" ScrubbingEnabled="True" Margin="8"/>
                 <Button x:Name="BigPlay" Style="{StaticResource FlatButton}" Width="72" Height="72" Background="#66FFFFFF"
                         HorizontalAlignment="Center" VerticalAlignment="Center">

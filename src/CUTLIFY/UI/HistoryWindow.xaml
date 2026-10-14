@@ -33,6 +33,7 @@
                     <RadioButton x:Name="FilterAll" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Todos" IsChecked="True"/>
                     <RadioButton x:Name="FilterImages" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Imágenes"/>
                     <RadioButton x:Name="FilterVideos" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Vídeos"/>
+                    <RadioButton x:Name="FilterAudio" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Audio"/>
                     <RadioButton x:Name="FilterAvailable" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Disponibles"/>
                     <RadioButton x:Name="FilterDeleted" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Eliminados"/>
                     <RadioButton x:Name="FilterExpired" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Expirados"/>

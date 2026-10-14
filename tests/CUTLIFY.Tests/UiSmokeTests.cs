@@ -85,6 +85,8 @@ namespace Cutlify.Tests
                     Pump(new HistoryWindow(controller));
                     Pump(new PinWindow(img));
                     Pump(new OcrWindow("Texto de prueba"));
+                    Pump(new AudioRecorderWindow(controller));
+                    Assert.True(System.IO.File.Exists(ThumbnailService.CreateWaveform(new[] { 0.1f, 0.8f, 0.4f }, "wave-" + theme)));
                     Pump(new CountdownWindow("Captura"));
                     var dlg = new DialogWindow("Título", "Mensaje", 1, "Cancelar", "Aceptar");
                     dlg.SetDetails("Notas");

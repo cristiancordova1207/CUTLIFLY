@@ -234,6 +234,17 @@
                         </Border>
                     </StackPanel>
 
+                    <TextBlock Text="Grabadora de audio" Style="{StaticResource SectionTitle}" Margin="2,14,0,8"/>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <Button x:Name="OpenAudioRecorderButton" DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="Abrir grabadora"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Grabación de audio multipista"/>
+                                <TextBlock Text="Micrófono, escritorio y aplicaciones concretas (p. ej. solo Spotify) en pistas separadas, con mezcla en M4A, MP3 o WAV." Style="{StaticResource Secondary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+
                     <TextBlock Text="Diagnóstico" Style="{StaticResource SectionTitle}" Margin="2,14,0,8"/>
                     <Border Style="{StaticResource Row}">
                         <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding ShowRecordingStats}">
@@ -374,6 +385,15 @@
                                 <Button x:Name="HkRepeatButton" Style="{StaticResource OutlineButton}" Content="Cambiar" Margin="8,0,0,0" Tag="repeat"/>
                             </StackPanel>
                             <TextBlock Text="Repetir última captura" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <Border Style="{StaticResource Row}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <Border Style="{StaticResource Key}"><TextBlock x:Name="HkAudioText" Foreground="{DynamicResource Accent}" FontWeight="SemiBold" HorizontalAlignment="Center"/></Border>
+                                <Button x:Name="HkAudioButton" Style="{StaticResource OutlineButton}" Content="Cambiar" Margin="8,0,0,0" Tag="audio"/>
+                            </StackPanel>
+                            <TextBlock Text="Grabadora de audio (iniciar / detener)" VerticalAlignment="Center"/>
                         </DockPanel>
                     </Border>
                     <TextBlock x:Name="HkStatus" Margin="2,6,0,0" TextWrapping="Wrap" Style="{StaticResource Secondary}"/>

@@ -25,7 +25,7 @@
     <Copyright>Copyright © 2026 CUTLIFY. Todos los derechos reservados.</Copyright>
     <NeutralLanguage>es</NeutralLanguage>
     <!-- Repositorio público con las Releases oficiales (solo binarios). -->
-    <ReleasesRepository Condition="'$(ReleasesRepository)' == ''">cristiancordova1207/cutlify-releases</ReleasesRepository>
+    <ReleasesRepository Condition="'$(ReleasesRepository)' == ''">cristiancordova1207/CUTLIFLY</ReleasesRepository>
     <!-- WPF necesita el DPI PerMonitorV2 en app.manifest -->
     <NoWarn>$(NoWarn);WFAC010</NoWarn>
   </PropertyGroup>

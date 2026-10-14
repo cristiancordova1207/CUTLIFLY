@@ -7,6 +7,19 @@ namespace Cutlify.Settings
 
     public enum MicConsent { Unknown, Granted, Denied }
 
+    public enum AudioTrackKind { Microphone, System, Application }
+
+    /// <summary>Pista de la grabadora de audio (micrófono, escritorio o una aplicación concreta).</summary>
+    public class AudioTrackConfig
+    {
+        public AudioTrackKind Kind { get; set; }
+        public string DeviceId { get; set; }     // micrófono / salida (null = predeterminado)
+        public string ProcessName { get; set; }  // aplicación (p. ej. "Spotify")
+        public string Name { get; set; }
+        public float Gain { get; set; } = 1f;    // volumen en la mezcla (0–2)
+        public bool Muted { get; set; }          // excluida de la mezcla (la pista se guarda igual)
+    }
+
     /// <summary>Preferencias del usuario (persistidas en settings.json).</summary>
     public class AppSettings
     {
@@ -47,6 +60,15 @@ namespace Cutlify.Settings
         public string MicrophoneDeviceId { get; set; }   // null = predeterminado
         public MicConsent MicrophoneConsent { get; set; } = MicConsent.Unknown;
 
+        // Grabadora de audio
+        public List<AudioTrackConfig> AudioTracks { get; set; } = new List<AudioTrackConfig>
+        {
+            new AudioTrackConfig { Kind = AudioTrackKind.System, Name = "Escritorio" },
+            new AudioTrackConfig { Kind = AudioTrackKind.Microphone, Name = "Micrófono" }
+        };
+        public string AudioMixFormat { get; set; } = "M4A";   // M4A (AAC) | MP3 | WAV
+        public bool AudioSeparateTracks { get; set; } = true; // además de la mezcla, una WAV por pista
+
         // Portapapeles
         public bool CopyRecordingsAsFile { get; set; } = true;
 
@@ -61,6 +83,7 @@ namespace Cutlify.Settings
         public string HotkeyRecord { get; set; } = "Win+Shift+R";
         public string HotkeyOpen { get; set; } = "Ctrl+Shift+X";
         public string HotkeyRepeat { get; set; } = "Alt+N";
+        public string HotkeyAudio { get; set; } = "Win+Shift+A";
 
         // Editor
         public List<string> RecentColors { get; set; } = new List<string>();

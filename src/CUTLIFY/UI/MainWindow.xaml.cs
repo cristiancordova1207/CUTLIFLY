@@ -19,6 +19,7 @@ namespace Cutlify.UI
     {
         private static readonly string[] ImageExt = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tif", ".tiff", ".webp" };
         private static readonly string[] VideoExt = { ".mp4", ".mov", ".m4v", ".wmv", ".avi", ".mkv", ".webm" };
+        private static readonly string[] AudioExt = { ".mp3", ".m4a", ".wav", ".wma", ".aac", ".flac" };
 
         private readonly AppController _app;
         private readonly DispatcherTimer _refresh;
@@ -56,6 +57,7 @@ namespace Cutlify.UI
             NewRecRect.Click += (_, __) => _app.StartRecording(CaptureMode.Rectangle, 0, true);
             NewRecWindow.Click += (_, __) => _app.StartRecording(CaptureMode.Window, 0, true);
             NewRecFull.Click += (_, __) => _app.StartRecording(CaptureMode.FullScreen, 0, true);
+            NewAudio.Click += (_, __) => _app.ShowAudioRecorder();
             EmptyCapture.Click += (_, __) => _app.StartCapture(SelectedMode, SelectedDelay, true);
             EmptyRecord.Click += (_, __) => _app.StartRecording(SelectedMode, SelectedDelay, true);
             RepeatButton.Click += (_, __) => _app.RepeatLastCapture();
@@ -125,7 +127,8 @@ namespace Cutlify.UI
 
         private void StartNew()
         {
-            if (KindRecord.IsChecked == true) _app.StartRecording(SelectedMode, SelectedDelay, true);
+            if (KindAudio.IsChecked == true) _app.ShowAudioRecorder();
+            else if (KindRecord.IsChecked == true) _app.StartRecording(SelectedMode, SelectedDelay, true);
             else _app.StartCapture(SelectedMode, SelectedDelay, true);
         }
 
@@ -176,7 +179,7 @@ namespace Cutlify.UI
                 GoneStatus.Text = item.StatusLabel;
                 GoneName.Text = $"{item.Name}  ·  {item.DateLabel} {item.TimeLabel}";
             }
-            else if (item.IsVideo)
+            else if (item.IsMedia)
             {
                 Editor.Visibility = Visibility.Collapsed;
                 Video.Visibility = Visibility.Visible;
@@ -220,7 +223,7 @@ namespace Cutlify.UI
                 bool visible = tag switch
                 {
                     "available" => i.IsAvailable,
-                    "image" => i.IsAvailable && !i.IsVideo,
+                    "image" => i.IsAvailable && !i.IsMedia,
                     "file" => i.HasFile && i.IsAvailable,
                     _ => true
                 };
@@ -242,7 +245,7 @@ namespace Cutlify.UI
         private void Ctx_Details(object sender, RoutedEventArgs e) { var i = ItemOf(sender); if (i != null) _app.ShowDetails(i, this); }
         private void Ctx_Remove(object sender, RoutedEventArgs e) { var i = ItemOf(sender); if (i != null) _app.RemoveFromHistory(i); }
         private void Ctx_Open(object sender, RoutedEventArgs e) { var i = ItemOf(sender); if (i != null) _app.Open(i); }
-        private void Ctx_Pin(object sender, RoutedEventArgs e) { var i = ItemOf(sender); if (i != null && !i.IsVideo) _app.Pin(AppController.GetImage(i)); }
+        private void Ctx_Pin(object sender, RoutedEventArgs e) { var i = ItemOf(sender); if (i != null && !i.IsMedia) _app.Pin(AppController.GetImage(i)); }
         private void Ctx_Location(object sender, RoutedEventArgs e) { var i = ItemOf(sender); if (i != null) _app.OpenLocation(i); }
         private void Ctx_Delete(object sender, RoutedEventArgs e) { var i = ItemOf(sender); if (i != null) _app.DeleteFile(i, this); }
 
@@ -290,7 +293,7 @@ namespace Cutlify.UI
             var f = files?.FirstOrDefault();
             if (f == null) return null;
             var ext = Path.GetExtension(f).ToLowerInvariant();
-            return ImageExt.Contains(ext) || VideoExt.Contains(ext) ? f : null;
+            return ImageExt.Contains(ext) || VideoExt.Contains(ext) || AudioExt.Contains(ext) ? f : null;
         }
 
         private void OnDragEnter(object sender, DragEventArgs e)
@@ -306,10 +309,11 @@ namespace Cutlify.UI
             DropHint.Visibility = Visibility.Collapsed;
             var f = DroppedFile(e);
             if (f == null) return;
-            bool video = VideoExt.Contains(Path.GetExtension(f).ToLowerInvariant());
+            var ext = Path.GetExtension(f).ToLowerInvariant();
+            bool video = VideoExt.Contains(ext) || AudioExt.Contains(ext);
             var item = new HistoryItem
             {
-                Kind = video ? ItemKind.Video : ItemKind.Image,
+                Kind = VideoExt.Contains(ext) ? ItemKind.Video : AudioExt.Contains(ext) ? ItemKind.Audio : ItemKind.Image,
                 FilePath = f,
                 IsExternal = true,
                 IsPermanent = true,

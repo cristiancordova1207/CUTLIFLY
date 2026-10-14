@@ -98,8 +98,7 @@ namespace Cutlify.Recording
             return a;
         }
 
-        private static bool IsAccessDenied(Exception ex) =>
-            ex is UnauthorizedAccessException || (ex is COMException c && c.HResult == unchecked((int)0x80070005));
+        private static bool IsAccessDenied(Exception ex) => AudioUtil.IsAccessDenied(ex);
 
         private static MMDevice FindDevice(MMDeviceEnumerator e, string id, DataFlow flow)
         {
@@ -118,9 +117,7 @@ namespace Cutlify.Recording
 
         private void AddCapture(IWaveIn capture)
         {
-            var wf = capture.WaveFormat;
-            // Normaliza WAVE_FORMAT_EXTENSIBLE a un formato equivalente que NAudio sabe convertir.
-            var plain = wf.BitsPerSample == 32 ? WaveFormat.CreateIeeeFloatWaveFormat(wf.SampleRate, wf.Channels) : new WaveFormat(wf.SampleRate, wf.BitsPerSample, wf.Channels);
+            var plain = AudioUtil.PlainFormat(capture.WaveFormat);
             var buffer = new BufferedWaveProvider(plain) { ReadFully = true, DiscardOnBufferOverflow = true, BufferDuration = TimeSpan.FromSeconds(2) };
             capture.DataAvailable += (_, e) => { lock (_sync) buffer.AddSamples(e.Buffer, 0, e.BytesRecorded); };
             capture.RecordingStopped += (_, e) => { if (e.Exception != null) Logger.Warn("Audio", "La captura de audio se detuvo", e.Exception); };
@@ -129,35 +126,7 @@ namespace Cutlify.Recording
             _mixer.AddMixerInput(Normalize(buffer.ToSampleProvider()));
         }
 
-        /// <summary>Convierte cualquier fuente a 48 kHz estéreo float.</summary>
-        private static ISampleProvider Normalize(ISampleProvider src)
-        {
-            if (src.WaveFormat.Channels == 1) src = new MonoToStereoSampleProvider(src);
-            else if (src.WaveFormat.Channels > 2)
-            {
-                var mux = new MultiplexingSampleProvider(new[] { src }, 2);
-                mux.ConnectInputToOutput(0, 0);
-                mux.ConnectInputToOutput(1, 1);
-                src = mux;
-            }
-            if (src.WaveFormat.SampleRate != SampleRate) src = new WdlResamplingSampleProvider(src, SampleRate);
-            return new PadWithSilence(src);
-        }
-
-        /// <summary>Completa con silencio: el mezclador descarta las entradas que devuelven menos muestras.</summary>
-        private sealed class PadWithSilence : ISampleProvider
-        {
-            private readonly ISampleProvider _src;
-            public PadWithSilence(ISampleProvider src) => _src = src;
-            public WaveFormat WaveFormat => _src.WaveFormat;
-
-            public int Read(float[] buffer, int offset, int count)
-            {
-                int n = _src.Read(buffer, offset, count);
-                if (n < count) Array.Clear(buffer, offset + Math.Max(0, n), count - Math.Max(0, n));
-                return count;
-            }
-        }
+        private static ISampleProvider Normalize(ISampleProvider src) => AudioUtil.Normalize(src, SampleRate);
 
         public void Start()
         {
@@ -200,17 +169,7 @@ namespace Cutlify.Recording
         // Si un dispositivo entrega algo más rápido que el reloj, se descarta el exceso para no acumular retraso.
         private void TrimLatency()
         {
-            foreach (var b in _buffers)
-            {
-                if (b.BufferedDuration <= MaxLatency) continue;
-                int excess = b.BufferedBytes - (int)(b.WaveFormat.AverageBytesPerSecond * MaxLatency.TotalSeconds);
-                excess -= excess % b.WaveFormat.BlockAlign;
-                if (excess <= 0) continue;
-                if (_scratch.Length < excess) _scratch = new byte[excess];
-                b.ReadFully = false;
-                b.Read(_scratch, 0, excess);
-                b.ReadFully = true;
-            }
+            foreach (var b in _buffers) AudioUtil.TrimLatency(b, MaxLatency, ref _scratch);
         }
 
         public void Dispose()

@@ -61,6 +61,7 @@
                                 <MenuItem x:Name="NewRecWindow" Header="Ventana" Icon="&#xE7C4;"/>
                                 <MenuItem x:Name="NewRecFull" Header="Pantalla completa" Icon="&#xE740;"/>
                             </MenuItem>
+                            <MenuItem x:Name="NewAudio" Header="Grabación de audio…" Icon="&#xE720;"/>
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>
@@ -77,6 +78,12 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE714;" Style="{StaticResource Icon}" FontSize="14"/>
                                 <TextBlock Text="Grabación" Margin="7,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton x:Name="KindAudio" GroupName="kind" Style="{StaticResource SegmentToggle}" ToolTip="Grabadora de audio multipista">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE720;" Style="{StaticResource Icon}" FontSize="14"/>
+                                <TextBlock Text="Audio" Margin="7,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
                         </RadioButton>
                     </StackPanel>
@@ -291,7 +298,7 @@
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsVideo}" Value="False">
+                                                        <DataTrigger Binding="{Binding IsMedia}" Value="False">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -306,18 +313,7 @@
                                 </Border>
                                 <TextBlock Text="{Binding Name}" FontSize="11" Margin="2,5,2,0" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Text}"/>
                                 <DockPanel Margin="2,2,2,0">
-                                    <TextBlock DockPanel.Dock="Left" FontFamily="{StaticResource IconFont}" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Text" Value="&#xEB9F;"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                                                        <Setter Property="Text" Value="&#xE714;"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                    <TextBlock DockPanel.Dock="Left" Text="{Binding TypeGlyph}" FontFamily="{StaticResource IconFont}" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
                                     <TextBlock Text="{Binding RelativeTime}" FontSize="11" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding StatusGlyph}" FontFamily="{StaticResource IconFont}" FontSize="10" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>

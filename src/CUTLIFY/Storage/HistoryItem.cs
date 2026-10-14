@@ -1,13 +1,14 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text.Json.Serialization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Cutlify.Storage
 {
-    public enum ItemKind { Image, Video }
+    public enum ItemKind { Image, Video, Audio }
 
     /// <summary>Estado del archivo físico. La entrada del historial se conserva aunque el archivo ya no exista.</summary>
     public enum ItemState { Available, Deleted, Expired, Incomplete, NotSaved }
@@ -38,6 +39,10 @@ namespace Cutlify.Storage
         public bool BitrateAuto { get; set; }
         public string Audio { get; set; }
 
+        // Grabadora de audio: pistas separadas (WAV) además de la mezcla en FilePath
+        public System.Collections.Generic.List<string> TrackFiles { get; set; } = new System.Collections.Generic.List<string>();
+        public System.Collections.Generic.List<string> TrackNames { get; set; } = new System.Collections.Generic.List<string>();
+
         /// <summary>Captura que solo existe en memoria (modo solo portapapeles).</summary>
         [JsonIgnore] public BitmapSource MemoryImage { get; set; }
 
@@ -45,10 +50,17 @@ namespace Cutlify.Storage
         [JsonIgnore] public bool IsExternal { get; set; }
 
         [JsonIgnore] public bool IsMemoryOnly => MemoryImage != null && string.IsNullOrEmpty(FilePath);
+        /// <summary>Archivos físicos del elemento (mezcla + pistas).</summary>
+        [JsonIgnore] public System.Collections.Generic.IEnumerable<string> AllFiles =>
+            new[] { FilePath }.Concat(TrackFiles ?? new System.Collections.Generic.List<string>()).Where(f => !string.IsNullOrEmpty(f));
+
         [JsonIgnore] public bool HasFile => !string.IsNullOrEmpty(FilePath) && File.Exists(FilePath);
         [JsonIgnore] public bool IsAvailable => State == ItemState.Available && (HasFile || MemoryImage != null);
         [JsonIgnore] public bool IsGone => !IsAvailable;
         [JsonIgnore] public bool IsVideo => Kind == ItemKind.Video;
+        [JsonIgnore] public bool IsAudio => Kind == ItemKind.Audio;
+        /// <summary>Vídeo o audio: se reproduce y se copia como archivo.</summary>
+        [JsonIgnore] public bool IsMedia => Kind != ItemKind.Image;
         [JsonIgnore] public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
 
         [JsonIgnore]
@@ -56,7 +68,9 @@ namespace Cutlify.Storage
             : !string.IsNullOrEmpty(FilePath) ? Path.GetFileName(FilePath)
             : $"Captura_{CreatedLocal:yyyy-MM-dd_HH-mm-ss}";
 
-        [JsonIgnore] public string TypeLabel => IsVideo ? "Grabación" : "Captura";
+        [JsonIgnore] public string TypeLabel => Kind switch { ItemKind.Video => "Grabación", ItemKind.Audio => "Audio", _ => "Captura" };
+        [JsonIgnore] public string TypeGlyph => Kind switch { ItemKind.Video => "\uE714", ItemKind.Audio => "\uE720", _ => "\uEB9F" };
+        [JsonIgnore] public string TracksLabel => TrackFiles.Count > 1 ? $"{TrackFiles.Count} pistas" : "";
 
         [JsonIgnore]
         public string StatusLabel => IsExternal ? "Externo" : State switch
@@ -83,7 +97,7 @@ namespace Cutlify.Storage
         [JsonIgnore] public string TimeLabel => CreatedLocal.ToString("HH:mm");
         [JsonIgnore] public string DimensionsLabel => Width > 0 ? $"{Width} × {Height}" : "";
         [JsonIgnore] public string SizeLabel => IsMemoryOnly ? "En memoria" : SizeBytes > 0 ? FormatBytes(SizeBytes) : "";
-        [JsonIgnore] public string DurationLabel => IsVideo ? FormatDuration(TimeSpan.FromMilliseconds(DurationMs)) : "";
+        [JsonIgnore] public string DurationLabel => IsMedia ? FormatDuration(TimeSpan.FromMilliseconds(DurationMs)) : "";
         [JsonIgnore] public string FormatLabel => IsVideo ? "MP4" : (Path.GetExtension(Name).TrimStart('.').ToUpperInvariant() is { Length: > 0 } e ? e : "PNG");
 
         [JsonIgnore]

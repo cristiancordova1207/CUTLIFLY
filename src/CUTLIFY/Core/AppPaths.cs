@@ -33,6 +33,7 @@ namespace Cutlify.Core
         public static string DocumentsRoot => Path.Combine(_documents, "CUTLIFY");
         public static string DefaultCapturesFolder => Path.Combine(DocumentsRoot, "Capturas");
         public static string DefaultRecordingsFolder => Path.Combine(DocumentsRoot, "Grabaciones");
+        public static string AudioFolder => Ensure(Path.Combine(DocumentsRoot, "Audio"));
 
         public static string CapturesFolder =>
             Ensure(string.IsNullOrWhiteSpace(SettingsService.Current.CapturesFolder) ? DefaultCapturesFolder : SettingsService.Current.CapturesFolder);
@@ -48,6 +49,7 @@ namespace Cutlify.Core
                 Ensure(DocumentsRoot);
                 _ = CapturesFolder;
                 _ = RecordingsFolder;
+                _ = AudioFolder;
                 _ = Temp;
                 _ = Thumbs;
             }

@@ -37,7 +37,7 @@ namespace Cutlify
         public void Copy(HistoryItem item)
         {
             if (!item.IsAvailable) return;
-            if (item.IsVideo)
+            if (item.IsMedia)
             {
                 if (ClipboardService.CopyFile(item.FilePath))
                 {
@@ -58,6 +58,7 @@ namespace Cutlify
         private void SaveCore(HistoryItem item, BitmapSource edited, bool askLocation)
         {
             if (item == null) return;
+            if (item.IsAudio) { SaveAudio(item, askLocation); return; }
             if (item.IsVideo) { SaveVideo(item, askLocation); return; }
             var image = edited ?? GetImage(item);
             if (image == null) return;
@@ -148,7 +149,7 @@ namespace Cutlify
         public void Open(HistoryItem item)
         {
             if (!item.IsAvailable) return;
-            if (!item.HasFile) { if (!item.IsVideo) ShowMainWindow(item); return; }
+            if (!item.HasFile) { if (!item.IsMedia) ShowMainWindow(item); return; }
             try { Process.Start(new ProcessStartInfo(item.FilePath) { UseShellExecute = true }); }
             catch (Exception ex) { Logger.Warn("UI", "No se pudo abrir el archivo", ex); }
         }
@@ -264,6 +265,11 @@ namespace Cutlify
                 Line("Bitrate", i.BitrateLabel);
                 Line("Duración", i.DurationLabel);
                 Line("Audio", i.Audio);
+            }
+            if (i.IsAudio)
+            {
+                Line("Duración", i.DurationLabel);
+                Line("Pistas", i.TrackNames.Count > 0 ? string.Join(", ", i.TrackNames) : "Mezcla");
             }
             Line("Tamaño", i.SizeLabel);
             Line("Fecha", $"{i.DateLabel} {i.CreatedLocal:HH:mm:ss}");

@@ -80,6 +80,8 @@ namespace Cutlify.UI
             HkRecordButton.Click += (_, __) => BeginHotkeyCapture("record");
             HkOpenButton.Click += (_, __) => BeginHotkeyCapture("open");
             HkRepeatButton.Click += (_, __) => BeginHotkeyCapture("repeat");
+            HkAudioButton.Click += (_, __) => BeginHotkeyCapture("audio");
+            OpenAudioRecorderButton.Click += (_, __) => _app.ShowAudioRecorder();
             HkResetButton.Click += (_, __) =>
             {
                 var d = new AppSettings();
@@ -87,6 +89,7 @@ namespace Cutlify.UI
                 S.HotkeyRecord = d.HotkeyRecord;
                 S.HotkeyOpen = d.HotkeyOpen;
                 S.HotkeyRepeat = d.HotkeyRepeat;
+                S.HotkeyAudio = d.HotkeyAudio;
                 SettingsService.Save();
                 HkStatus.Text = _app.ApplyHotkeys();
                 LoadValues();
@@ -149,6 +152,7 @@ namespace Cutlify.UI
             HkRecordText.Text = S.HotkeyRecord;
             HkOpenText.Text = S.HotkeyOpen;
             HkRepeatText.Text = S.HotkeyRepeat;
+            HkAudioText.Text = S.HotkeyAudio;
             CapturesFolderText.Text = AppPaths.CapturesFolder;
             RecordingsFolderText.Text = AppPaths.RecordingsFolder;
             VersionText.Text = "Versión " + UpdateService.CurrentVersionText;
@@ -413,7 +417,7 @@ namespace Cutlify.UI
         {
             _capturingHotkey = which;
             HkStatus.Text = "Pulsa la nueva combinación (con Ctrl, Alt, Shift o Win)…";
-            var label = which switch { "capture" => HkCaptureText, "record" => HkRecordText, "repeat" => HkRepeatText, _ => HkOpenText };
+            var label = which switch { "capture" => HkCaptureText, "record" => HkRecordText, "repeat" => HkRepeatText, "audio" => HkAudioText, _ => HkOpenText };
             label.Text = "…";
             _app.Hotkeys.CaptureNext(hk => OnHotkeyCaptured(hk));
         }
@@ -423,7 +427,7 @@ namespace Cutlify.UI
             var which = _capturingHotkey;
             _capturingHotkey = null;
             string text = hk.ToString();
-            var others = new[] { ("capture", S.HotkeyCapture), ("record", S.HotkeyRecord), ("open", S.HotkeyOpen), ("repeat", S.HotkeyRepeat) }
+            var others = new[] { ("capture", S.HotkeyCapture), ("record", S.HotkeyRecord), ("open", S.HotkeyOpen), ("repeat", S.HotkeyRepeat), ("audio", S.HotkeyAudio) }
                 .Where(o => o.Item1 != which).Select(o => o.Item2);
             if (others.Any(o => Hotkey.TryParse(o, out var x) && x.Equals(hk)))
                 HkStatus.Text = $"Conflicto: {text} ya está asignado a otra acción de CUTLIFY.";
@@ -436,6 +440,7 @@ namespace Cutlify.UI
                     case "capture": S.HotkeyCapture = text; break;
                     case "record": S.HotkeyRecord = text; break;
                     case "repeat": S.HotkeyRepeat = text; break;
+                    case "audio": S.HotkeyAudio = text; break;
                     default: S.HotkeyOpen = text; break;
                 }
                 SettingsService.Save();

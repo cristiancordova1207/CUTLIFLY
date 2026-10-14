@@ -39,7 +39,7 @@ namespace Cutlify.Update
         /// </summary>
         public static string Repository { get; } =
             Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyMetadataAttribute>()
-                .FirstOrDefault(a => a.Key == "ReleasesRepository")?.Value is { Length: > 0 } r ? r : "cristiancordova1207/cutlify-releases";
+                .FirstOrDefault(a => a.Key == "ReleasesRepository")?.Value is { Length: > 0 } r ? r : "cristiancordova1207/CUTLIFLY";
         public const string ExeAsset = "CUTLIFY.exe";
         public const string SetupAsset = "CUTLIFY-Setup.exe";
         public const string ChecksumsAsset = "SHA256SUMS.txt";

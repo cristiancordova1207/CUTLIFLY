@@ -90,6 +90,7 @@ namespace Cutlify
             _tray = new TrayIcon(
                 capture: () => StartCapture(SettingsService.Current.LastMode, SettingsService.Current.DefaultDelaySeconds, false),
                 record: () => StartRecording(CaptureMode.Rectangle, 0, false),
+                audio: () => ShowAudioRecorder(),
                 open: () => ShowMainWindow(),
                 settings: () => ShowSettings(),
                 togglePause: TogglePause,
@@ -129,6 +130,7 @@ namespace Cutlify
             Bind(s.HotkeyRecord, "grabación rápida", ToggleQuickRecord);
             Bind(s.HotkeyOpen, "abrir CUTLIFY", () => ShowMainWindow());
             Bind(s.HotkeyRepeat, "repetir captura", () => RepeatLastCapture());
+            Bind(s.HotkeyAudio, "grabadora de audio", ToggleAudioRecording);
             return string.Join("\n", errors);
         }
 
@@ -455,6 +457,7 @@ namespace Cutlify
             if (IsExiting) return;
             IsExiting = true;
             StopRecordingForExit();
+            StopAudioForExit();
             History.Save();
             SettingsService.Save();
             foreach (Window w in _wpf.Windows.Cast<Window>().ToList()) { try { w.Close(); } catch { } }

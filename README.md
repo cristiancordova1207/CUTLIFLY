@@ -19,6 +19,7 @@ CUTLIFY es **gratuito** para el usuario, **sin cuenta, sin publicidad, sin telem
 - **Fijar** capturas encima de todo (mover, redimensionar, cerrar).
 - **Grabación** de región, ventana, monitor o todas las pantallas a **MP4** con **H.264, HEVC o AV1** (solo los codecs disponibles en tu equipo), resolución hasta 4K, 30–240 FPS (limitados a la frecuencia real de tus monitores), bitrate automático o manual, aceleración por hardware, cursor y resaltado de clics.
 - **Audio**: sistema, micrófono o ambos **mezclados en una pista AAC sincronizada**, con selección de dispositivo, prueba y medidor de nivel. Consentimiento propio antes de usar el micrófono.
+- **Grabadora de audio multipista**: micrófono, escritorio y **aplicaciones concretas** (por ejemplo, solo Spotify, Discord o un juego) en pistas sincronizadas. Cada pista se guarda en WAV y se crea una mezcla en M4A, MP3 o WAV, con volumen y silencio por pista en la mezcla, medidores de nivel y pausa. Atajo `Win + Shift + A`. Grabar una sola aplicación requiere Windows 11.
 - **FPS honestos**: nunca se duplican fotogramas; las estadísticas muestran FPS reales y fotogramas perdidos.
 - **Temporales con caducidad** (5 min – 3 días / nunca) que funcionan aunque la app estuviera cerrada.
 - **Historial visual**: miniaturas independientes; una captura eliminada o caducada sigue visible como «Eliminada» / «Expirada». Filtros (todos, imágenes, vídeos, disponibles, eliminados, expirados) y búsqueda.
@@ -30,6 +31,7 @@ CUTLIFY es **gratuito** para el usuario, **sin cuenta, sin publicidad, sin telem
 |---|---|
 | Capturas guardadas | `Documentos\CUTLIFY\Capturas` (configurable) |
 | Grabaciones guardadas | `Documentos\CUTLIFY\Grabaciones` (configurable) |
+| Audio guardado (mezcla + pistas) | `Documentos\CUTLIFY\Audio` |
 | Temporales | `%LOCALAPPDATA%\CUTLIFY\Temporales` |
 | Miniaturas del historial | `%LOCALAPPDATA%\CUTLIFY\Thumbnails` |
 | Configuración / historial / logs | `%LOCALAPPDATA%\CUTLIFY` |
@@ -44,6 +46,7 @@ Los temporales viven en `%LOCALAPPDATA%` (no en Documentos) para no sincronizar 
 | `Win + Shift + R` | Grabación rápida (iniciar / detener) |
 | `Ctrl + Shift + X` | Abrir CUTLIFY |
 | `Alt + N` | Repetir la última captura |
+| `Win + Shift + A` | Grabadora de audio (iniciar / detener con las pistas configuradas) |
 | `Ctrl + C` / `Ctrl + S` / `Ctrl + Shift + S` | Copiar / guardar / guardar como (editor) |
 | `Ctrl + Z` / `Ctrl + Y` | Deshacer / rehacer |
 
@@ -55,7 +58,7 @@ Descarga `CUTLIFY-Setup.exe` (o el portable `CUTLIFY.exe`) desde las **Releases 
 
 ## Distribución oficial y actualizaciones
 
-- El código fuente está en un **repositorio privado**. Las versiones públicas se publican en un repositorio **público solo de binarios** (por defecto `cristiancordova1207/cutlify-releases`, configurable con la variable de repositorio `RELEASES_REPO`).
+- Las versiones se publican en las Releases de este repositorio (`cristiancordova1207/CUTLIFLY`; configurable con la variable de repositorio `RELEASES_REPO`). Si el repositorio es privado, las descargas y el actualizador solo funcionan para cuentas con acceso; para distribución pública, usa un repositorio público solo de binarios.
 - Solo son oficiales los binarios generados por el pipeline de GitHub Actions y publicados en esas Releases.
 - El actualizador integrado solo consulta ese repositorio, ignora las pre-releases, exige una versión mayor, comprueba tamaño, **SHA-256** y versión del archivo antes de instalar, y conserva configuración e historial.
 

@@ -91,11 +91,8 @@ namespace Cutlify.Storage
         public void DeleteFile(HistoryItem item, ItemState newState = ItemState.Deleted)
         {
             if (item.IsExternal) return;
-            if (item.HasFile)
-            {
-                bool recycle = item.IsPermanent || SettingsService.Current.SendExpiredToRecycleBin;
-                FileDeleter.Delete(item.FilePath, recycle);
-            }
+            bool recycle = item.IsPermanent || SettingsService.Current.SendExpiredToRecycleBin;
+            foreach (var f in item.AllFiles.ToList()) FileDeleter.Delete(f, recycle); // mezcla y pistas
             SetState(item, newState);
             item.NotifyStateChanged();
             Save();
@@ -119,9 +116,15 @@ namespace Cutlify.Storage
         }
 
         /// <summary>Convierte un elemento temporal/en memoria en permanente tras guardarlo en <paramref name="newPath"/>.</summary>
-        public void MarkPermanent(HistoryItem item, string newPath)
+        public void MarkPermanent(HistoryItem item, string newPath, List<string> newTracks = null)
         {
             var old = item.FilePath;
+            if (newTracks != null)
+            {
+                foreach (var t in item.TrackFiles.Except(newTracks, StringComparer.OrdinalIgnoreCase).Where(t => AppPaths.IsInside(t, AppPaths.Temp)))
+                    FileDeleter.Delete(t, false);
+                item.TrackFiles = newTracks;
+            }
             item.FilePath = newPath;
             item.FileName = Path.GetFileName(newPath);
             item.IsPermanent = true;

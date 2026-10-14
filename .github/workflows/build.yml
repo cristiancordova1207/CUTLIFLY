@@ -28,7 +28,7 @@ env:
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   # Repositorio PÚBLICO donde se publican solo los binarios (el código es privado). Variable de repositorio RELEASES_REPO.
-  RELEASES_REPO: ${{ vars.RELEASES_REPO || 'cristiancordova1207/cutlify-releases' }}
+  RELEASES_REPO: ${{ vars.RELEASES_REPO || github.repository }}
   # Proveedor de firma (variable de repositorio): pfx | artifact-signing | vacío = sin firma
   SIGNING_PROVIDER: ${{ vars.SIGNING_PROVIDER }}
   SIGNING_PUBLISHER: ${{ vars.SIGNING_PUBLISHER }}

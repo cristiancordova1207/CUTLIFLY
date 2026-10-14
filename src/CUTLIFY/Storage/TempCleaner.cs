@@ -42,8 +42,8 @@ namespace Cutlify.Storage
             try
             {
                 // Temporales huérfanos (p. ej. de entradas quitadas del historial) que ya caducaron.
-                var live = _history.Items.Where(i => i.State == ItemState.Available && !string.IsNullOrEmpty(i.FilePath))
-                    .Select(i => Path.GetFullPath(i.FilePath)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+                var live = _history.Items.Where(i => i.State == ItemState.Available)
+                    .SelectMany(i => i.AllFiles).Select(Path.GetFullPath).ToHashSet(StringComparer.OrdinalIgnoreCase);
                 if (retention.HasValue)
                 {
                     foreach (var f in new DirectoryInfo(AppPaths.Temp).EnumerateFiles())

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -28,6 +29,7 @@ namespace Cutlify.UI
             FilterAll.Checked += (_, __) => Refresh();
             FilterImages.Checked += (_, __) => Refresh();
             FilterVideos.Checked += (_, __) => Refresh();
+            FilterAudio.Checked += (_, __) => Refresh();
             FilterAvailable.Checked += (_, __) => Refresh();
             FilterDeleted.Checked += (_, __) => Refresh();
             FilterExpired.Checked += (_, __) => Refresh();
@@ -60,8 +62,9 @@ namespace Cutlify.UI
         private bool Filter(object o)
         {
             if (!(o is HistoryItem i)) return false;
-            if (FilterImages?.IsChecked == true && i.IsVideo) return false;
+            if (FilterImages?.IsChecked == true && i.IsMedia) return false;
             if (FilterVideos?.IsChecked == true && !i.IsVideo) return false;
+            if (FilterAudio?.IsChecked == true && !i.IsAudio) return false;
             if (FilterAvailable?.IsChecked == true && !i.IsAvailable) return false;
             if (FilterDeleted?.IsChecked == true && i.State != ItemState.Deleted) return false;
             if (FilterExpired?.IsChecked == true && i.State != ItemState.Expired) return false;
@@ -77,7 +80,8 @@ namespace Cutlify.UI
                 || i.DateLabel.Contains(q, cmp)
                 || i.CreatedLocal.ToString("d MMMM yyyy", new System.Globalization.CultureInfo("es-ES")).Contains(q, cmp)
                 || i.TypeLabel.Contains(q, cmp)
-                || (i.IsVideo ? "video vídeo mp4" : "imagen png jpg").Contains(q, cmp)
+                || (i.IsVideo ? "video vídeo mp4" : i.IsAudio ? "audio sonido m4a mp3 wav pista" : "imagen png jpg").Contains(q, cmp)
+                || i.TrackNames.Any(t => t.Contains(q, cmp))
                 || i.StatusLabel.Contains(q, cmp)
                 || i.CreatedLocal.ToString("yyyy-MM-dd").Contains(q, cmp);
         }
