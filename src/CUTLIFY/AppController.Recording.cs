@@ -31,7 +31,7 @@ namespace Cutlify
         public void ToggleQuickRecord()
         {
             if (IsRecording) StopRecording();
-            else StartRecording(CaptureMode.Rectangle, 0, false);
+            else StartRecording(SettingsService.Current.LastRecordMode, 0, false);
         }
 
         /// <summary>
@@ -94,11 +94,12 @@ namespace Cutlify
                 if (result == null) { RestoreAfterCapture(mainWasVisible); return; }
 
                 var s = SettingsService.Current;
+                if (s.LastRecordMode != result.Mode) { s.LastRecordMode = result.Mode; SettingsService.Save(); } // recordar el modo de grabación
                 if (!VideoSettings.IsCodecAvailable(s.RecordCodec))
                     throw new InvalidOperationException($"El codec {s.RecordCodec} no está disponible en este equipo. Elige otro en Configuración → Grabación.");
 
+                if (!await RunCountdown(delaySeconds, "Grabación")) { RestoreAfterCapture(mainWasVisible); return; }
                 audio = CreateAudio();
-                await CountdownWindow.Run(delaySeconds, "Grabación");
 
                 var output = VideoSettings.OutputSize(result.ScreenRect.Size, s.RecordResolution);
                 var (bitrate, auto) = VideoSettings.ResolveBitrate(s, output);

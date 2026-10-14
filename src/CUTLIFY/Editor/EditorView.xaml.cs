@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace Cutlify.Editor
 {
-    public enum EditorTool { Select, Pen, Highlighter, Eraser, Shape, Text, Crop }
+    public enum EditorTool { Select, Pen, Highlighter, Eraser, Arrow, Shape, Text, Crop }
 
     /// <summary>Editor sencillo de capturas: anotaciones, texto, formas, recorte y deshacer/rehacer.</summary>
     public partial class EditorView : UserControl
@@ -63,7 +63,7 @@ namespace Cutlify.Editor
             BuildPalette();
             BuildCropLayer();
 
-            foreach (var rb in new[] { ToolSelect, ToolPen, ToolHighlighter, ToolEraser, ToolShape, ToolText, ToolCrop })
+            foreach (var rb in new[] { ToolSelect, ToolPen, ToolHighlighter, ToolEraser, ToolArrow, ToolShape, ToolText, ToolCrop })
                 rb.Checked += (s, _) => SetTool((EditorTool)Enum.Parse(typeof(EditorTool), (string)((FrameworkElement)s).Tag));
 
             UndoButton.Click += (_, __) => Undo();
@@ -298,10 +298,10 @@ namespace Cutlify.Editor
             if (_tool == EditorTool.Crop && tool != EditorTool.Crop) CropLayer.Visibility = Visibility.Collapsed;
             _tool = tool;
 
-            bool drawing = tool is EditorTool.Pen or EditorTool.Highlighter or EditorTool.Shape or EditorTool.Text;
+            bool drawing = tool is EditorTool.Pen or EditorTool.Highlighter or EditorTool.Arrow or EditorTool.Shape or EditorTool.Text;
             ColorArea.Visibility = drawing ? Visibility.Visible : Visibility.Collapsed;
-            OpacityPanel.Visibility = tool is EditorTool.Pen or EditorTool.Shape or EditorTool.Text ? Visibility.Visible : Visibility.Collapsed;
-            ThicknessPanel.Visibility = tool is EditorTool.Pen or EditorTool.Highlighter or EditorTool.Shape ? Visibility.Visible : Visibility.Collapsed;
+            OpacityPanel.Visibility = tool is EditorTool.Pen or EditorTool.Arrow or EditorTool.Shape or EditorTool.Text ? Visibility.Visible : Visibility.Collapsed;
+            ThicknessPanel.Visibility = tool is EditorTool.Pen or EditorTool.Highlighter or EditorTool.Arrow or EditorTool.Shape ? Visibility.Visible : Visibility.Collapsed;
             ShapePanel.Visibility = tool == EditorTool.Shape ? Visibility.Visible : Visibility.Collapsed;
             TextPanel.Visibility = tool == EditorTool.Text ? Visibility.Visible : Visibility.Collapsed;
             CropPanel.Visibility = tool == EditorTool.Crop ? Visibility.Visible : Visibility.Collapsed;
@@ -380,20 +380,23 @@ namespace Cutlify.Editor
                     };
                     break;
                 case EditorTool.Shape:
-                    _active = CreateShape(p, th);
+                    _active = CreateShape(p, th, null);
+                    break;
+                case EditorTool.Arrow:
+                    _active = CreateShape(p, th, "Arrow");
                     break;
             }
 
-            if (_active != null && _tool is EditorTool.Pen or EditorTool.Highlighter or EditorTool.Shape)
+            if (_active != null && _tool is EditorTool.Pen or EditorTool.Highlighter or EditorTool.Arrow or EditorTool.Shape)
             {
                 _active.RenderTransform = new TranslateTransform();
                 Ink.Children.Add(_active);
             }
         }
 
-        private Shape CreateShape(Point p, double th)
+        private Shape CreateShape(Point p, double th, string forcedKind)
         {
-            var kind = (string)((ComboBoxItem)ShapeCombo.SelectedItem)?.Tag ?? "Rectangle";
+            var kind = forcedKind ?? (string)((ComboBoxItem)ShapeCombo.SelectedItem)?.Tag ?? "Rectangle";
             var stroke = StrokeBrush(WithOpacity(_color));
             Shape s = kind switch
             {
@@ -434,6 +437,7 @@ namespace Cutlify.Editor
                     if (_active is Polyline pl) pl.Points.Add(p);
                     break;
                 case EditorTool.Shape:
+                case EditorTool.Arrow:
                     UpdateShape(_active as Shape, _start, p, (Keyboard.Modifiers & ModifierKeys.Shift) != 0);
                     break;
             }
@@ -504,6 +508,7 @@ namespace Cutlify.Editor
                 case EditorTool.Pen:
                 case EditorTool.Highlighter:
                 case EditorTool.Shape:
+                case EditorTool.Arrow:
                     if (el == null) break;
                     if (el is Shape s && IsDegenerate(s)) { Ink.Children.Remove(el); break; }
                     Push(new EditAction { Undo = () => Ink.Children.Remove(el), Redo = () => Ink.Children.Add(el) }, applied: true);

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Grabadora de audio — CUTLIFY" Width="640" Height="560" MinWidth="520" MinHeight="420"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowGradient}"
-        FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
+        FontFamily="{DynamicResource UiFont}" FontSize="{DynamicResource BaseFontSize}" Foreground="{DynamicResource Text}"
         Icon="pack://application:,,,/CUTLIFY;component/Assets/cutlify.ico">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="48" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
@@ -44,14 +44,14 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Background="{DynamicResource SurfaceAlt}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                                            CornerRadius="10" Padding="12,8" Margin="0,0,0,8">
+                                            CornerRadius="{DynamicResource RadiusM}" Padding="12,8" Margin="0,0,0,8">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <Border Width="34" Height="34" CornerRadius="9" Background="{DynamicResource AccentSoft}" VerticalAlignment="Center">
+                                            <Border Width="34" Height="34" CornerRadius="{DynamicResource RadiusS}" Background="{DynamicResource AccentSoft}" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Glyph}" Style="{StaticResource Icon}" Foreground="{DynamicResource Accent}"/>
                                             </Border>
                                             <StackPanel Grid.Column="1" Margin="12,0,12,0" VerticalAlignment="Center">
@@ -104,7 +104,7 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="bd" CornerRadius="26" Background="#F0506E">
-                                    <Border x:Name="inner" Width="18" Height="18" CornerRadius="9" Background="White"/>
+                                    <Border x:Name="inner" Width="18" Height="18" CornerRadius="{DynamicResource RadiusS}" Background="White"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Opacity" Value="0.9"/></Trigger>

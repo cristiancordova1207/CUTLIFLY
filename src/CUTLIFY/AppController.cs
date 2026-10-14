@@ -73,8 +73,9 @@ namespace Cutlify
         {
             Logger.PurgeOld();
             SettingsService.Load();
-            ThemeManager.Apply(SettingsService.Current.Theme);
+            ThemeManager.Apply(SettingsService.Current.ThemeStyle, SettingsService.Current.Theme);
             ThemeManager.WatchSystem();
+            ThemeAnimations.Register();
             StartupManager.Refresh();
             AppPaths.EnsureUserFolders();
 
@@ -89,7 +90,7 @@ namespace Cutlify
 
             _tray = new TrayIcon(
                 capture: () => StartCapture(SettingsService.Current.LastMode, SettingsService.Current.DefaultDelaySeconds, false),
-                record: () => StartRecording(CaptureMode.Rectangle, 0, false),
+                record: () => StartRecording(SettingsService.Current.LastRecordMode, 0, false),
                 audio: () => ShowAudioRecorder(),
                 open: () => ShowMainWindow(),
                 settings: () => ShowSettings(),
@@ -109,7 +110,7 @@ namespace Cutlify
 
         public void ApplySettings()
         {
-            ThemeManager.Apply(SettingsService.Current.Theme);
+            ThemeManager.Apply(SettingsService.Current.ThemeStyle, SettingsService.Current.Theme);
             ApplyHotkeys();
             _main?.LoadSettings();
         }
@@ -215,7 +216,7 @@ namespace Cutlify
             {
                 mainWasVisible = HideMainForCapture();
                 if (mainWasVisible) await Task.Delay(220); // dejar que la ventana desaparezca
-                await CountdownWindow.Run(delaySeconds, "Captura");
+                if (!await RunCountdown(delaySeconds, "Captura")) { RestoreAfterCapture(mainWasVisible); return; }
 
                 frozen = ScreenCapture.CaptureVirtualScreen();
                 var result = await RunOverlay(frozen, mode, false);
@@ -261,14 +262,25 @@ namespace Cutlify
             if (retry) StartCapture(mode, 0, fromMain || mainWasVisible);
         }
 
-        private static Task<OverlayResult> RunOverlay(Drawing.Bitmap frozen, CaptureMode mode, bool recording)
+        private Task<OverlayResult> RunOverlay(Drawing.Bitmap frozen, CaptureMode mode, bool recording)
         {
             var tcs = new TaskCompletionSource<OverlayResult>();
             var overlay = new CaptureOverlay(frozen, mode, recording);
             overlay.Completed += r => tcs.TrySetResult(r);
-            overlay.FormClosed += (_, __) => { tcs.TrySetResult(null); overlay.Dispose(); };
+            overlay.FormClosed += (_, __) => { Hotkeys.OverlayKeys = null; tcs.TrySetResult(null); overlay.Dispose(); };
+            Hotkeys.OverlayKeys = overlay.HandleKey; // Esc / Enter aunque la capa no tenga el foco
             overlay.Show();
             return tcs.Task;
+        }
+
+        /// <summary>Cuenta regresiva cancelable con Esc.</summary>
+        private async Task<bool> RunCountdown(int seconds, string caption)
+        {
+            if (seconds <= 0) return true;
+            using var cts = new System.Threading.CancellationTokenSource();
+            Hotkeys.OverlayKeys = vk => { if (vk == HotkeyManager.VK_ESCAPE) cts.Cancel(); };
+            try { return await CountdownWindow.Run(seconds, caption, cts.Token); }
+            finally { Hotkeys.OverlayKeys = null; }
         }
 
         private void ShowPickedColor(Drawing.Color c)
@@ -307,7 +319,7 @@ namespace Cutlify
                 }
                 mainWasVisible = HideMainForCapture();
                 await Task.Delay(mainWasVisible ? 260 : 60);
-                await CountdownWindow.Run(_last.Delay, "Captura");
+                if (!await RunCountdown(_last.Delay, "Captura")) { RestoreAfterCapture(mainWasVisible); return; }
                 rect.Intersect(ScreenCapture.VirtualScreen);
                 BitmapSource image;
                 using (var bmp = ScreenCapture.CaptureRegion(rect)) image = ImageUtil.ToBitmapSource(bmp);

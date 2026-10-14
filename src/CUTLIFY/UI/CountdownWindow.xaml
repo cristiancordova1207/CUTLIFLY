@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CUTLIFY" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" ShowActivated="False"
-        Width="180" Height="180" WindowStartupLocation="CenterScreen" FontFamily="{StaticResource UiFont}">
+        Width="180" Height="180" WindowStartupLocation="CenterScreen" FontFamily="{DynamicResource UiFont}">
     <Border CornerRadius="90" Background="#E61F1B2E" BorderBrush="#7C5CFF" BorderThickness="3">
         <Grid>
             <TextBlock x:Name="Number" Text="3" FontSize="84" FontWeight="SemiBold" Foreground="White"

@@ -4,7 +4,7 @@
         xmlns:ed="clr-namespace:Cutlify.Editor"
         Title="CUTLIFY" Width="1180" Height="820" MinWidth="980" MinHeight="600"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowGradient}"
-        FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
+        FontFamily="{DynamicResource UiFont}" FontSize="{DynamicResource BaseFontSize}" Foreground="{DynamicResource Text}"
         AllowDrop="True" Icon="pack://application:,,,/CUTLIFY;component/Assets/cutlify.ico">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="52" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
@@ -66,7 +66,7 @@
                     </Button.ContextMenu>
                 </Button>
 
-                <Border Margin="12,0,0,0" Padding="3" CornerRadius="11" Background="{DynamicResource AccentSoft}">
+                <Border Margin="12,0,0,0" Padding="3" CornerRadius="{DynamicResource RadiusM}" Background="{DynamicResource AccentSoft}">
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="KindCapture" GroupName="kind" Style="{StaticResource SegmentToggle}" IsChecked="True">
                             <StackPanel Orientation="Horizontal">
@@ -145,14 +145,14 @@
                     <Image Source="pack://application:,,,/CUTLIFY;component/Assets/logo.png" Width="72" Height="72" Opacity="0.95" RenderOptions.BitmapScalingMode="HighQuality"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
                         <TextBlock Text="Presiona" FontSize="16" VerticalAlignment="Center"/>
-                        <Border Background="{DynamicResource AccentSoft}" CornerRadius="6" Padding="8,3" Margin="8,0,0,0">
+                        <Border Background="{DynamicResource AccentSoft}" CornerRadius="{DynamicResource RadiusS}" Padding="8,3" Margin="8,0,0,0">
                             <TextBlock x:Name="CaptureKeyText" Text="Win + Shift + S" FontWeight="SemiBold" Foreground="{DynamicResource Accent}" FontSize="15"/>
                         </Border>
                         <TextBlock Text="para capturar" FontSize="16" Margin="8,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                         <TextBlock Text="o" Style="{StaticResource Secondary}" FontSize="13" VerticalAlignment="Center"/>
-                        <Border Background="{DynamicResource PinkSoft}" CornerRadius="6" Padding="8,2" Margin="8,0,0,0">
+                        <Border Background="{DynamicResource PinkSoft}" CornerRadius="{DynamicResource RadiusS}" Padding="8,2" Margin="8,0,0,0">
                             <TextBlock x:Name="RecordKeyText" Text="Win + Shift + R" FontWeight="SemiBold" Foreground="{DynamicResource Danger}"/>
                         </Border>
                         <TextBlock Text="para grabar una región" Style="{StaticResource Secondary}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center"/>
@@ -178,8 +178,8 @@
             <ed:VideoView x:Name="Video" Visibility="Collapsed"/>
             <Border x:Name="GonePanel" Style="{StaticResource Card}" Visibility="Collapsed">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="460">
-                    <Border CornerRadius="10" Width="320" Height="190" Background="{DynamicResource Stage}" Opacity="0.45">
-                        <Border CornerRadius="10">
+                    <Border CornerRadius="{DynamicResource RadiusM}" Width="320" Height="190" Background="{DynamicResource Stage}" Opacity="0.45">
+                        <Border CornerRadius="{DynamicResource RadiusM}">
                             <Border.Background>
                                 <ImageBrush x:Name="GoneThumb" Stretch="UniformToFill"/>
                             </Border.Background>
@@ -195,7 +195,7 @@
                     <Button x:Name="GoneRemove" Style="{StaticResource OutlineButton}" Content="Quitar del historial" HorizontalAlignment="Center" Margin="0,16,0,0"/>
                 </StackPanel>
             </Border>
-            <Border x:Name="DropHint" Visibility="Collapsed" CornerRadius="14" BorderThickness="2" BorderBrush="{DynamicResource Accent}"
+            <Border x:Name="DropHint" Visibility="Collapsed" CornerRadius="{DynamicResource RadiusL}" BorderThickness="2" BorderBrush="{DynamicResource Accent}"
                     Background="#337C5CFF" IsHitTestVisible="False">
                 <TextBlock Text="Suelta para abrir en CUTLIFY" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource Accent}"
                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -212,7 +212,7 @@
                 <DockPanel LastChildFill="False" Margin="0,0,0,8">
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
                         <TextBlock Text="Capturas recientes" Style="{StaticResource SectionTitle}"/>
-                        <Border Background="{DynamicResource AccentSoft}" CornerRadius="9" Padding="8,1" Margin="8,0,0,0" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource AccentSoft}" CornerRadius="{DynamicResource RadiusS}" Padding="8,1" Margin="8,0,0,0" VerticalAlignment="Center">
                             <TextBlock x:Name="CountText" Text="0" Foreground="{DynamicResource Accent}" FontSize="12" FontWeight="SemiBold"/>
                         </Border>
                     </StackPanel>
@@ -262,9 +262,9 @@
                                         <MenuItem Header="Quitar del historial" Icon="&#xE894;" Click="Ctx_Remove"/>
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
-                                <Border Height="96" CornerRadius="8" Background="{DynamicResource Stage}">
+                                <Border Height="96" CornerRadius="{DynamicResource RadiusS}" Background="{DynamicResource Stage}">
                                     <Grid>
-                                        <Border CornerRadius="8">
+                                        <Border CornerRadius="{DynamicResource RadiusS}">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
@@ -278,7 +278,7 @@
                                                 <ImageBrush ImageSource="{Binding Thumbnail}" Stretch="UniformToFill"/>
                                             </Border.Background>
                                         </Border>
-                                        <Border Background="#D91F1B2E" CornerRadius="6" Padding="7,3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Border Background="#D91F1B2E" CornerRadius="{DynamicResource RadiusS}" Padding="7,3" HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Setter Property="Visibility" Value="Collapsed"/>

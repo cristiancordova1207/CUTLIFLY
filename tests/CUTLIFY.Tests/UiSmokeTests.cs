@@ -64,9 +64,10 @@ namespace Cutlify.Tests
                 var item = new HistoryItem { Kind = ItemKind.Image, MemoryImage = img, Width = 64, Height = 48 };
                 controller.History.Items.Add(item);
 
+                foreach (var style in Themes.ThemeCatalog.Styles)
                 foreach (var theme in new[] { "Light", "Dark" })
                 {
-                    ThemeManager.Apply(theme);
+                    ThemeManager.Apply(style.Id, theme);
 
                     var main = new MainWindow(controller);
                     main.Show();
@@ -86,7 +87,7 @@ namespace Cutlify.Tests
                     Pump(new PinWindow(img));
                     Pump(new OcrWindow("Texto de prueba"));
                     Pump(new AudioRecorderWindow(controller));
-                    Assert.True(System.IO.File.Exists(ThumbnailService.CreateWaveform(new[] { 0.1f, 0.8f, 0.4f }, "wave-" + theme)));
+                    Assert.True(System.IO.File.Exists(ThumbnailService.CreateWaveform(new[] { 0.1f, 0.8f, 0.4f }, "wave-" + style.Id + theme)));
                     Pump(new CountdownWindow("Captura"));
                     var dlg = new DialogWindow("Título", "Mensaje", 1, "Cancelar", "Aceptar");
                     dlg.SetDetails("Notas");

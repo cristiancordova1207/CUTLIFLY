@@ -145,7 +145,7 @@ namespace Cutlify.Core
         {
             try
             {
-                int pref = 2; // DWMWCP_ROUND
+                int pref = Cutlify.UI.ThemeManager.Style.SquareWindows ? 1 : 2; // DWMWCP_DONOTROUND / DWMWCP_ROUND
                 DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref pref, sizeof(int));
             }
             catch { }

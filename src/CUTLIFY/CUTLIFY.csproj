@@ -33,6 +33,7 @@
   <ItemGroup>
     <Resource Include="..\..\icons\cutlify.ico" Link="Assets\cutlify.ico" />
     <Resource Include="..\..\assets\logo.png" Link="Assets\logo.png" />
+    <Resource Include="..\..\assets\fonts\*.ttf" Link="Assets\Fonts\%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -34,7 +34,9 @@ namespace Cutlify.Settings
         public string ImageFormat { get; set; } = "PNG";
         public bool AutoCopyCaptures { get; set; } = true;
         public bool SaveTemporarily { get; set; } = true;
-        public CaptureMode LastMode { get; set; } = CaptureMode.Rectangle;
+        public CaptureMode LastMode { get; set; } = CaptureMode.Rectangle;        // última captura
+        public CaptureMode LastRecordMode { get; set; } = CaptureMode.Rectangle;  // última grabación
+        public string LastKind { get; set; } = "Capture";                         // Capture | Record | Audio
         public int DefaultDelaySeconds { get; set; }
         public bool AdjustBeforeCapture { get; set; }
         public bool ShowMagnifier { get; set; }
@@ -88,7 +90,8 @@ namespace Cutlify.Settings
         // Editor
         public List<string> RecentColors { get; set; } = new List<string>();
 
-        // Apariencia: System | Light | Dark
+        // Apariencia: estilo (Classic | Cozy | Pixel | Retro | Minimal) y modo (System | Light | Dark)
+        public string ThemeStyle { get; set; } = "Classic";
         public string Theme { get; set; } = "System";
 
         // Actualizaciones: Never | Startup | Daily | Weekly

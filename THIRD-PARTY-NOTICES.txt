@@ -16,6 +16,9 @@ Microsoft.Windows.SDK.NET / C#/WinRT — Licencia MIT
 https://github.com/microsoft/CsWinRT
 Copyright (c) Microsoft Corporation
 ----------------------------------------------------------------------
+Fuentes Nunito, Pixelify Sans y VT323 — SIL Open Font License 1.1
+Textos completos de la licencia: assets/fonts/OFL-LICENSES.txt (incluidos en la aplicación)
+----------------------------------------------------------------------
 
 Texto de la licencia MIT:
 

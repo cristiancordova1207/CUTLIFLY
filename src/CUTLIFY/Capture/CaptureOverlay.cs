@@ -65,8 +65,8 @@ namespace Cutlify.Capture
         private readonly float _scale;
         private readonly Font _iconFont, _labelFont, _smallFont;
 
-        private static readonly Color Accent = Color.FromArgb(124, 92, 255);
-        private static readonly Color AccentSoft = Color.FromArgb(237, 232, 255);
+        private static Color Accent => Cutlify.UI.ThemeManager.AccentDrawing;
+        private static Color AccentSoft => Color.FromArgb(48, Accent.R, Accent.G, Accent.B);
 
         public event Action<OverlayResult> Completed;
 
@@ -169,6 +169,13 @@ namespace Cutlify.Capture
         {
             if (m.Msg == WM_DPICHANGED) return; // mantener el tamaño exacto sobre monitores con distinto DPI
             base.WndProc(ref m);
+        }
+
+        /// <summary>Esc cancela; Enter confirma la selección en modo de ajuste (también desde el hook global).</summary>
+        public void HandleKey(int vk)
+        {
+            if (vk == 0x1B) Finish(null);
+            else if (vk == 0x0D && _adjusting) Finish(_sel, IntPtr.Zero);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

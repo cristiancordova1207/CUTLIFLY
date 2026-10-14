@@ -51,6 +51,7 @@ Name: "startup"; Description: "Iniciar CUTLIFY con Windows (en la bandeja)"; Gro
 Source: "..\publish\CUTLIFY.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\THIRD-PARTY-NOTICES.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\assets\fonts\OFL-LICENSES.txt"; DestDir: "{app}"; DestName: "FONT-LICENSES.txt"; Flags: ignoreversion
 
 [Icons]
 Name: "{userprograms}\CUTLIFY"; Filename: "{app}\CUTLIFY.exe"; Comment: "Screen Capture & Recording"

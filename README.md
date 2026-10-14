@@ -23,7 +23,8 @@ CUTLIFY es **gratuito** para el usuario, **sin cuenta, sin publicidad, sin telem
 - **FPS honestos**: nunca se duplican fotogramas; las estadísticas muestran FPS reales y fotogramas perdidos.
 - **Temporales con caducidad** (5 min – 3 días / nunca) que funcionan aunque la app estuviera cerrada.
 - **Historial visual**: miniaturas independientes; una captura eliminada o caducada sigue visible como «Eliminada» / «Expirada». Filtros (todos, imágenes, vídeos, disponibles, eliminados, expirados) y búsqueda.
-- Bandeja del sistema, pausa temporal de atajos, inicio con Windows (opcional), notificaciones, tema claro/oscuro/sistema, multimonitor y DPI por monitor.
+- **Temas**: Clásico, Cozy, Pixel art, Retro y Minimalista, cada uno en claro y noche (o siguiendo a Windows), con sus propios colores, bordes, tipografía, sombras y animaciones.
+- Bandeja del sistema, pausa temporal de atajos, inicio con Windows (opcional), notificaciones, multimonitor y DPI por monitor.
 
 ## Carpetas
 

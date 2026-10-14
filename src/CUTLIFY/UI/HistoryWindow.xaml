@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Historial — CUTLIFY" Width="980" Height="680" MinWidth="720" MinHeight="420"
         WindowStartupLocation="CenterOwner" Background="{DynamicResource WindowGradient}"
-        FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
+        FontFamily="{DynamicResource UiFont}" FontSize="{DynamicResource BaseFontSize}" Foreground="{DynamicResource Text}"
         Icon="pack://application:,,,/CUTLIFY;component/Assets/cutlify.ico">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="48" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
@@ -28,7 +28,7 @@
         </Grid>
 
         <DockPanel Grid.Row="1" Margin="16,0,16,12" LastChildFill="False">
-            <Border DockPanel.Dock="Left" Padding="3" CornerRadius="11" Background="{DynamicResource AccentSoft}">
+            <Border DockPanel.Dock="Left" Padding="3" CornerRadius="{DynamicResource RadiusM}" Background="{DynamicResource AccentSoft}">
                 <StackPanel Orientation="Horizontal">
                     <RadioButton x:Name="FilterAll" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Todos" IsChecked="True"/>
                     <RadioButton x:Name="FilterImages" GroupName="f" Style="{StaticResource SegmentToggle}" Content="Imágenes"/>
@@ -73,8 +73,8 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Height="62" CornerRadius="8" Background="{DynamicResource Stage}">
-                                    <Border CornerRadius="8">
+                                <Border Height="62" CornerRadius="{DynamicResource RadiusS}" Background="{DynamicResource Stage}">
+                                    <Border CornerRadius="{DynamicResource RadiusS}">
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Style.Triggers>
@@ -94,7 +94,7 @@
                                     <TextBlock Margin="0,4,0,0" Style="{StaticResource Secondary}">
                                         <Run Text="{Binding TypeLabel, Mode=OneWay}"/><Run Text="  ·  "/><Run Text="{Binding DateLabel, Mode=OneWay}"/><Run Text="  "/><Run Text="{Binding TimeLabel, Mode=OneWay}"/><Run Text="  ·  "/><Run Text="{Binding SizeLabel, Mode=OneWay}"/><Run Text="  ·  "/><Run Text="{Binding DimensionsLabel, Mode=OneWay}"/><Run Text="  "/><Run Text="{Binding DurationLabel, Mode=OneWay}"/>
                                     </TextBlock>
-                                    <Border HorizontalAlignment="Left" Margin="0,5,0,0" CornerRadius="6" Padding="7,1" Background="{DynamicResource AccentSoft}">
+                                    <Border HorizontalAlignment="Left" Margin="0,5,0,0" CornerRadius="{DynamicResource RadiusS}" Padding="7,1" Background="{DynamicResource AccentSoft}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding StatusGlyph}" FontFamily="{StaticResource IconFont}" FontSize="10" Foreground="{DynamicResource Accent}" VerticalAlignment="Center"/>
                                             <TextBlock Text="{Binding StatusLabel}" FontSize="11" Foreground="{DynamicResource Accent}" Margin="4,0,0,0"/>

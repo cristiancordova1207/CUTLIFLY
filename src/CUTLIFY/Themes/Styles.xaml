@@ -2,10 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <FontFamily x:Key="IconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
-    <FontFamily x:Key="UiFont">Segoe UI Variable Text, Segoe UI</FontFamily>
 
-    <DropShadowEffect x:Key="SoftShadow" BlurRadius="22" ShadowDepth="3" Direction="270" Opacity="0.14" Color="#5A4A9E"/>
-    <DropShadowEffect x:Key="CardShadow" BlurRadius="14" ShadowDepth="1" Direction="270" Opacity="0.08" Color="#5A4A9E"/>
 
     <!-- Botón plano base -->
     <Style x:Key="FlatButton" TargetType="ButtonBase">
@@ -21,7 +18,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
                     <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{DynamicResource RadiusS}"
                             Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/>
                     </Border>
@@ -57,7 +54,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="9" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="{DynamicResource RadiusS}" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -86,10 +83,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="12" ShadowDepth="2" Direction="270" Opacity="0.25" Color="#7C5CFF"/>
-                        </Border.Effect>
+                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="{DynamicResource RadiusM}" Padding="{TemplateBinding Padding}"
+                            Effect="{DynamicResource AccentShadow}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -125,7 +120,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid>
-                        <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="{DynamicResource RadiusS}" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <Border x:Name="bar" Height="3" Width="18" CornerRadius="1.5" Background="{DynamicResource Accent}"
@@ -159,7 +154,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="{DynamicResource RadiusS}" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -168,7 +163,7 @@
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="bd" Property="Background" Value="{DynamicResource Surface}"/>
-                            <Setter TargetName="bd" Property="Effect" Value="{StaticResource CardShadow}"/>
+                            <Setter TargetName="bd" Property="Effect" Value="{DynamicResource CardShadow}"/>
                             <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -194,7 +189,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="bd" Background="Transparent" CornerRadius="8">
+                    <Border x:Name="bd" Background="Transparent" CornerRadius="{DynamicResource RadiusS}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -234,9 +229,9 @@
     <Style x:Key="Card" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource Surface}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="14"/>
-        <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource BorderWidth}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusL}"/>
+        <Setter Property="Effect" Value="{DynamicResource CardShadow}"/>
     </Style>
 
     <!-- Interruptor -->
@@ -254,7 +249,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <ContentPresenter VerticalAlignment="Center" Margin="0,0,16,0"/>
-                        <Border x:Name="track" Grid.Column="1" Width="40" Height="20" CornerRadius="10"
+                        <Border x:Name="track" Grid.Column="1" Width="40" Height="20" CornerRadius="{DynamicResource RadiusM}"
                                 Background="Transparent" BorderBrush="{DynamicResource TextSecondary}" BorderThickness="1.5">
                             <Ellipse x:Name="thumb" Width="10" Height="10" Fill="{DynamicResource TextSecondary}"
                                      HorizontalAlignment="Left" Margin="4,0,0,0"/>
@@ -299,7 +294,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
                     <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="1" CornerRadius="8">
+                            BorderThickness="1" CornerRadius="{DynamicResource RadiusS}">
                         <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -321,7 +316,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBoxItem">
-                    <Border x:Name="bd" CornerRadius="6" Padding="{TemplateBinding Padding}" Background="Transparent">
+                    <Border x:Name="bd" CornerRadius="{DynamicResource RadiusS}" Padding="{TemplateBinding Padding}" Background="Transparent">
                         <ContentPresenter/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -356,7 +351,7 @@
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Border x:Name="b" Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                             BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                            BorderThickness="1" CornerRadius="8">
+                                            BorderThickness="1" CornerRadius="{DynamicResource RadiusS}">
                                         <TextBlock Text="&#xE70D;" FontFamily="{StaticResource IconFont}" FontSize="10"
                                                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"
                                                    Foreground="{DynamicResource TextSecondary}"/>
@@ -376,7 +371,7 @@
                         <Popup x:Name="PART_Popup" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
                             <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                                    CornerRadius="10" Margin="0,4,10,10" Padding="4" Effect="{StaticResource SoftShadow}"
+                                    CornerRadius="{DynamicResource RadiusM}" Margin="0,4,10,10" Padding="4" Effect="{DynamicResource SoftShadow}"
                                     MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
                                 <ScrollViewer MaxHeight="320" VerticalScrollBarVisibility="Auto">
                                     <ItemsPresenter/>
@@ -394,13 +389,13 @@
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="HasDropShadow" Value="True"/>
         <Setter Property="Foreground" Value="{DynamicResource Text}"/>
-        <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource UiFont}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContextMenu">
                     <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                            CornerRadius="10" Padding="4" Margin="0,0,12,12" Effect="{StaticResource SoftShadow}">
+                            CornerRadius="{DynamicResource RadiusM}" Padding="4" Margin="0,0,12,12" Effect="{DynamicResource SoftShadow}">
                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
                     </Border>
                 </ControlTemplate>
@@ -426,7 +421,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="MenuItem">
                     <Grid>
-                        <Border x:Name="bd" CornerRadius="6" Background="Transparent" Padding="{TemplateBinding Padding}" MinWidth="200">
+                        <Border x:Name="bd" CornerRadius="{DynamicResource RadiusS}" Background="Transparent" Padding="{TemplateBinding Padding}" MinWidth="200">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="28"/>
@@ -448,7 +443,7 @@
                                IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
                             <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                                    CornerRadius="10" Padding="4" Margin="0,0,12,12" Effect="{StaticResource SoftShadow}">
+                                    CornerRadius="{DynamicResource RadiusM}" Padding="4" Margin="0,0,12,12" Effect="{DynamicResource SoftShadow}">
                                 <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
                             </Border>
                         </Popup>
@@ -496,7 +491,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="bd" CornerRadius="12" Padding="{TemplateBinding Padding}" Background="Transparent"
+                    <Border x:Name="bd" CornerRadius="{DynamicResource RadiusM}" Padding="{TemplateBinding Padding}" Background="Transparent"
                             BorderThickness="1.5" BorderBrush="Transparent" RenderTransformOrigin="0.5,0.5">
                         <Border.RenderTransform>
                             <ScaleTransform x:Name="sc"/>
@@ -534,7 +529,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="bd" CornerRadius="8" Padding="{TemplateBinding Padding}" Background="Transparent">
+                    <Border x:Name="bd" CornerRadius="{DynamicResource RadiusS}" Padding="{TemplateBinding Padding}" Background="Transparent">
                         <ContentPresenter/>
                     </Border>
                     <ControlTemplate.Triggers>

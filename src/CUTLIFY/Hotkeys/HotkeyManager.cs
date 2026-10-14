@@ -47,6 +47,14 @@ namespace Cutlify.Hotkeys
         private IntPtr _hook;
         private Action<Hotkey> _captureNext;
 
+        /// <summary>
+        /// Mientras hay una selección o cuenta regresiva en pantalla, Esc y Enter se entregan aquí aunque
+        /// la capa no tenga el foco del teclado (p. ej. con un juego en primer plano). Se ejecuta en el hilo de la UI.
+        /// </summary>
+        public Action<int> OverlayKeys { get; set; }
+
+        public const int VK_ESCAPE = 0x1B, VK_RETURN = 0x0D;
+
         public HotkeyManager(Dispatcher dispatcher)
         {
             _dispatcher = dispatcher;
@@ -98,6 +106,14 @@ namespace Cutlify.Hotkeys
 
                 if (!injected && (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN) && !IsModifierKey(data.vkCode))
                 {
+                    var overlay = OverlayKeys;
+                    if (overlay != null && (data.vkCode == VK_ESCAPE || data.vkCode == VK_RETURN) && CurrentModifiers() == HotkeyModifiers.None)
+                    {
+                        int vk = data.vkCode;
+                        _swallowUp.Add(vk);
+                        _dispatcher.BeginInvoke(new Action(() => overlay(vk)));
+                        return (IntPtr)1;
+                    }
                     var hk = new Hotkey(CurrentModifiers(), data.vkCode);
                     if (_captureNext != null && hk.Modifiers != HotkeyModifiers.None)
                     {

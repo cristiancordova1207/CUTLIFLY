@@ -2,6 +2,19 @@
 
 Todas las versiones siguen [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.3.0] - 2026-10-14
+
+### Added
+- **Temas**: Clásico, Cozy (cálido, bordes muy redondeados y animaciones elásticas «esponjosas»), Pixel art (esquinas rectas, contornos y sombras duras, animaciones a saltos), Retro (70–80 de día, synthwave de noche) y Minimalista (sin sombras ni animaciones). Cada estilo tiene modo claro y noche, y se puede seguir el modo de Windows. Fuentes incluidas: Nunito, Pixelify Sans y VT323 (OFL).
+- Editor: **Flecha** como herramienta propia; **Formas** reúne rectángulo, círculo y línea.
+
+### Changed
+- Grabación recuerda su último modo (rectángulo, ventana, pantalla…) por separado de la captura, también para el atajo y la bandeja; la ventana principal recuerda la pestaña Captura / Grabación / Audio.
+- Seleccionar **Audio** abre directamente la grabadora de audio.
+
+### Fixed
+- **Esc** cancela siempre la selección y la cuenta regresiva aunque la capa no tenga el foco del teclado (p. ej. con un juego en primer plano); Enter confirma en el modo de ajuste.
+
 ## [1.2.0] - 2026-10-14
 
 ### Added

@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CUTLIFY" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" ShowActivated="False"
-        Width="404" SizeToContent="Height" FontFamily="{StaticResource UiFont}" FontSize="13">
+        Width="404" SizeToContent="Height" FontFamily="{DynamicResource UiFont}" FontSize="{DynamicResource BaseFontSize}">
     <Border x:Name="Root" Margin="12" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-            CornerRadius="14" Effect="{StaticResource SoftShadow}" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+            CornerRadius="{DynamicResource RadiusL}" Effect="{DynamicResource SoftShadow}" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
         <Border.RenderTransform>
             <TranslateTransform x:Name="Slide" X="40"/>
         </Border.RenderTransform>
@@ -16,7 +16,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Border Width="36" Height="36" CornerRadius="10" VerticalAlignment="Top">
+            <Border Width="36" Height="36" CornerRadius="{DynamicResource RadiusM}" VerticalAlignment="Top">
                 <Image Source="pack://application:,,,/CUTLIFY;component/Assets/logo.png"/>
             </Border>
             <StackPanel Grid.Column="1" Margin="12,0,10,0">
@@ -25,7 +25,7 @@
                 <TextBlock x:Name="MessageText" Margin="0,2,0,0" Foreground="{DynamicResource TextSecondary}" TextWrapping="Wrap"/>
                 <StackPanel x:Name="Actions" Orientation="Horizontal" Margin="0,10,0,0"/>
             </StackPanel>
-            <Border Grid.Column="2" x:Name="ThumbBorder" CornerRadius="8" Width="96" Height="60" ClipToBounds="True"
+            <Border Grid.Column="2" x:Name="ThumbBorder" CornerRadius="{DynamicResource RadiusS}" Width="96" Height="60" ClipToBounds="True"
                     VerticalAlignment="Center" Background="{DynamicResource Stage}">
                 <Grid>
                     <Image x:Name="Thumb" Stretch="UniformToFill"/>

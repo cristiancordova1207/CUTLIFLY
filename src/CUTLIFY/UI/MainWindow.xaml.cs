@@ -72,7 +72,17 @@ namespace Cutlify.UI
             MenuExit.Click += (_, __) => _app.Exit();
             OpenTempButton.Click += (_, __) => AppController.OpenFolder(AppPaths.Temp);
 
-            ModeCombo.SelectionChanged += (_, __) => { if (!_loadingSettings) { SettingsService.Current.LastMode = SelectedMode; SettingsService.Save(); } };
+            // Cada pestaña recuerda su último modo (Captura y Grabación por separado).
+            ModeCombo.SelectionChanged += (_, __) =>
+            {
+                if (_loadingSettings) return;
+                if (KindRecord.IsChecked == true) SettingsService.Current.LastRecordMode = SelectedMode;
+                else SettingsService.Current.LastMode = SelectedMode;
+                SettingsService.Save();
+            };
+            KindCapture.Checked += (_, __) => OnKindChanged("Capture");
+            KindRecord.Checked += (_, __) => OnKindChanged("Record");
+            KindAudio.Checked += (_, __) => OnKindChanged("Audio");
             DelayCombo.SelectionChanged += (_, __) => { if (!_loadingSettings) { SettingsService.Current.DefaultDelaySeconds = SelectedDelay; SettingsService.Save(); } };
             TempSwitch.Click += (_, __) => { SettingsService.Current.SaveTemporarily = TempSwitch.IsChecked == true; SettingsService.Save(); };
             RetentionCombo.SelectionChanged += (_, __) =>
@@ -132,11 +142,28 @@ namespace Cutlify.UI
             else _app.StartCapture(SelectedMode, SelectedDelay, true);
         }
 
+        private void OnKindChanged(string kind)
+        {
+            if (_loadingSettings) return;
+            SettingsService.Current.LastKind = kind;
+            SettingsService.Save();
+            LoadSettings();
+            if (kind == "Audio") _app.ShowAudioRecorder();
+        }
+
         public void LoadSettings()
         {
             _loadingSettings = true;
             var s = SettingsService.Current;
-            SelectByTag(ModeCombo, s.LastMode.ToString());
+            KindRecord.IsChecked = s.LastKind == "Record";
+            KindAudio.IsChecked = s.LastKind == "Audio";
+            KindCapture.IsChecked = s.LastKind != "Record" && s.LastKind != "Audio";
+            bool record = s.LastKind == "Record";
+            // Forma libre y selector de color no existen al grabar.
+            foreach (ComboBoxItem it in ModeCombo.Items)
+                it.Visibility = record && ((string)it.Tag == "FreeForm") ? Visibility.Collapsed : Visibility.Visible;
+            ModeCombo.IsEnabled = DelayCombo.IsEnabled = s.LastKind != "Audio";
+            SelectByTag(ModeCombo, (record ? s.LastRecordMode : s.LastMode).ToString());
             SelectByTag(DelayCombo, s.DefaultDelaySeconds.ToString());
             SelectByTag(RetentionCombo, s.RetentionMinutes.ToString());
             TempSwitch.IsChecked = s.SaveTemporarily;

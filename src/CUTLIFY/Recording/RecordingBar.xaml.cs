@@ -25,7 +25,7 @@ namespace Cutlify.Recording
         public RecordingBar(System.Drawing.Rectangle region, Func<TimeSpan> elapsed, Func<RecordingStats?> stats = null)
         {
             _stats = stats;
-            Resources["BarColor"] = Cutlify.UI.ThemeManager.IsDark ? Color.FromRgb(0x21, 0x1E, 0x2C) : Color.FromRgb(0xFF, 0xFF, 0xFF);
+            Resources["BarColor"] = Cutlify.UI.ThemeManager.Palette.Surface;
             InitializeComponent();
             _region = region;
             _elapsed = elapsed;

@@ -1,5 +1,16 @@
+<!-- Valores por defecto (estilo Clásico, claro). En ejecución ThemeManager sustituye este diccionario por el del tema elegido. -->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <FontFamily x:Key="UiFont">Segoe UI Variable Text, Segoe UI</FontFamily>
+    <sys:Double x:Key="BaseFontSize">13</sys:Double>
+    <CornerRadius x:Key="RadiusS">8</CornerRadius>
+    <CornerRadius x:Key="RadiusM">10</CornerRadius>
+    <CornerRadius x:Key="RadiusL">14</CornerRadius>
+    <Thickness x:Key="BorderWidth">1</Thickness>
+    <DropShadowEffect x:Key="SoftShadow" BlurRadius="22" ShadowDepth="3" Direction="270" Opacity="0.14" Color="#5A4A9E"/>
+    <DropShadowEffect x:Key="CardShadow" BlurRadius="14" ShadowDepth="1" Direction="270" Opacity="0.08" Color="#5A4A9E"/>
+    <DropShadowEffect x:Key="AccentShadow" BlurRadius="12" ShadowDepth="2" Direction="270" Opacity="0.25" Color="#7C5CFF"/>
     <Color x:Key="AccentColor">#7C5CFF</Color>
     <Color x:Key="ShadowColor">#5A4A9E</Color>
     <SolidColorBrush x:Key="Bg" Color="#F6F4FD"/>

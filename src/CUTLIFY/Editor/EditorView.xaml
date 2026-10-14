@@ -25,7 +25,10 @@
                     <RadioButton x:Name="ToolEraser" GroupName="tools" Style="{StaticResource ToolToggle}" Tag="Eraser" ToolTip="Borrador">
                         <StackPanel><TextBlock Text="&#xE75C;" Style="{StaticResource Icon}"/><TextBlock Text="Borrador" Style="{StaticResource Caption}"/></StackPanel>
                     </RadioButton>
-                    <RadioButton x:Name="ToolShape" GroupName="tools" Style="{StaticResource ToolToggle}" Tag="Shape" ToolTip="Formas">
+                    <RadioButton x:Name="ToolArrow" GroupName="tools" Style="{StaticResource ToolToggle}" Tag="Arrow" ToolTip="Flecha (para señalar)">
+                        <StackPanel><TextBlock Text="&#xE76C;" Style="{StaticResource Icon}" RenderTransformOrigin="0.5,0.5"><TextBlock.RenderTransform><RotateTransform Angle="-45"/></TextBlock.RenderTransform></TextBlock><TextBlock Text="Flecha" Style="{StaticResource Caption}"/></StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="ToolShape" GroupName="tools" Style="{StaticResource ToolToggle}" Tag="Shape" ToolTip="Formas: rectángulo, círculo y línea">
                         <StackPanel><TextBlock Text="&#xF158;" Style="{StaticResource Icon}"/><TextBlock Text="Formas" Style="{StaticResource Caption}"/></StackPanel>
                     </RadioButton>
                     <RadioButton x:Name="ToolText" GroupName="tools" Style="{StaticResource ToolToggle}" Tag="Text" ToolTip="Texto">
@@ -69,7 +72,7 @@
         </Border>
 
         <!-- Opciones contextuales -->
-        <Border Grid.Row="1" x:Name="OptionsBar" Margin="0,0,0,8" Padding="10,6" CornerRadius="12"
+        <Border Grid.Row="1" x:Name="OptionsBar" Margin="0,0,0,8" Padding="10,6" CornerRadius="{DynamicResource RadiusM}"
                 Background="{DynamicResource SurfaceAlt}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
             <StackPanel Orientation="Horizontal">
                 <StackPanel x:Name="ColorArea" Orientation="Horizontal" VerticalAlignment="Center">
@@ -96,7 +99,6 @@
                         <ComboBoxItem Tag="Rectangle">▭  Rectángulo</ComboBoxItem>
                         <ComboBoxItem Tag="Ellipse">◯  Círculo</ComboBoxItem>
                         <ComboBoxItem Tag="Line">╱  Línea</ComboBoxItem>
-                        <ComboBoxItem Tag="Arrow">➚  Flecha</ComboBoxItem>
                     </ComboBox>
                     <CheckBox x:Name="FillCheck" Content="Relleno" Margin="12,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
@@ -133,7 +135,7 @@
         </Border>
 
         <!-- Lienzo -->
-        <Border Grid.Row="2" x:Name="Stage" CornerRadius="14" Background="{DynamicResource Stage}" ClipToBounds="True">
+        <Border Grid.Row="2" x:Name="Stage" CornerRadius="{DynamicResource RadiusL}" Background="{DynamicResource Stage}" ClipToBounds="True">
             <Viewbox Stretch="Uniform" StretchDirection="DownOnly" Margin="16">
                 <Grid x:Name="Surface" ClipToBounds="True">
                     <Image x:Name="BaseImage" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality"/>

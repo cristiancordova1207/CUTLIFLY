@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CUTLIFY - Grabando" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" SizeToContent="WidthAndHeight"
-        Left="-10000" Top="-10000" FontFamily="{StaticResource UiFont}" FontSize="13">
-    <Border Margin="10" CornerRadius="14" Padding="6" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}"
-            Effect="{StaticResource SoftShadow}" Cursor="SizeAll" x:Name="Root">
+        Left="-10000" Top="-10000" FontFamily="{DynamicResource UiFont}" FontSize="{DynamicResource BaseFontSize}">
+    <Border Margin="10" CornerRadius="{DynamicResource RadiusL}" Padding="6" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}"
+            Effect="{DynamicResource SoftShadow}" Cursor="SizeAll" x:Name="Root">
         <Border.Background>
             <SolidColorBrush Color="{DynamicResource BarColor}" Opacity="0.92"/>
         </Border.Background>

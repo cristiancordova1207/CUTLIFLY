@@ -148,6 +148,7 @@ namespace Cutlify.UI
             ThemeLight.IsChecked = S.Theme == "Light";
             ThemeDark.IsChecked = S.Theme == "Dark";
             ThemeSystem.IsChecked = S.Theme != "Light" && S.Theme != "Dark";
+            BuildStyleGallery();
             HkCaptureText.Text = S.HotkeyCapture;
             HkRecordText.Text = S.HotkeyRecord;
             HkOpenText.Text = S.HotkeyOpen;
@@ -178,7 +179,57 @@ namespace Cutlify.UI
             if (_loading) return;
             S.Theme = theme;
             SettingsService.Save();
-            ThemeManager.Apply(theme);
+            ThemeManager.Apply(S.ThemeStyle, theme);
+            BuildStyleGallery();
+        }
+
+        /// <summary>Tarjetas de estilo con una vista previa de sus colores, bordes y tipografía.</summary>
+        private void BuildStyleGallery()
+        {
+            StylePanel.Children.Clear();
+            foreach (var st in Themes.ThemeCatalog.Styles)
+            {
+                var p = ThemeManager.IsDark ? st.Dark : st.Light;
+                System.Windows.Media.SolidColorBrush B(System.Windows.Media.Color c) => new System.Windows.Media.SolidColorBrush(c);
+                var preview = new Border
+                {
+                    Width = 168, Height = 74, CornerRadius = new CornerRadius(st.RadiusL), Background = B(p.Bg),
+                    BorderBrush = B(p.Border), BorderThickness = new Thickness(st.BorderWidth), Padding = new Thickness(10)
+                };
+                var inner = new StackPanel();
+                inner.Children.Add(new Border
+                {
+                    Height = 22, CornerRadius = new CornerRadius(st.RadiusS), Background = B(p.Surface), BorderBrush = B(p.Border),
+                    BorderThickness = new Thickness(st.BorderWidth), Margin = new Thickness(0, 0, 0, 8),
+                    Child = new TextBlock { Text = "CUTLIFY", FontFamily = ThemeManager.Font(st.Font), FontSize = st.FontSize - 2, Foreground = B(p.Text), Margin = new Thickness(6, 2, 0, 0) }
+                });
+                var row = new StackPanel { Orientation = Orientation.Horizontal };
+                row.Children.Add(new Border { Width = 46, Height = 16, CornerRadius = new CornerRadius(st.RadiusS), Background = B(p.Accent) });
+                row.Children.Add(new Border { Width = 30, Height = 16, CornerRadius = new CornerRadius(st.RadiusS), Background = B(p.AccentSoft), Margin = new Thickness(6, 0, 0, 0) });
+                row.Children.Add(new Border { Width = 16, Height = 16, CornerRadius = new CornerRadius(st.RadiusS), Background = B(p.PinkSoft), Margin = new Thickness(6, 0, 0, 0) });
+                inner.Children.Add(row);
+                preview.Child = inner;
+
+                var content = new StackPanel { Width = 168 };
+                content.Children.Add(preview);
+                content.Children.Add(new TextBlock { Text = st.Name, FontWeight = FontWeights.SemiBold, Margin = new Thickness(2, 8, 0, 0) });
+                content.Children.Add(new TextBlock { Text = st.Description, Style = (Style)FindResource("Secondary"), TextWrapping = TextWrapping.Wrap, Margin = new Thickness(2, 2, 0, 0) });
+                var rb = new RadioButton
+                {
+                    GroupName = "style", Content = content, Style = (Style)FindResource("SegmentToggle"), Padding = new Thickness(10),
+                    Margin = new Thickness(0, 0, 10, 10), IsChecked = S.ThemeStyle == st.Id, Tag = st.Id, VerticalContentAlignment = VerticalAlignment.Top
+                };
+                System.Windows.Automation.AutomationProperties.SetName(rb, "Estilo " + st.Name);
+                rb.Checked += (_, __) =>
+                {
+                    if (_loading || S.ThemeStyle == (string)rb.Tag) return;
+                    S.ThemeStyle = (string)rb.Tag;
+                    SettingsService.Save();
+                    ThemeManager.Apply(S.ThemeStyle, S.Theme);
+                    Native.RoundCorners(new WindowInteropHelper(this).Handle);
+                };
+                StylePanel.Children.Add(rb);
+            }
         }
 
         // ------------------------------------------------------------------ Grabación

@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CUTLIFY - Fijada" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" SizeToContent="Manual"
-        FontFamily="{StaticResource UiFont}">
-    <Border x:Name="Frame" Margin="10" CornerRadius="8" BorderThickness="2" BorderBrush="{DynamicResource Accent}"
-            Background="{DynamicResource Surface}" Effect="{StaticResource SoftShadow}" Cursor="SizeAll">
+        FontFamily="{DynamicResource UiFont}">
+    <Border x:Name="Frame" Margin="10" CornerRadius="{DynamicResource RadiusS}" BorderThickness="2" BorderBrush="{DynamicResource Accent}"
+            Background="{DynamicResource Surface}" Effect="{DynamicResource SoftShadow}" Cursor="SizeAll">
         <Border.ContextMenu>
             <ContextMenu>
                 <MenuItem x:Name="CopyItem" Header="Copiar" Icon="&#xE8C8;"/>

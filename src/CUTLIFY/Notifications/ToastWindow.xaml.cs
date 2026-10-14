@@ -96,9 +96,10 @@ namespace Cutlify.Notifications
 
         private void Animate()
         {
-            var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
-            Slide.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(40, 0, TimeSpan.FromMilliseconds(260)) { EasingFunction = ease });
-            BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200)));
+            var ease = Cutlify.UI.ThemeAnimations.EntranceEasing;
+            var dur = Cutlify.UI.ThemeAnimations.EntranceDuration;
+            Slide.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(40, 0, dur) { EasingFunction = ease });
+            BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(Math.Min(200, dur.TotalMilliseconds))));
         }
 
         private void FadeOut()

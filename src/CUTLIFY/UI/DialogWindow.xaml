@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CUTLIFY" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" SizeToContent="WidthAndHeight" ShowInTaskbar="False" Topmost="True"
-        WindowStartupLocation="CenterScreen" FontFamily="{StaticResource UiFont}" FontSize="13">
+        WindowStartupLocation="CenterScreen" FontFamily="{DynamicResource UiFont}" FontSize="{DynamicResource BaseFontSize}">
     <Border Margin="16" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-            CornerRadius="14" Effect="{StaticResource SoftShadow}" MinWidth="360" MaxWidth="520">
+            CornerRadius="{DynamicResource RadiusL}" Effect="{DynamicResource SoftShadow}" MinWidth="360" MaxWidth="520">
         <StackPanel Margin="22,20,22,18">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                 <Image Source="pack://application:,,,/CUTLIFY;component/Assets/logo.png" Width="20" Height="20" Margin="0,0,8,0"/>

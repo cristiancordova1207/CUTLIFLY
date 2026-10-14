@@ -22,19 +22,26 @@ namespace Cutlify.UI
             };
         }
 
-        public static async Task Run(int seconds, string caption)
+        /// <summary>Muestra la cuenta regresiva. Devuelve false si se canceló (Esc).</summary>
+        public static async Task<bool> Run(int seconds, string caption, System.Threading.CancellationToken cancel = default)
         {
-            if (seconds <= 0) return;
+            if (seconds <= 0) return !cancel.IsCancellationRequested;
             var w = new CountdownWindow(caption);
             w.Show();
-            for (int i = seconds; i > 0; i--)
+            try
             {
-                w.Number.Text = i.ToString();
-                w.Number.BeginAnimation(OpacityProperty, new DoubleAnimation(1, 0.35, TimeSpan.FromMilliseconds(950)));
-                await Task.Delay(1000);
+                for (int i = seconds; i > 0; i--)
+                {
+                    w.Number.Text = i.ToString();
+                    w.Number.BeginAnimation(OpacityProperty, new DoubleAnimation(1, 0.35, TimeSpan.FromMilliseconds(950)));
+                    await Task.Delay(1000, cancel);
+                }
             }
-            w.Close();
+            catch (TaskCanceledException) { }
+            finally { w.Close(); }
+            if (cancel.IsCancellationRequested) return false;
             await Task.Delay(120); // que desaparezca antes de congelar la pantalla
+            return true;
         }
     }
 }

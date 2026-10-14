@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Configuración — CUTLIFY" Width="900" Height="640" MinWidth="760" MinHeight="480"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowGradient}"
-        FontFamily="{StaticResource UiFont}" FontSize="13" Foreground="{DynamicResource Text}"
+        FontFamily="{DynamicResource UiFont}" FontSize="{DynamicResource BaseFontSize}" Foreground="{DynamicResource Text}"
         Icon="pack://application:,,,/CUTLIFY;component/Assets/cutlify.ico">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="48" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
@@ -404,16 +404,17 @@
 
                 <StackPanel x:Name="Page_appearance" Visibility="Collapsed">
                     <TextBlock Text="Apariencia" Style="{StaticResource PageTitle}"/>
+                    <TextBlock Text="Estilo" Style="{StaticResource SectionTitle}" Margin="2,0,0,8"/>
+                    <WrapPanel x:Name="StylePanel" Margin="0,0,0,8"/>
+                    <TextBlock Text="Modo" Style="{StaticResource SectionTitle}" Margin="2,8,0,8"/>
                     <Border Style="{StaticResource Row}" Padding="16,12">
-                        <StackPanel>
-                            <TextBlock Text="Tema" Margin="0,0,0,10"/>
-                            <StackPanel Orientation="Horizontal">
-                                <RadioButton x:Name="ThemeLight" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Claro" Margin="0,0,6,0"/>
-                                <RadioButton x:Name="ThemeDark" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Oscuro" Margin="0,0,6,0"/>
-                                <RadioButton x:Name="ThemeSystem" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Usar configuración de Windows"/>
-                            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton x:Name="ThemeLight" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Claro" Margin="0,0,6,0"/>
+                            <RadioButton x:Name="ThemeDark" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Noche" Margin="0,0,6,0"/>
+                            <RadioButton x:Name="ThemeSystem" GroupName="theme" Style="{StaticResource SegmentToggle}" Content="Usar configuración de Windows"/>
                         </StackPanel>
                     </Border>
+                    <TextBlock Text="Cada estilo cambia colores, bordes, tipografía, sombras y animaciones, y tiene versión clara y de noche." Style="{StaticResource Secondary}" Margin="2,4,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
 
                 <StackPanel x:Name="Page_privacy" Visibility="Collapsed">
