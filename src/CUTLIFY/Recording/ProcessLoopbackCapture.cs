@@ -59,9 +59,9 @@ namespace Cutlify.Recording
                 var raw = await handler.Task.ConfigureAwait(false);
                 var client = new AudioClient((NAudio.CoreAudioApi.Interfaces.IAudioClient)raw);
 
-                const int LOOPBACK = 0x00020000, EVENTCALLBACK = 0x00040000, SRC_DEFAULT_QUALITY = 0x08000000;
-                const int AUTOCONVERTPCM = unchecked((int)0x80000000);
-                var flags = (AudioClientStreamFlags)(LOOPBACK | EVENTCALLBACK | SRC_DEFAULT_QUALITY | AUTOCONVERTPCM);
+                // LOOPBACK | EVENTCALLBACK | SRC_DEFAULT_QUALITY | AUTOCONVERTPCM
+                const uint flagBits = 0x00020000u | 0x00040000u | 0x08000000u | 0x80000000u;
+                var flags = unchecked((AudioClientStreamFlags)flagBits);
                 client.Initialize(AudioClientShareMode.Shared, flags, 2_000_000, 0, format, Guid.Empty);
                 return new ProcessLoopbackCapture(client, format);
             }
