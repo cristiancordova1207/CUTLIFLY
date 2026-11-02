@@ -50,6 +50,7 @@ namespace Cutlify.UI
             NewCapWindow.Click += (_, __) => _app.StartCapture(CaptureMode.Window, 0, true);
             NewCapFree.Click += (_, __) => _app.StartCapture(CaptureMode.FreeForm, 0, true);
             NewCapColor.Click += (_, __) => _app.StartCapture(CaptureMode.ColorPicker, 0, true);
+            NewCapText.Click += (_, __) => _app.StartCapture(CaptureMode.Text, 0, true);
             NewCapFull.Click += (_, __) => _app.StartCapture(CaptureMode.FullScreen, 0, true);
             NewCap3.Click += (_, __) => _app.StartCapture(SelectedMode, 3, true);
             NewCap5.Click += (_, __) => _app.StartCapture(SelectedMode, 5, true);
@@ -159,9 +160,9 @@ namespace Cutlify.UI
             KindAudio.IsChecked = s.LastKind == "Audio";
             KindCapture.IsChecked = s.LastKind != "Record" && s.LastKind != "Audio";
             bool record = s.LastKind == "Record";
-            // Forma libre y selector de color no existen al grabar.
+            // Forma libre, selector de color y texto no existen al grabar.
             foreach (ComboBoxItem it in ModeCombo.Items)
-                it.Visibility = record && ((string)it.Tag == "FreeForm") ? Visibility.Collapsed : Visibility.Visible;
+                it.Visibility = record && ((string)it.Tag == "FreeForm" || (string)it.Tag == "Text") ? Visibility.Collapsed : Visibility.Visible;
             ModeCombo.IsEnabled = DelayCombo.IsEnabled = s.LastKind != "Audio";
             SelectByTag(ModeCombo, (record ? s.LastRecordMode : s.LastMode).ToString());
             SelectByTag(DelayCombo, s.DefaultDelaySeconds.ToString());

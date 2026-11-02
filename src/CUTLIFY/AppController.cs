@@ -243,6 +243,13 @@ namespace Cutlify
                     image = ImageUtil.ToBitmapSource(cropped);
                 }
 
+                if (result.Mode == CaptureMode.Text)
+                {
+                    RestoreAfterCapture(mainWasVisible);
+                    TranscribeCapture(image, null, false);
+                    return;
+                }
+
                 _last = new LastCapture { Mode = result.Mode, Rect = result.ScreenRect, Window = result.Window, Delay = delaySeconds };
                 if (SettingsService.Current.LastMode != result.Mode) { SettingsService.Current.LastMode = result.Mode; SettingsService.Save(); }
                 _historyWindow?.Show();

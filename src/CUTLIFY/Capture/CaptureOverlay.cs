@@ -74,7 +74,7 @@ namespace Cutlify.Capture
         {
             _frozen = frozen;
             _recording = recording;
-            _mode = recording && (mode == CaptureMode.FreeForm || mode == CaptureMode.ColorPicker) ? CaptureMode.Rectangle : mode;
+            _mode = recording && (mode == CaptureMode.FreeForm || mode == CaptureMode.ColorPicker || mode == CaptureMode.Text) ? CaptureMode.Rectangle : mode;
             _ratio = Ratios.Contains(SettingsService.Current.AspectRatio) ? SettingsService.Current.AspectRatio : "Libre";
             _vs = ScreenCapture.VirtualScreen;
             _windows = WindowFinder.GetVisibleWindows();
@@ -117,6 +117,7 @@ namespace Cutlify.Capture
             Mode("", "Pantalla", CaptureMode.FullScreen);
             if (Screen.AllScreens.Length > 1) Mode("", "Todas", CaptureMode.AllScreens);
             if (!_recording) Mode("", "Color", CaptureMode.ColorPicker);
+            if (!_recording) Mode("\uE8D2", "Texto", CaptureMode.Text);
             _buttons.Add(new ToolButton { Glyph = "", Label = _ratio, Click = CycleRatio });
             _buttons.Add(new ToolButton { Glyph = "", Label = "Cerrar", Click = () => Finish(null) });
 
@@ -192,6 +193,8 @@ namespace Cutlify.Capture
             base.OnKeyUp(e);
         }
 
+        private bool SelectsRect => _mode == CaptureMode.Rectangle || _mode == CaptureMode.Text;
+
         private bool MagnifierVisible =>
             _mode == CaptureMode.ColorPicker || SettingsService.Current.ShowMagnifier || (ModifierKeys & Keys.Control) != 0;
 
@@ -229,6 +232,7 @@ namespace Cutlify.Capture
             switch (_mode)
             {
                 case CaptureMode.Rectangle:
+                case CaptureMode.Text:
                     _dragStart = e.Location;
                     _sel = new Rectangle(e.Location, Size.Empty);
                     Capture = true;
@@ -264,7 +268,7 @@ namespace Cutlify.Capture
                 _sel = AdjustRect(_adjustStart, _adjustHandle, e.X - _dragStart.Value.X, e.Y - _dragStart.Value.Y);
                 InvalidateAround(Rectangle.Union(old, _sel));
             }
-            else if (_mode == CaptureMode.Rectangle && _dragStart.HasValue)
+            else if (SelectsRect && _dragStart.HasValue)
             {
                 var old = _sel;
                 if ((Native.GetAsyncKeyState(VK_SPACE) & 0x8000) != 0)
@@ -455,7 +459,7 @@ namespace Cutlify.Capture
             g.CompositingMode = CompositingMode.SourceCopy;
             g.DrawImage(_dim, clip, clip, GraphicsUnit.Pixel);
 
-            var active = _mode == CaptureMode.Rectangle ? _sel : _mode == CaptureMode.FreeForm ? Rectangle.Empty : _hover;
+            var active = SelectsRect ? _sel : _mode == CaptureMode.FreeForm ? Rectangle.Empty : _hover;
             if (!active.IsEmpty)
             {
                 var vis = Rectangle.Intersect(active, clip);
@@ -497,7 +501,7 @@ namespace Cutlify.Capture
             using (var pen = new Pen(Color.White, Math.Max(1f, 1.5f * _scale)))
                 g.DrawRectangle(pen, r.X, r.Y, r.Width - 1, r.Height - 1);
 
-            if (_mode == CaptureMode.Rectangle)
+            if (SelectsRect)
             {
                 float hr = 4.5f * _scale;
                 using var fill = new SolidBrush(Color.White);
@@ -509,7 +513,7 @@ namespace Cutlify.Capture
                 }
             }
 
-            var text = $"{r.Width} × {r.Height}" + (_ratio != "Libre" && _mode == CaptureMode.Rectangle ? $"  ·  {_ratio}" : "");
+            var text = $"{r.Width} × {r.Height}" + (_ratio != "Libre" && SelectsRect ? $"  ·  {_ratio}" : "");
             var size = g.MeasureString(text, _labelFont);
             float w = size.Width + S(16), h = size.Height + S(6);
             float x = r.X + (r.Width - w) / 2f;

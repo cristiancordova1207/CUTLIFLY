@@ -292,6 +292,7 @@ namespace Cutlify
             try
             {
                 var text = await OcrService.RecognizeAsync(image);
+                if (text.Length > 0) ClipboardService.CopyText(text);
                 new OcrWindow(text) { Owner = DialogOwner }.Show();
             }
             catch (Exception ex)
@@ -301,7 +302,7 @@ namespace Cutlify
             }
         }
 
-        /// <summary>Cambia la captura del portapapeles por su texto. Si no hay texto, la imagen se queda como estaba.</summary>
+        /// <summary>Deja en el portapapeles el texto de la captura. Si no hay texto, lo que hubiera se queda como estaba.</summary>
         private async void TranscribeCapture(BitmapSource image, HistoryItem item, bool imageCopied)
         {
             string title, message;
@@ -309,7 +310,7 @@ namespace Cutlify
             {
                 var text = await OcrService.RecognizeAsync(image);
                 if (text.Length == 0)
-                    (title, message) = ("No encontré texto", imageCopied ? "La imagen sigue en el portapapeles." : "Ábrela en CUTLIFY para editarla.");
+                    (title, message) = ("No encontré texto", imageCopied ? "La imagen sigue en el portapapeles." : "Prueba con una zona más ajustada al texto.");
                 else if (ClipboardService.CopyText(text))
                     (title, message) = ("Texto copiado", text.Length > 120 ? text.Substring(0, 120) : text);
                 else
@@ -321,7 +322,7 @@ namespace Cutlify
                 (title, message) = ("No se pudo leer la imagen", ex.Message);
             }
             if (SettingsService.Current.ShowNotifications)
-                ToastWindow.ShowToast(title, message, image, null, () => ShowMainWindow(item));
+                ToastWindow.ShowToast(title, message, image, null, item == null ? null : () => ShowMainWindow(item));
         }
     }
 }

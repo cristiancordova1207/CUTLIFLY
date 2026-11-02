@@ -2,6 +2,14 @@
 
 Todas las versiones siguen [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.5.0] - 2026-11-02
+
+### Added
+- **Modo Texto**: botón en la barra de captura, en «Nuevo» y en el selector de modo. Seleccionas una zona y su texto queda en el portapapeles, sin crear una captura.
+
+### Changed
+- **Extraer texto** del editor también copia el texto al portapapeles.
+
 ## [1.4.0] - 2026-11-02
 
 ### Added

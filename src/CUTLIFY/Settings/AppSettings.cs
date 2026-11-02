@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Cutlify.Settings
 {
-    public enum CaptureMode { Rectangle, Window, FullScreen, FreeForm, AllScreens, ColorPicker }
+    public enum CaptureMode { Rectangle, Window, FullScreen, FreeForm, AllScreens, ColorPicker, Text }
 
     public enum MicConsent { Unknown, Granted, Denied }
 

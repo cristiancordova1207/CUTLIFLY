@@ -51,6 +51,7 @@
                                 <MenuItem x:Name="NewCapWindow" Header="Ventana" Icon="&#xE7C4;"/>
                                 <MenuItem x:Name="NewCapFull" Header="Pantalla completa" Icon="&#xE740;"/>
                                 <MenuItem x:Name="NewCapColor" Header="Selector de color" Icon="&#xEF3C;"/>
+                                <MenuItem x:Name="NewCapText" Header="Texto (copiar el texto de la zona)" Icon="&#xE8D2;"/>
                                 <Separator/>
                                 <MenuItem x:Name="NewCap3" Header="En 3 segundos" Icon="&#xE916;"/>
                                 <MenuItem x:Name="NewCap5" Header="En 5 segundos" Icon="&#xE916;"/>
@@ -95,6 +96,7 @@
                     <ComboBoxItem Tag="FreeForm">✎  Forma libre</ComboBoxItem>
                     <ComboBoxItem Tag="FullScreen">⛶  Pantalla completa</ComboBoxItem>
                     <ComboBoxItem Tag="AllScreens">⧉  Todas las pantallas</ComboBoxItem>
+                    <ComboBoxItem Tag="Text">Aa  Texto</ComboBoxItem>
                 </ComboBox>
                 <ComboBox x:Name="DelayCombo" Margin="8,0,0,0" MinWidth="130" ToolTip="Temporizador">
                     <ComboBoxItem Tag="0">⏱  Sin retraso</ComboBoxItem>
