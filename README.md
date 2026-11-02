@@ -16,6 +16,7 @@ CUTLIFY es **gratuito** para el usuario, **sin cuenta, sin publicidad, sin telem
 - **Retraso** de 1, 2, 3, 5 o 10 s con cuenta regresiva visual. **Repetir captura** (Alt + N).
 - **Editor**: cursor, lápiz, resaltador, borrador, línea, flecha, rectángulo, elipse, texto, recorte, deshacer/rehacer, color + colores recientes, grosor, opacidad, copiar, guardar y guardar como.
 - **OCR local** («Extraer texto») con el motor de Windows; sin servicios externos.
+- **Transcribir imagen**: con la opción activada, el texto de cada captura queda en el portapapeles (OCR de Windows, sin internet).
 - **Fijar** capturas encima de todo (mover, redimensionar, cerrar).
 - **Grabación** de región, ventana, monitor o todas las pantallas a **MP4** con **H.264, HEVC o AV1** (solo los codecs disponibles en tu equipo), resolución hasta 4K, 30–240 FPS (limitados a la frecuencia real de tus monitores), bitrate automático o manual, aceleración por hardware, cursor y resaltado de clics.
 - **Audio**: sistema, micrófono o ambos **mezclados en una pista AAC sincronizada**, con selección de dispositivo, prueba y medidor de nivel. Consentimiento propio antes de usar el micrófono.

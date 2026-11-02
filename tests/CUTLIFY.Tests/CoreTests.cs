@@ -211,6 +211,7 @@ namespace Cutlify.Tests
             Assert.Equal("Ctrl+Shift+X", s.HotkeyOpen);
             Assert.Equal("PNG", s.ImageFormat);
             Assert.True(s.AutoCopyCaptures);
+            Assert.False(s.TranscribeCaptures);
             Assert.True(s.SaveTemporarily);
             Assert.True(s.SendExpiredToRecycleBin);
             Assert.Equal(60, s.RetentionMinutes);

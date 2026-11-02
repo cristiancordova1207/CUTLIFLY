@@ -2,6 +2,11 @@
 
 Todas las versiones siguen [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.4.0] - 2026-11-02
+
+### Added
+- **Transcribir imagen** (Ajustes → Capturas): al hacer una captura, su texto queda en el portapapeles en lugar de la imagen. Si no hay texto, la imagen se queda como estaba. Sin internet, con el OCR de Windows.
+
 ## [1.3.0] - 2026-10-14
 
 ### Added

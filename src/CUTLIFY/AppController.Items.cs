@@ -300,5 +300,28 @@ namespace Cutlify
                 DialogWindow.Ask(DialogOwner, "No se pudo extraer el texto", ex.Message, 0, "Cerrar");
             }
         }
+
+        /// <summary>Cambia la captura del portapapeles por su texto. Si no hay texto, la imagen se queda como estaba.</summary>
+        private async void TranscribeCapture(BitmapSource image, HistoryItem item, bool imageCopied)
+        {
+            string title, message;
+            try
+            {
+                var text = await OcrService.RecognizeAsync(image);
+                if (text.Length == 0)
+                    (title, message) = ("No encontré texto", imageCopied ? "La imagen sigue en el portapapeles." : "Ábrela en CUTLIFY para editarla.");
+                else if (ClipboardService.CopyText(text))
+                    (title, message) = ("Texto copiado", text.Length > 120 ? text.Substring(0, 120) : text);
+                else
+                    (title, message) = ("No se pudo copiar el texto", "Otra aplicación está usando el portapapeles.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn("OCR", "No se pudo transcribir la captura", ex);
+                (title, message) = ("No se pudo leer la imagen", ex.Message);
+            }
+            if (SettingsService.Current.ShowNotifications)
+                ToastWindow.ShowToast(title, message, image, null, () => ShowMainWindow(item));
+        }
     }
 }

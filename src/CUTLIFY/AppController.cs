@@ -369,7 +369,8 @@ namespace Cutlify
             }
             History.Add(item);
 
-            if (s.ShowNotifications)
+            if (s.TranscribeCaptures) TranscribeCapture(image, item, copied);
+            else if (s.ShowNotifications)
             {
                 if (copied)
                     ToastWindow.ShowToast("Captura copiada al portapapeles", "Puedes pegarla con Ctrl + V", image, null, () => ShowMainWindow(item));

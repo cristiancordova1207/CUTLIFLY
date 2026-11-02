@@ -112,6 +112,7 @@
                         </DockPanel>
                     </Border>
                     <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Copiar automáticamente al portapapeles" IsChecked="{Binding AutoCopyCaptures}"/></Border>
+                    <Border Style="{StaticResource Row}"><CheckBox Style="{StaticResource Switch}" Content="Transcribir imagen: copiar el texto de la captura al portapapeles" IsChecked="{Binding TranscribeCaptures}"/></Border>
                     <Border Style="{StaticResource Row}">
                         <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding SaveTemporarily}">
                             <StackPanel>

@@ -33,6 +33,7 @@ namespace Cutlify.Settings
         // Capturas
         public string ImageFormat { get; set; } = "PNG";
         public bool AutoCopyCaptures { get; set; } = true;
+        public bool TranscribeCaptures { get; set; }
         public bool SaveTemporarily { get; set; } = true;
         public CaptureMode LastMode { get; set; } = CaptureMode.Rectangle;        // última captura
         public CaptureMode LastRecordMode { get; set; } = CaptureMode.Rectangle;  // última grabación
