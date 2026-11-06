@@ -221,7 +221,7 @@ namespace Cutlify
                     ToastWindow.ShowToast(copied ? "Grabación guardada y copiada como archivo" : "Grabación guardada",
                         $"{item.DurationLabel}  ·  {item.Width} × {item.Height}  ·  {item.FpsLabel}",
                         item.Thumbnail, item.DurationLabel, () => ShowMainWindow(item),
-                        new (string, Action)[] { ("Abrir", () => ShowMainWindow(item)) });
+                        new (string, Action)[] { ("Editar", () => ShowVideoEditor(item.FilePath)), ("Abrir", () => ShowMainWindow(item)) });
                 if (_recordFromMain) ShowMainWindow(item);
             }
             catch (Exception ex)

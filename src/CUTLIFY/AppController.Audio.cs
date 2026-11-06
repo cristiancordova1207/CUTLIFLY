@@ -138,7 +138,7 @@ namespace Cutlify
                     ToastWindow.ShowToast(copied ? "Audio guardado y copiado como archivo" : "Audio guardado",
                         $"{item.DurationLabel}{(item.TrackFiles.Count > 1 ? $"  ·  {item.TrackFiles.Count} pistas" : "")}  ·  {item.FormatLabel}",
                         item.Thumbnail, item.DurationLabel, () => ShowMainWindow(item),
-                        new (string, Action)[] { ("Abrir", () => ShowMainWindow(item)) });
+                        new (string, Action)[] { ("Editar", () => ShowAudioEditor(item.FilePath)), ("Abrir", () => ShowMainWindow(item)) });
             }
             catch (Exception ex)
             {

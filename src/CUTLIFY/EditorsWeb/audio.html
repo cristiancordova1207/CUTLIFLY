@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Editor de audio</title>
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <div class="top">
+    <div class="top-title"><b>Editor de audio <small id="editName"></small></b><small>El editor de MicLY: cortes, fades, efectos de voz y volumen</small></div>
+    <div class="row">
+      <button class="ghost sm" id="edOpen">📂 Abrir audio…</button>
+      <button class="ghost sm" id="edRecorder" title="Abre la grabadora de audio de CUTLIFY; al terminar podrás editar la grabación">🎙 Grabadora</button>
+      <button class="ghost sm" id="edUndo" title="Deshacer (Ctrl+Z)">↶</button>
+      <button class="ghost sm" id="edRedo" title="Rehacer (Ctrl+Shift+Z)">↷</button>
+      <button class="ghost sm" id="edPremiere" title="Crea un .xml que Premiere Pro importa como secuencia con tus cortes, volumen y fades (sin renderizar)">⇪ Exportar a Premiere</button>
+      <button class="ghost sm" id="edCopy" title="Guarda un WAV nuevo «(editado)» junto al original">Guardar copia</button>
+      <button class="primary sm" id="edSave" title="Ctrl+S">Guardar</button>
+    </div>
+  </div>
+  <div class="empty" id="edEmpty"><div><b>🎙 Aún no hay audio</b><p>Graba con la grabadora de CUTLIFY y pulsa <b>✂ Editar</b>, o abre un audio.</p>
+    <div class="row"><button class="primary sm" id="edOpen2">📂 Abrir audio…</button></div></div></div>
+  <div class="body" id="editor" hidden>
+    <div class="ed-bar">
+      <button class="ed-play" id="edPlay" title="Reproducir (Espacio)">▶</button>
+      <span class="ed-time" id="edTime">00:00.00 / 00:00.00</span>
+      <div class="vol-box" title="Sube o baja el volumen de la voz. Con un clip seleccionado cambia solo ese clip.">
+        <span class="vol-ico">🔊</span>
+        <div><b>Volumen de la voz</b><small id="volTarget">todos los clips</small></div>
+        <input type="range" id="edVol" min="-24" max="12" step="0.5" value="0">
+        <span class="vol-val" id="edVolVal">0 dB</span>
+        <button class="ghost sm" id="edVolReset" title="Volver a 0 dB">↺</button>
+      </div>
+      <div class="grow"></div>
+      <label class="zoom">Zoom <input type="range" id="edZoom" min="0" max="100" value="30"></label>
+      <button class="ghost sm" id="edFit">Ajustar</button>
+    </div>
+    <div class="fx-shelf" id="fxShelf" title="Arrastra un efecto a un clip"></div>
+    <div class="tl" id="timeline"><div class="tl-spacer" id="tlSpacer"></div><canvas id="tlCanvas"></canvas></div>
+    <div class="keys" id="edKeys"></div>
+    <div class="fx-pop" id="fxPop" hidden></div>
+  </div>
+  <div id="toasts"></div>
+  <script src="premiere-xml.js"></script>
+  <script src="common.js"></script>
+  <script type="module" src="audio.js"></script>
+</body>
+</html>

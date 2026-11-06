@@ -63,6 +63,9 @@
                                 <MenuItem x:Name="NewRecFull" Header="Pantalla completa" Icon="&#xE740;"/>
                             </MenuItem>
                             <MenuItem x:Name="NewAudio" Header="Grabación de audio…" Icon="&#xE720;"/>
+                            <Separator/>
+                            <MenuItem x:Name="NewAudioEditor" Header="Editor de audio…" Icon="&#xE8D6;"/>
+                            <MenuItem x:Name="NewVideoEditor" Header="Editor de vídeo…" Icon="&#xE714;"/>
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>

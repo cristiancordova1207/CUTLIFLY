@@ -2,6 +2,17 @@
 
 Todas las versiones siguen [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.6.0] - 2026-11-06
+
+### Added
+- **Editor de audio** (el de MicLY): cortes (`S`/`X`), borrar clip (`A`), cerrar hueco (`D`), recortar (`Q`/`W`), mover clips (`←`/`→`), fades con los cuadritos de las esquinas, volumen por clip, 16 **efectos de voz** que se arrastran a un clip, guardar / guardar copia en WAV y exportar a Premiere Pro.
+- **Editor de vídeo** (el de CaptLY): los mismos cortes, huecos, fades y volumen, con miniaturas y onda del audio; exporta un MP4 (codificador por hardware si lo hay) o un proyecto para Premiere Pro. Necesita ffmpeg (`winget install Gyan.FFmpeg`).
+- Botón **Editar** en las grabaciones de audio y vídeo, acción **Editar** en el aviso al terminar de grabar, y **Nuevo → Editor de audio / Editor de vídeo**. Desde el editor de audio se abre la grabadora.
+- Los editores usan los colores y la fuente del tema activo de CUTLIFY.
+
+### Changed
+- Las Releases oficiales se publican aunque no haya firma digital configurada, para que CUTLIFY se actualice solo.
+
 ## [1.5.0] - 2026-11-02
 
 ### Added

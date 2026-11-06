@@ -206,7 +206,7 @@ jobs:
           $out += 'Solo los archivos publicados aquí son versiones oficiales de CUTLIFY. CUTLIFY instalado detecta esta versión y se actualiza solo.'
           $out -join "`n" | Set-Content release-notes.md -Encoding utf8
 
-      - name: Publicar GitHub Release oficial (solo binarios firmados)
+      - name: Publicar GitHub Release oficial
         if: >
           github.event_name != 'pull_request' && (
             github.ref_type == 'tag' ||
@@ -217,9 +217,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN || github.token }}
         run: |
+          # Sin certificado también se publica (decisión del autor): así CUTLIFY se actualiza solo al abrirse.
+          # Windows puede mostrar el aviso de SmartScreen hasta que se configure la firma.
           if ('${{ steps.sign.outputs.enabled }}' -ne 'true') {
-            Write-Host "::warning::Code signing is not configured. No se publica la Release oficial: una Release de producción requiere CUTLIFY.exe y CUTLIFY-Setup.exe firmados."
-            exit 0
+            Write-Host "::warning::Code signing is not configured. La Release oficial se publica SIN FIRMA."
           }
           $tag = "v${{ steps.ver.outputs.version }}"
           gh release view $tag --repo "$env:RELEASES_REPO" *> $null

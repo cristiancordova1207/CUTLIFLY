@@ -160,7 +160,7 @@ namespace Cutlify
             else if (item.IsMemoryOnly) DialogWindow.Ask(DialogOwner, "Solo en el portapapeles", "Esta captura no tiene archivo. Pulsa Guardar para crearlo.", 0, "Aceptar");
         }
 
-        private static void OpenLocationPath(string path)
+        internal static void OpenLocationPath(string path)
         {
             try { Process.Start("explorer.exe", $"/select,\"{path}\""); }
             catch (Exception ex) { Logger.Warn("UI", "No se pudo abrir la ubicación", ex); }

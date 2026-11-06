@@ -59,6 +59,8 @@ namespace Cutlify.UI
             NewRecWindow.Click += (_, __) => _app.StartRecording(CaptureMode.Window, 0, true);
             NewRecFull.Click += (_, __) => _app.StartRecording(CaptureMode.FullScreen, 0, true);
             NewAudio.Click += (_, __) => _app.ShowAudioRecorder();
+            NewAudioEditor.Click += (_, __) => _app.ShowAudioEditor();
+            NewVideoEditor.Click += (_, __) => _app.ShowVideoEditor();
             EmptyCapture.Click += (_, __) => _app.StartCapture(SelectedMode, SelectedDelay, true);
             EmptyRecord.Click += (_, __) => _app.StartRecording(SelectedMode, SelectedDelay, true);
             RepeatButton.Click += (_, __) => _app.RepeatLastCapture();
@@ -109,6 +111,7 @@ namespace Cutlify.UI
             Editor.DeleteRequested += () => { if (Current != null) _app.DeleteFile(Current, this); };
 
             // Vídeo
+            Video.EditRequested += () => { if (Current != null) _app.Edit(Current); };
             Video.CopyRequested += () => { if (Current != null) _app.Copy(Current); };
             Video.SaveRequested += () => { if (Current != null) _app.Save(Current); };
             Video.SaveAsRequested += () => { if (Current != null) _app.SaveAs(Current); };

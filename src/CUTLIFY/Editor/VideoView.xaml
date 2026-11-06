@@ -15,6 +15,9 @@
                     <TextBlock x:Name="InfoText" Style="{StaticResource Secondary}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" MaxWidth="560"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button x:Name="EditButton" Style="{StaticResource FlatButton}" ToolTip="Editar: cortes, fades, volumen (y efectos de voz en el audio)" MinWidth="56">
+                        <StackPanel><TextBlock Text="&#xE8C6;" Style="{StaticResource Icon}" Foreground="{DynamicResource Accent}"/><TextBlock Text="Editar" Style="{StaticResource Caption}"/></StackPanel>
+                    </Button>
                     <Button x:Name="CopyButton" Style="{StaticResource FlatButton}" ToolTip="Copiar archivo al portapapeles" MinWidth="64">
                         <StackPanel><TextBlock Text="&#xE8C8;" Style="{StaticResource Icon}"/><TextBlock Text="Copiar archivo" Style="{StaticResource Caption}"/></StackPanel>
                     </Button>

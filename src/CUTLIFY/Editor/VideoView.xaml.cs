@@ -16,7 +16,7 @@ namespace Cutlify.Editor
 
         public HistoryItem Item { get; private set; }
 
-        public event Action CopyRequested, SaveRequested, SaveAsRequested, OpenRequested, OpenLocationRequested, DeleteRequested;
+        public event Action EditRequested, CopyRequested, SaveRequested, SaveAsRequested, OpenRequested, OpenLocationRequested, DeleteRequested;
 
         public VideoView()
         {
@@ -45,6 +45,7 @@ namespace Cutlify.Editor
             Seek.PreviewMouseUp += (_, __) => { Player.Position = TimeSpan.FromSeconds(Seek.Value); _seeking = false; };
             Seek.ValueChanged += (_, __) => { if (_seeking) PositionText.Text = HistoryItem.FormatDuration(TimeSpan.FromSeconds(Seek.Value)); };
 
+            EditButton.Click += (_, __) => { Pause(); EditRequested?.Invoke(); };
             CopyButton.Click += (_, __) => CopyRequested?.Invoke();
             SaveButton.Click += (_, __) => SaveRequested?.Invoke();
             SaveAsButton.Click += (_, __) => SaveAsRequested?.Invoke();
@@ -69,6 +70,7 @@ namespace Cutlify.Editor
             Seek.Maximum = Math.Max(0.1, item.DurationMs / 1000.0);
             Seek.Value = 0;
             DeleteButton.IsEnabled = !item.IsExternal;
+            EditButton.IsEnabled = item.HasFile;
             AudioArt.Visibility = item.IsAudio ? Visibility.Visible : Visibility.Collapsed;
             AudioArt.Source = item.IsAudio ? item.Thumbnail : null;
             if (item.HasFile)

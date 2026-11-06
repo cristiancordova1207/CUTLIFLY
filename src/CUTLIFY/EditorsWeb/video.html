@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Editor de vídeo</title>
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <div class="top">
+    <div class="top-title"><b id="evName">Editor de vídeo</b><small id="evMeta">El editor de CaptLY: cortes, huecos, fades y volumen</small></div>
+    <div class="row">
+      <button class="ghost sm" id="evOpen">📂 Abrir vídeo…</button>
+      <button class="ghost sm" id="evUndo" title="Deshacer (Ctrl+Z)">↶</button>
+      <button class="ghost sm" id="evRedo" title="Rehacer (Ctrl+Shift+Z)">↷</button>
+      <button class="ghost sm" id="evPremiere" title="Crea un .xml que Premiere Pro importa como secuencia con tus cortes, volumen y fades (sin renderizar)">⇪ Exportar a Premiere</button>
+      <button class="primary sm" id="evRender" title="Crea un MP4 nuevo con tus cortes, fades y volumen">⬇ Exportar MP4</button>
+    </div>
+  </div>
+  <div class="empty" id="evEmpty"><div><b>🎬 Aún no hay vídeo</b><p>Graba con CUTLIFY y pulsa <b>✂ Editar</b>, o abre un vídeo.</p>
+    <div class="row"><button class="primary sm" id="evOpen2">📂 Abrir vídeo…</button></div></div></div>
+  <div class="body" id="evBody" hidden>
+    <div class="ev-preview"><video id="evVideo" preload="auto"></video>
+      <div class="ev-progress" id="evProg" hidden><b>Exportando…</b><div class="bar"><i></i></div><span>0 %</span></div>
+    </div>
+    <div class="ed-bar">
+      <button class="ed-play" id="evPlay" title="Reproducir (Espacio)">▶</button>
+      <span class="ed-time" id="evTime">00:00.00 / 00:00.00</span>
+      <div class="vol-box" title="Sube o baja el volumen del audio. Con un clip seleccionado cambia solo ese clip.">
+        <span class="vol-ico">🔊</span>
+        <div><b>Volumen del audio</b><small id="evVolTarget">todos los clips</small></div>
+        <input type="range" id="evVol" min="-24" max="12" step="0.5" value="0">
+        <span class="vol-val" id="evVolVal">0 dB</span>
+        <button class="ghost sm" id="evVolReset" title="Volver a 0 dB">↺</button>
+      </div>
+      <div class="grow"></div>
+      <label class="zoom">Zoom <input type="range" id="evZoom" min="0" max="100" value="30"></label>
+      <button class="ghost sm" id="evFit">Ajustar</button>
+    </div>
+    <div class="tl" id="evTl"><div class="tl-spacer" id="evSpacer"></div><canvas id="evCanvas"></canvas></div>
+    <div class="keys" id="evKeys"></div>
+  </div>
+  <div id="toasts"></div>
+  <script src="premiere-xml.js"></script>
+  <script src="common.js"></script>
+  <script src="video.js"></script>
+</body>
+</html>

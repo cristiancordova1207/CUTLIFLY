@@ -34,12 +34,17 @@
     <Resource Include="..\..\icons\cutlify.ico" Link="Assets\cutlify.ico" />
     <Resource Include="..\..\assets\logo.png" Link="Assets\logo.png" />
     <Resource Include="..\..\assets\fonts\*.ttf" Link="Assets\Fonts\%(Filename)%(Extension)" />
+    <!-- Páginas de los editores, servidas desde https://app.cutlify/ (ver UI/MediaEditorWindow) -->
+    <EmbeddedResource Include="EditorsWeb\*.*" LogicalName="web/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="EditorsWeb\fonts\*.*" LogicalName="web/fonts/%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Captura WASAPI (audio del sistema y micrófono), remuestreo y mezcla. Licencia MIT. -->
     <PackageReference Include="NAudio.Core" Version="2.2.1" />
     <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+    <!-- Editores de audio (MicLY) y vídeo (CaptLY): su interfaz HTML corre en WebView2. Licencia BSD. -->
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3485.44" />
   </ItemGroup>
 
   <ItemGroup>

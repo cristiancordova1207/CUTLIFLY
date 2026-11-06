@@ -11,8 +11,14 @@ namespace Cutlify
 {
     public partial class App : Application
     {
+#if DEBUG
+        // La compilación de desarrollo puede abrirse junto a la instalada.
+        private const string MutexName = "CUTLIFY_SingleInstance_v1_dev";
+        private const string ShowEventName = "CUTLIFY_ShowMainWindow_v1_dev";
+#else
         private const string MutexName = "CUTLIFY_SingleInstance_v1";
         private const string ShowEventName = "CUTLIFY_ShowMainWindow_v1";
+#endif
 
         private Mutex _mutex;
         private EventWaitHandle _showEvent;
@@ -46,6 +52,13 @@ namespace Cutlify
             bool tray = e.Args.Any(a => a.Equals("--tray", StringComparison.OrdinalIgnoreCase));
             bool updated = e.Args.Any(a => a.Equals("--updated", StringComparison.OrdinalIgnoreCase));
             AppController.Initialize(this, startInTray: tray, justUpdated: updated);
+
+            // CUTLIFY.exe --edit-audio <archivo> | --edit-video <archivo>: abre el archivo en el editor
+            for (int i = 0; i + 1 < e.Args.Length; i++)
+            {
+                if (e.Args[i].Equals("--edit-audio", StringComparison.OrdinalIgnoreCase)) AppController.Instance?.ShowAudioEditor(e.Args[i + 1]);
+                if (e.Args[i].Equals("--edit-video", StringComparison.OrdinalIgnoreCase)) AppController.Instance?.ShowVideoEditor(e.Args[i + 1]);
+            }
         }
 
         private void OnDispatcherException(object sender, DispatcherUnhandledExceptionEventArgs e)
